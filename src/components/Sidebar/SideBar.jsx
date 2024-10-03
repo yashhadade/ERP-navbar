@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser } from "react-icons/fa";
+import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser ,FaTools,FaMapMarked,FaMoneyCheckAlt } from "react-icons/fa";
+import { IoBagRemoveSharp } from "react-icons/io5";
+import { FaIdCardClip,FaCartFlatbedSuitcase } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
-import { BiAnalyse, BiSearch } from "react-icons/bi";
+ import { BiAnalyse} from "react-icons/bi";
+ import { DiUikit } from "react-icons/di";
 import { BiCog } from "react-icons/bi";
 import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
@@ -28,6 +31,49 @@ const routes = [
     path: "/analytics",
     name: "Analytics",
     icon: <BiAnalyse />,
+  },
+  {
+    path: "/file-manager",
+    name: "Masters",
+    icon: <DiUikit />,
+    subRoutes: [
+      {
+        path: "/temporaryClient",
+        name: "Temporary Client",
+        icon: <FaIdCardClip />,
+      },
+      {
+        path: "/temporarySite",
+        name: "Temporary Site",
+        icon: <FaMapMarked />,
+      },
+      {
+        path: "/temporaryDesignantion",
+        name: "Temporary Designation",
+        icon: <IoBagRemoveSharp />,
+      },
+      {
+        path: "/salaryHead",
+        name: "Salary Head",
+        icon: <FaMoneyCheckAlt />,
+      },
+      {
+        path: "/salaryComponents",
+        name: "Salary Components",
+        icon: <FaMoneyBill />,
+      },
+      {
+        path: "/machinery",
+        name: "Machinery",
+        icon: <FaTools />,
+      },
+      {
+        path: "/material",
+        name: "Material",
+        icon: <FaCartFlatbedSuitcase />,
+      },
+      
+    ],
   },
   {
     path: "/file-manager",
@@ -148,7 +194,7 @@ const SideBar = ({ children }) => {
                   exit="hidden"
                   className="logo"
                 >
-                  DoSomeCoding
+                  ISmart ERP
                 </motion.h1>
               )}
             </AnimatePresence>
@@ -157,7 +203,7 @@ const SideBar = ({ children }) => {
               <FaBars onClick={toggle} />
             </div>
           </div>
-          <div className="search">
+          {/* <div className="search">
             <div className="search_icon">
               <BiSearch />
             </div>
@@ -173,7 +219,7 @@ const SideBar = ({ children }) => {
                 />
               )}
             </AnimatePresence>
-          </div>
+          </div> */}
           <section className="routes">
             {routes.map((route, index) => {
               if (route.subRoutes) {

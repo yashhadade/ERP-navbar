@@ -10,6 +10,16 @@ import Analytics from "./pages/Analytics";
 import Order from "./pages/Order";
 import Saved from "./pages/Saved";
 import Setting from "./pages/Setting";
+import TemporaryClient from "./pages/TemopraryClient";
+import TemporarySite from "./pages/TemporarySite";
+import TemporaryDesignantion from "./pages/TemporaryDesignantion";
+import SalarayHead from "./pages/SalarayHead";
+import SalarayComponents from "./pages/SalaryComponents";
+import Machinery from "./pages/Machinery";
+import Material from "./pages/Material";
+
+
+
 function App() {
   return (
     <Router>
@@ -23,6 +33,13 @@ function App() {
           <Route path="/order" element={<Order />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/settings" element={<Setting />} />
+          <Route path="/temporaryClient" element={<TemporaryClient/>}/>
+          <Route path="/temporarySite" element={<TemporarySite/>}/>
+          <Route path="/temporaryDesignantion" element={<TemporaryDesignantion/>}/>
+          <Route path="/salaryHead" element={<SalarayHead/>}/>
+          <Route path="/salaryComponents" element={<SalarayComponents/>}/>
+          <Route path="/machinery" element={<Machinery/>}/>
+          <Route path="/material" element={<Material/>}/>
 
           <Route path="*" element={<> not found</>} />
         </Routes>
