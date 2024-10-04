@@ -23,6 +23,8 @@ main {
   color: white;
   height: 100vh;
   overflow-y: auto;
+  position: relative; /* Ensure the sidebar has a positioning context */
+  z-index: 10;
 }
 
 .top_section {
@@ -79,7 +81,7 @@ main {
 }
 .active {
   border-right: 4px solid white;
-  background: rgb(45, 51, 89);
+  background: #2d3359;
 }
 .link_text {
   white-space: nowrap;
@@ -107,4 +109,53 @@ main {
   padding-left: 20px;
   border-bottom: #fff 0.5px solid;
 }
+.TemporaryClient {
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin: 20px auto;
+  padding: 20px;
+  z-index: 5;
+  overflow-x: auto;
+  overflow-y: auto;
+  /* Removed position: absolute; */
+}
 
+.container { 
+  /* background-color: #ffffff; */
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  border-radius: 5px;
+  position: absolute;
+  margin: 20px auto;
+  padding: 20px;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5; /* Lower z-index than sidebar */
+}
+input[type="text"] {
+  margin: 10px 0;
+  padding: 12px;
+  width: calc(100% - 24px);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+.submit {
+  background-color: rgb(0, 7, 61);
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.submit:hover {
+  background-color: #004494;
+}
+h1{
+  text-align: center;
+}
