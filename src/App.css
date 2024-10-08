@@ -36,6 +36,7 @@ main {
 .logo {
   font-size: 18px;
   line-height: 0;
+  font-weight: bold;
 }
 .bars {
   width: 30px;
@@ -122,16 +123,21 @@ main {
 }
 
 .container { 
-  /* background-color: #ffffff; */
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+ height: 100vh;
   border-radius: 5px;
   position: absolute;
-  margin: 20px auto;
+  margin: 60px auto;
   padding: 20px;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+  transition: margin-left 0.5s ease; /* Smooth transition */
   z-index: 5; /* Lower z-index than sidebar */
+  overflow-x: auto;
+  overflow-y: auto;
+}
+.container.sidebar-open {
+  margin-left: 100px; /* Adjust based on your sidebar's width */
 }
 input[type="text"] {
   margin: 10px 0;
@@ -157,5 +163,39 @@ input[type="text"] {
   background-color: #004494;
 }
 h1{
+  text-align: center;
+}
+
+td,th{
+  background-color: #6090c7;
+}
+.edit{
+  background-color: #e0a503;
+  width: 60px;
+  color: black;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  border-radius: 5px;
+  margin:10px;
+
+}
+.edit:hover{
+  background-color:#856307 ;
+}
+.delete{
+  background-color: #db0707;
+  width: 60px;
+  color: rgb(252, 249, 249);
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  border-radius: 5px;
+  margin:10px;
+}
+.delete:hover{
+  background-color:#831414 ;
+}
+h3{
   text-align: center;
 }

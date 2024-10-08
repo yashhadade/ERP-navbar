@@ -133,7 +133,7 @@ const routes = [
 ];
 
 const SideBar = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const toggle = () => setIsOpen(!isOpen);
   const inputAnimation = {
     hidden: {
@@ -184,7 +184,8 @@ const SideBar = ({ children }) => {
           }}
           className={`sidebar `}
         >
-          <div className="top_section">
+          
+          <div className="top_section" >
             <AnimatePresence>
               {isOpen && (
                 <motion.h1
@@ -259,8 +260,8 @@ const SideBar = ({ children }) => {
             })}
           </section>
         </motion.div>
-
-        <main>{children}</main>
+        <main className={`container ${isOpen ? 'sidebar-open' : ''}`}>
+        {children}</main>
       </div>
     </>
   );

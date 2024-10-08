@@ -1,22 +1,10 @@
-import { useState, useEffect } from "react"; 
-import ServerApi from "../ServerApi";
-import axios from "axios";
+import useCustomReactQuery from "./getForAllApi";
+
 
 
 function TemopraryClient(){
-    const [product, setProduct] = useState([]);
-    const apiUrl = ServerApi();
-    useEffect(() => {
-        (async () => {
-            try {
-                const response = await axios.get(`${apiUrl}/temp-client`);
-                setProduct(response.data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        })();
-    }, [apiUrl]);   
     
+    const [product]= useCustomReactQuery('temp-client')
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -26,20 +14,20 @@ function TemopraryClient(){
     return (
         <div className="container">
             <div className="TemporaryClient">
-                <h2>TEMPORARY CLIENT</h2>
+                <h3>TEMPORARY CLIENT</h3>
                 <form onSubmit={handleSubmit}>
-                    <div>
+                    <div>A
                         <label>Client Name:</label>
-                        <input type="text" placeholder="Client Name" required />
+                        <input type="text" placeholder="Client Name" name="name" required />
                     </div>
                     <button type="submit" className="submit">Submit</button>
                 </form>
             </div>
             <div className="TemporaryClient">
-                <h2>CLIENT LIST</h2>
+                <h3>CLIENT LIST</h3>
                 <button id="exportButton">Export to Excel</button>
                 <h2>The Number of Clients: {product.length}</h2>
-                <table id="clientTable" className="display">
+                <table className="table">
                     <thead>
                         <tr>
                             <th>Sr No</th>
@@ -48,17 +36,17 @@ function TemopraryClient(){
                         </tr>
                     </thead>
                     <tbody>
-                        {/* {product.map((client, index) => (
+                        {product.map((client, index) => (
                             <tr key={client.id}> 
                                 <td>{index + 1}</td>
                                 <td>{client.clientName}</td> 
                                 <td>
                                     
-                                    <button>Edit</button>
-                                    <button>Delete</button>
+                                    <button className="edit" >Edit</button>
+                                    <button className="delete">Delete</button>
                                 </td>
                             </tr>
-                        ))} */}
+                        ))}
                     </tbody>
                 </table>
             </div>
@@ -68,3 +56,8 @@ function TemopraryClient(){
 
 
 export default TemopraryClient
+
+
+// custome React Query
+
+
