@@ -130,6 +130,7 @@ main {
   padding: 20px;
   top: 40%;
   left: 50%;
+  right: 20%;
   transform: translate(-50%, -50%);
   transition: margin-left 0.5s ease; /* Smooth transition */
   z-index: 5; /* Lower z-index than sidebar */
@@ -137,7 +138,7 @@ main {
   overflow-y: auto;
 }
 .container.sidebar-open {
-  margin-left: 100px; /* Adjust based on your sidebar's width */
+  margin-left: 100px; 
 }
 input[type="text"] {
   margin: 10px 0;
@@ -198,4 +199,22 @@ td,th{
 }
 h3{
   text-align: center;
+}
+.cancle{
+  background-color: #f44336;
+  color: white;
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  
+}
+.save{
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+ 
 }

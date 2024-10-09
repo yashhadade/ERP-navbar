@@ -16,6 +16,6 @@ const useCustomReactQuery = (urlPath) => {
         })();
     }, [apiUrl, urlPath]); // Added urlPath to the dependency array
 
-    return [product];
+    return [product,setProduct];
 }
 export default useCustomReactQuery
