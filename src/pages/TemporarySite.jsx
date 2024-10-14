@@ -1,9 +1,10 @@
-import { useState } from "react";
+
+import { deleteProduct } from "./DeleteAPI";
 import useCustomReactQuery from "./getForAllApi";
 
 
 const TemporarySite = () => {
-  const [product] = useCustomReactQuery('temp-site');
+  const [product,setProduct] = useCustomReactQuery('temp-site');
 
   
  
@@ -48,7 +49,7 @@ const TemporarySite = () => {
                   </button>
                   <button
                    
-                    className="delete"
+                    className="delete" onClick={() => deleteProduct("temp-site/delete", site.id, setProduct)}
                   >
                     Delete
                   </button>

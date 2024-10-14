@@ -2,8 +2,7 @@ import useCustomReactQuery from "./getForAllApi";
 import { useState, useEffect } from "react"; 
 import usePostData from "./postData";
 import { Link } from "react-router-dom";
-import { deleteProduct } from "./DeleteAPI"; // Import the delete function
-
+import { deleteProduct } from "./DeleteAPI";
 function TemporaryClient() {
     const [product, setProduct] = useCustomReactQuery('temp-client');
     const [inputData, setInputData] = useState({ clientName: '' });

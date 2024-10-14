@@ -20,7 +20,7 @@ const EditTemporaryClient = () => {
             setInputData({ clientName: "" });
             setTimeout(() => {
                 navigate("/temporaryClient/");
-            }, 1500);
+            }, 1000);
         }
     };
     useEffect(() => {
