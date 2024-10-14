@@ -1,9 +1,10 @@
 import ServerApi from "../ServerApi";
 import axios from "axios";
 import { useState, useEffect } from "react"; 
+
 const useCustomReactQuery = (urlPath) => {
     const [product, setProduct] = useState([]);
-    const apiUrl = ServerApi(); // Ensure ServerApi is defined and returns a base URL
+    const apiUrl = ServerApi(); 
 
     useEffect(() => {
         (async () => {
@@ -18,4 +19,5 @@ const useCustomReactQuery = (urlPath) => {
 
     return [product,setProduct];
 }
+
 export default useCustomReactQuery

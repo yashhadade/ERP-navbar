@@ -1,22 +1,19 @@
 import useCustomReactQuery from "./getForAllApi";
-import { useState,useEffect} from "react"; 
+import { useState, useEffect } from "react"; 
 import usePostData from "./postData";
-function TemopraryClient() {
+import { Link } from "react-router-dom";
+import { deleteProduct } from "./DeleteAPI"; // Import the delete function
 
-    const [product,setProduct] = useCustomReactQuery('temp-client')
+function TemporaryClient() {
+    const [product, setProduct] = useCustomReactQuery('temp-client');
     const [inputData, setInputData] = useState({ clientName: '' });
-    const { postData, responseData, error, loading,message } = usePostData("temp-client/new");
-    const [hidden,setHidden]=useState(false);
-    function handleEdit(){
-        setHidden(true)
-    }
-    function handleCancle(){
-        setHidden(false)
-    }
+    const { postData, responseData, error, loading, message } = usePostData("temp-client/new");
+
     const handleData = (e) => {
         setInputData({ ...inputData, [e.target.name]: e.target.value });
     };
-    const handleSubmit=async(event)=> {
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const newClient = await postData(inputData);
         if (newClient) {
@@ -24,6 +21,7 @@ function TemopraryClient() {
             setInputData({ clientName: "" });
         }
     };
+
     useEffect(() => {
         if (responseData) {
             console.log("New client added:", responseData);
@@ -32,16 +30,23 @@ function TemopraryClient() {
 
     return (
         <div className="container">
-            <div className="TemporaryClient" style={{ display: hidden ? 'none' : '' }}>
+            <div className="TemporaryClient">
                 <h3>Temporary Client</h3>
                 <label>Client Name</label>
-                <input type="text" name="clientName" placeholder="Clinet Name" value={inputData.clientName} onChange={handleData}></input>
+                <input 
+                    type="text" 
+                    name="clientName" 
+                    placeholder="Client Name" 
+                    value={inputData.clientName} 
+                    onChange={handleData}
+                />
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 {message && <p style={{ color: 'green' }}>{message}</p>}
-                <button className="submit" onClick={handleSubmit} disabled={loading}>{loading ? "Submitting..." : "Submit"}</button>
-               
+                <button className="submit" onClick={handleSubmit} disabled={loading}>
+                    {loading ? "Submitting..." : "Submit"}
+                </button>
             </div>
-            <div className="TemporaryClient" style={{ display: hidden ? 'none' : '' }}>
+            <div className="TemporaryClient">
                 <h3>CLIENT LIST</h3>
                 <button id="exportButton">Export to Excel</button>
                 <h2>The Number of Clients: {product.length}</h2>
@@ -59,33 +64,21 @@ function TemopraryClient() {
                                 <td>{index + 1}</td>
                                 <td>{client.clientName}</td>
                                 <td>
-
-                                    <button className="edit" onClick={handleEdit}>Edit</button>
-                                    <button className="delete">Delete</button>
+                                    <Link className="edit" to={`/editTemporaryClient/${client.id}`}>Edit</Link>
+                                    <button 
+                                        className="delete" 
+                                        onClick={() => deleteProduct("temp-client/delete", client.id, setProduct)}
+                                    >
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            <div className="TemporaryClient" style={{ display: hidden ? '' : 'none' }}>
-                        <h2>Edit Client</h2>
-                        <h3>Temporary Client</h3>
-                <label>Client Name</label>
-                <input type="text" name="clientName" placeholder="Clinet Name" value={inputData.clientName} onChange={handleData}></input>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {message && <p style={{ color: 'green' }}>{message}</p>}
-                <button className="cancle"onClick={handleCancle} >Cancle</button>
-                <button className="save" onClick={handleSubmit} disabled={loading}>{loading ? "Submitting..." : "Submit"}</button>
-            </div>
         </div>
     );
 }
 
-
-export default TemopraryClient
-
-
-// custome React Query
-
-
+export default TemporaryClient;

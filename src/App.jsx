@@ -1,7 +1,6 @@
 import "./App.css";
 import SideBar from "./components/Sidebar/SideBar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Messages from "./pages/Messages";
@@ -17,6 +16,7 @@ import SalarayHead from "./pages/SalarayHead";
 import SalarayComponents from "./pages/SalaryComponents";
 import Machinery from "./pages/Machinery";
 import Material from "./pages/Material";
+import EditTemporaryClient from "./pages/EditTemporaryClient";
 
 
 
@@ -34,6 +34,7 @@ function App() {
           <Route path="/saved" element={<Saved />} />
           <Route path="/settings" element={<Setting />} />
           <Route path="/temporaryClient" element={<TemporaryClient/>}/>
+          <Route path="/editTemporaryClient/:clintId" element={<EditTemporaryClient/>}/>
           <Route path="/temporarySite" element={<TemporarySite/>}/>
           <Route path="/temporaryDesignantion" element={<TemporaryDesignantion/>}/>
           <Route path="/salaryHead" element={<SalarayHead/>}/>

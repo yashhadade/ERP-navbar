@@ -3,11 +3,13 @@ import axios from "axios";
 import ServerApi from "../ServerApi";
 
 const usePostData = (url) => {
+
     const [responseData, setResponseData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [message,setMessage]=useState('');
     const apiEndPoint=ServerApi()
+    
     const postData = async (data) => {
         setMessage('');
         setLoading(true);
@@ -20,7 +22,7 @@ const usePostData = (url) => {
 
             setTimeout(() => {
                 setMessage('');
-            }, 3000);
+            }, 1000);
             return response.data;
         } catch (error) {
             // setError(error);
