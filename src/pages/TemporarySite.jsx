@@ -1,21 +1,17 @@
 import { useState } from "react";
 import useCustomReactQuery from "./getForAllApi";
-import useCustomGetIdReactQuery from "./getByIdAllApi";
+
 
 const TemporarySite = () => {
   const [product] = useCustomReactQuery('temp-site');
 
-  const [container, setContainer] = useState(false);
-  const [editSiteId, setEditSiteId] = useState(null);
-  function handleContainer(id) {
-    setContainer(prev => !prev);
-    setEditSiteId(id); // Store the id of the site being edited
-
-  }
+  
+ 
+  
 
   return (
     <div className="container">
-      <div className="TemporaryClient" style={{ display: container ? 'none' : '' }}>
+      <div className="TemporaryClient" >
         <h3>SITE LIST</h3>
         <button id="exportButton">Export to Excel</button>
         <h2>The Number of sites: {product.length}</h2>
@@ -46,14 +42,12 @@ const TemporarySite = () => {
                 <td>{site.address}</td>
                 <td>
                   <button
-                    id={`edit-${site.id}`}
-                    onClick={() => handleContainer(site.id)}
                     className="edit"
                   >
                     Edit
                   </button>
                   <button
-                    id={`delete-${site.id}`}
+                   
                     className="delete"
                   >
                     Delete
@@ -64,16 +58,7 @@ const TemporarySite = () => {
           </tbody>
         </table>
       </div>
-      <div className="TemporaryClient" style={{ display: container ? '' : 'none' }}>
-        <h1>EDIT SITE</h1>
-        <p>Editing site ID: {editSiteId}</p>
-        <div>
-          <label>Client Name:</label>
-          <input type="text" placeholder="Client Name" required />
-        </div>
-        <button type="submit" className="save">Save</button>  
-        <button onClick={() => handleContainer(null)}>Cancel</button> {/* Toggle without an ID */}
-      </div>
+     
     </div>
   );
 };
