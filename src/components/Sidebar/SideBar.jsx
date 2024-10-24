@@ -28,8 +28,8 @@ const routes = [
     icon: <MdMessage />,
   },
   {
-    path: "/analytics",
-    name: "Analytics",
+    path: "/survey",
+    name: "Survey",
     icon: <BiAnalyse />,
   },
   {

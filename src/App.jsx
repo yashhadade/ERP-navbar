@@ -5,7 +5,6 @@ import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
 import Messages from "./pages/Messages";
 import FileManager from "./pages/FileManager";
-import Analytics from "./pages/Analytics";
 import Order from "./pages/Order";
 import Saved from "./pages/Saved";
 import Setting from "./pages/Setting";
@@ -17,6 +16,7 @@ import SalarayComponents from "./pages/SalaryComponents";
 import Machinery from "./pages/Machinery";
 import Material from "./pages/Material";
 import EditTemporaryClient from "./pages/EditTemporaryClient";
+import Survey from "./pages/Survey";
 
 
 
@@ -28,7 +28,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/users" element={<Users />} />
           <Route path="/messages" element={<Messages />} />
-          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/survey" element={<Survey />} />
           <Route path="/file-manager" element={<FileManager />} />
           <Route path="/order" element={<Order />} />
           <Route path="/saved" element={<Saved />} />
