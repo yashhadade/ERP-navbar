@@ -3,14 +3,15 @@ import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser ,FaTools,FaMapMarked,FaMone
 import { IoBagRemoveSharp } from "react-icons/io5";
 import { FaIdCardClip,FaCartFlatbedSuitcase } from "react-icons/fa6";
 import { MdMessage } from "react-icons/md";
-import { BiAccessibility, BiAdjust, BiAnalyse} from "react-icons/bi";
- import { DiLaravel, DiUikit } from "react-icons/di";
+import { BiAccessibility, BiAdjust, BiAnalyse, BiBuilding} from "react-icons/bi";
+import { DiLaravel, DiUikit } from "react-icons/di";
 import { BiCog } from "react-icons/bi";
 import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
+
 
 const routes = [
   {
@@ -33,6 +34,7 @@ const routes = [
     name: "Survey",
     icon: <BiAnalyse />,
   },
+
   
   {
     path: "/file-manager",
