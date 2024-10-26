@@ -19,6 +19,7 @@ import EditTemporaryClient from "./pages/EditTemporaryClient";
 import Survey from "./pages/Survey";
 import Premises from "./pages/Premises";
 import Buildings from "./pages/Buildings";
+import Basement from "./pages/Basement";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/material" element={<Material/>}/>
           <Route path="/premises" element={<Premises/>}/>
           <Route path="/buildings" element={<Buildings/>}/>
+          <Route path="/basement" element={<Basement/>}/>
          
 
           <Route path="*" element={<> not found</>} />

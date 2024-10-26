@@ -16,7 +16,7 @@ const [buildingOpen,setBuildingOpen] = useState();
   const [validated, setValidated] = useState(false);
 
   useEffect(() => {
-    setSurveyUsers(["User 1", "User 2", "User 3"]); // Replace with API call if needed
+    setSurveyUsers(["User 1", "User 2", "User 3"]); // replace with API call if needed
   }, []);
 
   useEffect(() => {

@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser ,FaTools,FaMapMarked,FaMoneyCheckAlt } from "react-icons/fa";
 import { IoBagRemoveSharp } from "react-icons/io5";
 import { FaIdCardClip,FaCartFlatbedSuitcase } from "react-icons/fa6";
-import { MdMessage } from "react-icons/md";
+import { Md10K, MdMessage } from "react-icons/md";
 import { BiAccessibility, BiAdjust, BiAnalyse, BiBuilding} from "react-icons/bi";
-import { DiLaravel, DiUikit } from "react-icons/di";
+import { DiAppstore, DiAtom, DiAws, DiCisco, DiLaravel, DiUikit } from "react-icons/di";
 import { BiCog } from "react-icons/bi";
 import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
@@ -33,6 +33,12 @@ const routes = [
     path: "/survey",
     name: "Survey",
     icon: <BiAnalyse />,
+  },
+
+  {
+    path: "/basement",
+    name: "Basement",
+    icon: <DiAws />,
   },
 
   
