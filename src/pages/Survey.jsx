@@ -1,16 +1,46 @@
-import React, { useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import Premises from './Premises';
+import React, { useContext, useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import Premises from "./Premises";
+import { useNavigate } from "react-router-dom";
+import { FormContext } from "../FormContext/FormContextProvider";
 
 const Survey = () => {
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [showNextForm, setShowNextForm] = useState(false);
-  const [numOfPremises, setNumOfPremises] = useState(0);
-  const [currentPremisesIndex, setCurrentPremisesIndex] = useState(0);
-  const [allPremisesData,setAllPremiseData]= useState([]);
+
+  const {
+    numOfPremises,
+    setNumOfPremises,
+    allPremisesData,
+    currentPremisesIndex,
+    setCurrentPremisesIndex,
+    setAllPremiseData,
+  } = useContext(FormContext);
+
+  console.log(numOfPremises);
 
   const [premisesData, setPremisesData] = useState([
-    { siteName: "", buildings: 0, carpetArea: 0, builtUpArea: 0, basementUpArea: 0, basement: 0, floors: 0, workStations: 0, employees: 0, operatingShifts: 1, shifts: [{ startTime: "", endTime: "" }], grade: "Select", tier: "", surveyDate: "", surveyBy: "", clientVisitingCard: null, locationPhoto: null, moreInfo: "" }
+    {
+      siteName: "",
+      buildings: 0,
+      carpetArea: 0,
+      builtUpArea: 0,
+      basementUpArea: 0,
+      basement: 0,
+      floors: 0,
+      workStations: 0,
+      employees: 0,
+      operatingShifts: 1,
+      shifts: [{ startTime: "", endTime: "" }],
+      grade: "Select",
+      tier: "",
+      surveyDate: "",
+      surveyBy: "",
+      clientVisitingCard: null,
+      locationPhoto: null,
+      moreInfo: "",
+    },
   ]);
 
   const handleSubmit = (event) => {
@@ -24,6 +54,8 @@ const Survey = () => {
 
   const handleNext = () => {
     setShowNextForm(true);
+
+    navigate("/premises");
   };
 
   const handlePrevious = () => {
@@ -34,14 +66,31 @@ const Survey = () => {
   const handlePremisesChange = (e) => {
     const value = Number(e.target.value);
     setNumOfPremises(value);
-    setPremisesData(Array.from({ length: value }, () => ({
-      siteName: "", buildings: 0, carpetArea: 0, builtUpArea: 0, basementUpArea: 0, basement: 0, floors: 0, workStations: 0, employees: 0, operatingShifts: 1, shifts: [{ startTime: "", endTime: "" }], grade: "Select", tier: "", surveyDate: "", surveyBy: "", clientVisitingCard: null, locationPhoto: null, moreInfo: ""
-    })));
+    setPremisesData(
+      Array.from({ length: value }, () => ({
+        siteName: "",
+        buildings: 0,
+        carpetArea: 0,
+        builtUpArea: 0,
+        basementUpArea: 0,
+        basement: 0,
+        floors: 0,
+        workStations: 0,
+        employees: 0,
+        operatingShifts: 1,
+        shifts: [{ startTime: "", endTime: "" }],
+        grade: "Select",
+        tier: "",
+        surveyDate: "",
+        surveyBy: "",
+        clientVisitingCard: null,
+        locationPhoto: null,
+        moreInfo: "",
+      }))
+    );
   };
 
   const goToNextPremises = () => {
-    console.log("data");
-    
     if (currentPremisesIndex < numOfPremises - 1) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
     }
@@ -116,21 +165,44 @@ const Survey = () => {
             </Form.Group>
           </Row>
 
-          {['Site Incharge', 'Commercial Incharge', 'Location Incharge', 'Referal'].map((incharge, index) => (
+          {[
+            "Site Incharge",
+            "Commercial Incharge",
+            "Location Incharge",
+            "Referal",
+          ].map((incharge, index) => (
             <div key={index}>
               <h2>{incharge}</h2>
               <Row className="mb-3">
-                <Form.Group as={Col} md="4" controlId={`validation${incharge}Name`}>
+                <Form.Group
+                  as={Col}
+                  md="4"
+                  controlId={`validation${incharge}Name`}
+                >
                   <Form.Label>Name</Form.Label>
                   <Form.Control required type="text" placeholder="Name" />
                 </Form.Group>
-                <Form.Group as={Col} md="4" controlId={`validation${incharge}Email`}>
+                <Form.Group
+                  as={Col}
+                  md="4"
+                  controlId={`validation${incharge}Email`}
+                >
                   <Form.Label>Email</Form.Label>
                   <Form.Control required type="text" placeholder="Email" />
                 </Form.Group>
-                <Form.Group as={Col} md="4" controlId={`validation${incharge}Phone`}>
+                <Form.Group
+                  as={Col}
+                  md="4"
+                  controlId={`validation${incharge}Phone`}
+                >
                   <Form.Label>Phone</Form.Label>
-                  <Form.Control required type="text" placeholder="Phone" minLength={10} maxLength={10} />
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Phone"
+                    minLength={10}
+                    maxLength={10}
+                  />
                 </Form.Group>
               </Row>
               <hr />
@@ -139,29 +211,65 @@ const Survey = () => {
 
           <Row className="mb-3">
             <h2>Sent Proposal To</h2>
-            {['Site Incharge', 'Commercial Incharge', 'Location Incharge'].map((incharge, index) => (
-              <Form.Group as={Col} md="4" key={index} controlId={`proposal${index}`}>
-                <Form.Check inline label={incharge} type="checkbox" id={`proposalCheckbox${index}`} />
-              </Form.Group>
-            ))}
+            {["Site Incharge", "Commercial Incharge", "Location Incharge"].map(
+              (incharge, index) => (
+                <Form.Group
+                  as={Col}
+                  md="4"
+                  key={index}
+                  controlId={`proposal${index}`}
+                >
+                  <Form.Check
+                    inline
+                    label={incharge}
+                    type="checkbox"
+                    id={`proposalCheckbox${index}`}
+                  />
+                </Form.Group>
+              )
+            )}
           </Row>
 
           <Row className="mb-3">
             <h2>Services Required</h2>
-            {['Service One', 'Service Two', 'Service Three'].map((service, index) => (
-              <Form.Group as={Col} md="4" key={index} controlId={`service${index}`}>
-                <Form.Check inline label={service} type="checkbox" id={`serviceCheckbox${index}`} />
-              </Form.Group>
-            ))}
+            {["Service One", "Service Two", "Service Three"].map(
+              (service, index) => (
+                <Form.Group
+                  as={Col}
+                  md="4"
+                  key={index}
+                  controlId={`service${index}`}
+                >
+                  <Form.Check
+                    inline
+                    label={service}
+                    type="checkbox"
+                    id={`serviceCheckbox${index}`}
+                  />
+                </Form.Group>
+              )
+            )}
           </Row>
 
           <Row className="mb-3">
             <h2>Additional Services</h2>
-            {['Additional One', 'Additional Two', 'Additional Three'].map((service, index) => (
-              <Form.Group as={Col} md="4" key={index} controlId={`additionalService${index}`}>
-                <Form.Check inline label={service} type="checkbox" id={`additionalServiceCheckbox${index}`} />
-              </Form.Group>
-            ))}
+            {["Additional One", "Additional Two", "Additional Three"].map(
+              (service, index) => (
+                <Form.Group
+                  as={Col}
+                  md="4"
+                  key={index}
+                  controlId={`additionalService${index}`}
+                >
+                  <Form.Check
+                    inline
+                    label={service}
+                    type="checkbox"
+                    id={`additionalServiceCheckbox${index}`}
+                  />
+                </Form.Group>
+              )
+            )}
           </Row>
 
           <Row className="mb-3">
@@ -183,7 +291,7 @@ const Survey = () => {
               />
             </Form.Group>
           </Row>
-          
+
           <Button type="button" onClick={handleNext} className="me-2">
             Next
           </Button>
@@ -193,14 +301,11 @@ const Survey = () => {
         <div>
           {currentPremisesIndex < numOfPremises && (
             <Premises
-              key={currentPremisesIndex}
               currentPremisesIndex={currentPremisesIndex}
               numOfPremises={numOfPremises}
-              // formData={premisesData[currentPremisesIndex]} // Pass current form data
-              // setFormData={(data) => handlePremisesDataChange(currentPremisesIndex, data)} // Update specific premises data
               onPrevious={goToPreviousPremises} // Updated: navigate within premises or to Survey
               onNext={goToNextPremises} // Updated: control forward navigation
-              allPremisesData= {allPremisesData}
+              allPremisesData={allPremisesData}
               setAllPremiseData={setAllPremiseData}
             />
           )}

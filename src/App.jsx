@@ -28,7 +28,6 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/users" element={<Users />} />
           <Route path="/messages" element={<Messages />} />
-          <Route path="/survey" element={<Survey />} />
           <Route path="/file-manager" element={<FileManager />} />
           <Route path="/order" element={<Order />} />
           <Route path="/saved" element={<Saved />} />
@@ -41,6 +40,8 @@ function App() {
           <Route path="/salaryComponents" element={<SalarayComponents/>}/>
           <Route path="/machinery" element={<Machinery/>}/>
           <Route path="/material" element={<Material/>}/>
+          
+          <Route path="/survey" element={<Survey />} />
           <Route path="/premises" element={<Premises/>}/>
           <Route path="/buildings" element={<Buildings/>}/>
          
