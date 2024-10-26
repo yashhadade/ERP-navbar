@@ -1,315 +1,165 @@
 import React, { useState, useEffect } from "react";
 import { Button, Col, Form, Row } from 'react-bootstrap';
+import Buildings from './Buildings';
 
-const Premises = ({ onPrevious }) => {
+const Premises = ({ onPrevious,  onNext, currentPremisesIndex, numOfPremises,setAllPremiseData,allPremisesData }) => {
   const [formData, setFormData] = useState({
-    siteName: "",
-    buildings: 0,
-    carpetArea: 0,
-    builtUpArea: 0,
-    basementUpArea: 0,
-    basement: 0,
-    floors: 0,
-    workStations: 0,
-    employees: 0,
-    operatingShifts: 1,
-    shifts: [{ startTime: "", endTime: "" }],
-    grade: "Select",
-    tier: "",
-    surveyDate: "",
-    surveyBy: "",
-    clientVisitingCard: null,
-    locationPhoto: null,
-    moreInfo: "",
-    noOfPremises: 1,
+    siteName: "", buildings: 0, carpetArea: 0, builtUpArea: 0, basementUpArea: 0,
+    basement: 0, floors: 0, workStations: 0, employees: 0, operatingShifts: 1,
+    shifts: [{ startTime: "", endTime: "" }], grade: "Select", tier: "", surveyDate: "",
+    surveyBy: "", clientVisitingCard: null, locationPhoto: null, moreInfo: "", noOfPremises: 1,
   });
+const [buildingOpen,setBuildingOpen] = useState();
 
-
-
+  
   const [surveyUsers, setSurveyUsers] = useState([]);
   const [validated, setValidated] = useState(false);
 
   useEffect(() => {
-    const fetchSurveyUsers = async () => {
-      const users = ["User 1", "User 2", "User 3"]; // replace with API
-      setSurveyUsers(users);
-    };
-    fetchSurveyUsers();
+    setSurveyUsers(["User 1", "User 2", "User 3"]); // Replace with API call if needed
   }, []);
 
-  
   useEffect(() => {
-    const newShifts = Array.from({ length: formData.operatingShifts }, (_, index) => ({
-      startTime: formData.shifts[index]?.startTime || "",
-      endTime: formData.shifts[index]?.endTime || ""
+    const newShifts = Array.from({ length: formData.operatingShifts }, (_, i) => ({
+      startTime: formData.shifts[i]?.startTime || "", endTime: formData.shifts[i]?.endTime || ""
     }));
     setFormData(prev => ({ ...prev, shifts: newShifts }));
   }, [formData.operatingShifts]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleShiftChange = (index, field, value) => {
-    const newShifts = [...formData.shifts];
-    newShifts[index][field] = value;
-    setFormData(prev => ({ ...prev, shifts: newShifts }));
-  };
-
-  const handleFileUpload = (e, field) => {
-    const file = e.target.files[0];
-    setFormData(prev => ({ ...prev, [field]: URL.createObjectURL(file) }));
-  };
+  const handleInputChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleShiftChange = (i, field, value) => setFormData(prev => {
+    const shifts = [...prev.shifts];
+    shifts[i][field] = value;
+    return { ...prev, shifts };
+  });
+  const handleFileUpload = (e, field) => setFormData(prev => ({
+    ...prev, [field]: URL.createObjectURL(e.target.files[0])
+  }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (e.currentTarget.checkValidity() === false) {
-      e.stopPropagation();
-    }
+    if (e.currentTarget.checkValidity() === false) e.stopPropagation();
     setValidated(true);
     console.log("Form submitted:", formData);
   };
 
-  return (
+  const renderFormField = (name, label, type = "text", props = {}) => (
+    <Form.Group as={Col} md="4" controlId={name}>
+      <Form.Label>{label}</Form.Label>
+      <Form.Control type={type} name={name} value={formData[name] || ""} onChange={handleInputChange} {...props} />
+    </Form.Group>
+  );
 
 
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+  const onNextForm =async (e) => {
+    console.log("called");
     
-      <h1 className="form-title">Premises Survey </h1>
+    e.preventDefault();
+   await setAllPremiseData(prev => {
+            const updatedData = [...prev, formData];
+      console.log("Updated All Premises Data:", updatedData); // Log the updated data
+      return updatedData; // Save formData to allPremisesData
+    });
 
+   onNext();
+  };
+
+  console.log(allPremisesData);
+  return (
+    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <h1 className="form-title">Premises Form {currentPremisesIndex + 1}</h1>
+      
       <Row className="mb-3">
-        <Form.Group as={Col} md="4" controlId="siteName">
-          <Form.Label>Name of Site</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Site Name"
-            name="siteName"
-            value={formData.siteName}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="4" controlId="buildings">
-          <Form.Label>Buildings</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Buildings"
-            name="buildings"
-            value={formData.buildings}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="4" controlId="carpetArea">
-          <Form.Label>Carpet Area (sq. ft)</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Carpet Area"
-            name="carpetArea"
-            value={formData.carpetArea}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+        {renderFormField("siteName", "Name of Site", "text", { required: true })}
+        {renderFormField("buildings", "Buildings", "number", { required: true })}
+        {renderFormField("carpetArea", "Carpet Area (sq. ft)", "number", { required: true })}
       </Row>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="4" controlId="builtUpArea">
-          <Form.Label>Built-Up Area (sq. ft)</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Built-Up Area"
-            name="builtUpArea"
-            value={formData.builtUpArea}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="4" controlId="basement">
-          <Form.Label>Basement</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Basement"
-            name="basement"
-            value={formData.basement}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="4" controlId="basementUpArea">
-          <Form.Label>Basement Up Area (sq. ft)</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Basement Up Area"
-            name="basementUpArea"
-            value={formData.basementUpArea}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+        {renderFormField("builtUpArea", "Built-Up Area (sq. ft)", "number", { required: true })}
+        {renderFormField("basement", "Basement", "number", { required: true })}
+        {renderFormField("basementUpArea", "Basement Up Area (sq. ft)", "number", { required: true })}
       </Row>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="4" controlId="floors">
-          <Form.Label>Floors</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Floors"
-            name="floors"
-            value={formData.floors}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="4" controlId="workStations">
-          <Form.Label>Work Stations</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Work Stations"
-            name="workStations"
-            value={formData.workStations}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="4" controlId="employees">
-          <Form.Label>Employees</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Employees"
-            name="employees"
-            value={formData.employees}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
+        {renderFormField("floors", "Floors", "number", { required: true })}
+        {renderFormField("workStations", "Work Stations", "number", { required: true })}
+        {renderFormField("employees", "Employees", "number", { required: true })}
       </Row>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="4" controlId="surveyDate">
-          <Form.Label>Survey Date</Form.Label>
-          <Form.Control
-            type="date"
-            placeholder="Survey Date"
-            name="surveyDate"
-            value={formData.surveyDate}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
+        {renderFormField("surveyDate", "Survey Date", "date")}
         <Form.Group as={Col} md="4" controlId="surveyBy">
           <Form.Label>Survey By</Form.Label>
           <Form.Select name="surveyBy" value={formData.surveyBy} onChange={handleInputChange} required>
             <option>--Select--</option>
-            {surveyUsers.map((user) => (
-              <option key={user} value={user}>{user}</option>
-            ))}
+            {surveyUsers.map(user => <option key={user} value={user}>{user}</option>)}
           </Form.Select>
         </Form.Group>
-        <Form.Group as={Col} md="4" controlId="operatingShifts">
-          <Form.Label>Operating Shifts</Form.Label>
-          <Form.Control
-            type="number"
-            placeholder="Operating Shifts"
-            name="operatingShifts"
-            value={formData.operatingShifts}
-            onChange={handleInputChange}
-            min={1}
-            required
-          />
-        </Form.Group>
+        {renderFormField("operatingShifts", "Operating Shifts", "number", { min: 1, required: true })}
       </Row>
 
-      {formData.shifts.map((shift, index) => (
-        <Row className="mb-3" key={index}>
-          <Form.Group as={Col} md="4" controlId={`shiftStartTime-${index}`}>
-            <Form.Label>Shift Start Time {index + 1}</Form.Label>
-            <Form.Control
-              type="time"
-              value={shift.startTime}
-              onChange={(e) => handleShiftChange(index, 'startTime', e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group as={Col} md="4" controlId={`shiftEndTime-${index}`}>
-            <Form.Label>Shift End Time {index + 1}</Form.Label>
-            <Form.Control
-              type="time"
-              value={shift.endTime}
-              onChange={(e) => handleShiftChange(index, 'endTime', e.target.value)}
-              required
-            />
-          </Form.Group>
+      {formData?.shifts?.map((shift, i) => (
+        <Row className="mb-3" key={i}>
+          {renderFormField(`shiftStartTime-${i}`, `Shift Start Time ${i + 1}`, "time", {
+            value: shift.startTime,
+            onChange: e => handleShiftChange(i, "startTime", e.target.value),
+            required: true,
+          })}
+          {renderFormField(`shiftEndTime-${i}`, `Shift End Time ${i + 1}`, "time", {
+            value: shift.endTime,
+            onChange: e => handleShiftChange(i, "endTime", e.target.value),
+            required: true,
+          })}
         </Row>
       ))}
 
-
-        <Form.Group as={Col} md="4" controlId="surveyBy">
+      <Row className="mb-3">
+        <Form.Group as={Col} md="4" controlId="grade">
           <Form.Label>Grade of Premises</Form.Label>
-          <Form.Select name="surveyBy" value={formData.surveyBy} onChange={handleInputChange} required>
+          <Form.Select name="grade" value={formData.grade} onChange={handleInputChange} required>
             <option>--Select--</option>
             <option>Silver</option>
             <option>Platinum</option>
             <option>Gold</option>
-           
           </Form.Select>
         </Form.Group>
-
-       
-        <Form.Group as={Col} md="4" controlId="tier">
-          <Form.Label>Tier of Premises</Form.Label>
-          <Form.Control
-            type="input"
-            placeholder="Tier of Premises"
-            name="tier"
-            value={formData.tier}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-       
-
-
-
-      <Row className="mb-3">
-        <Form.Group as={Col} md="4" controlId="clientVisitingCard">
-          <Form.Label>Upload Client Visiting Card</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={(e) => handleFileUpload(e, "clientVisitingCard")}
-          />
-          {formData.clientVisitingCard && (
-            <img src={formData.clientVisitingCard} alt="Client Visiting Card" style={{ width: "100px", height: "auto" }} />
-          )}
-        </Form.Group>
-        <Form.Group as={Col} md="4" controlId="locationPhoto">
-          <Form.Label>Upload Location Photo</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={(e) => handleFileUpload(e, "locationPhoto")}
-          />
-          {formData.locationPhoto && (
-            <img src={formData.locationPhoto} alt="Location Photo" style={{ width: "100px", height: "auto" }} />
-          )}
-        </Form.Group>
-        <Form.Group as={Col} md="4" controlId="moreInfo">
-          <Form.Label>More Information</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={2}
-            name="moreInfo"
-            value={formData.moreInfo}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
+        {renderFormField("tier", "Tier of Premises")}
       </Row>
 
-      <Button variant="secondary" onClick={onPrevious}>Previous</Button>
-      <Button type="submit">Save & Continue</Button>
+      <Row className="mb-3">
+        {["clientVisitingCard", "locationPhoto"].map(field => (
+          <Form.Group as={Col} md="4" key={field} controlId={field}>
+            <Form.Label>{field === "clientVisitingCard" ? "Upload Client Visiting Card" : "Upload Location Photo"}</Form.Label>
+            <Form.Control type="file" onChange={e => handleFileUpload(e, field)} />
+            {formData[field] && <img src={formData[field]} alt={field} style={{ width: "100px", height: "auto" }} />}
+          </Form.Group>
+        ))}
+        {renderFormField("moreInfo", "More Information", "textarea", { as: "textarea", rows: 2 })}
+      </Row>
+
+      <Button
+        variant="secondary"
+        onClick={onPrevious}
+        className="me-2"
+        style={{ float: "left" }} // Position Previous button to the left
+        disabled={currentPremisesIndex === ""} // Disabled on Survey form return condition
+      >
+        Previous
+      </Button>
+
+      <Button
+        variant="secondary"
+        className="me-2"
+        // onClick={formData.buildings < 0? buildingOpen: onNext}
+        onClick={onNextForm}
+        style={{ float: "right" }} // Position Next button to the right
+        disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
+      >
+        Next
+      </Button>
     </Form>
   );
-
 };
-
 
 export default Premises;

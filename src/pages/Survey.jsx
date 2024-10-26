@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import Premises from './Premises'; 
+import Premises from './Premises';
 
 const Survey = () => {
   const [validated, setValidated] = useState(false);
   const [showNextForm, setShowNextForm] = useState(false);
-  const [numOfPremises, setNumOfPremises] = useState(0);  
-  const [currentPremisesIndex, setCurrentPremisesIndex] = useState(0);  
-  
+  const [numOfPremises, setNumOfPremises] = useState(0);
+  const [currentPremisesIndex, setCurrentPremisesIndex] = useState(0);
+  const [allPremisesData,setAllPremiseData]= useState([]);
+
+  const [premisesData, setPremisesData] = useState([
+    { siteName: "", buildings: 0, carpetArea: 0, builtUpArea: 0, basementUpArea: 0, basement: 0, floors: 0, workStations: 0, employees: 0, operatingShifts: 1, shifts: [{ startTime: "", endTime: "" }], grade: "Select", tier: "", surveyDate: "", surveyBy: "", clientVisitingCard: null, locationPhoto: null, moreInfo: "" }
+  ]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -23,15 +27,21 @@ const Survey = () => {
   };
 
   const handlePrevious = () => {
-    setShowNextForm(false); 
-    setCurrentPremisesIndex(0);  // it gets reset to the prev form when going back to the main form
+    setShowNextForm(false);
+    setCurrentPremisesIndex(0); // Reset to the main form when going back
   };
 
   const handlePremisesChange = (e) => {
-    setNumOfPremises(Number(e.target.value));
+    const value = Number(e.target.value);
+    setNumOfPremises(value);
+    setPremisesData(Array.from({ length: value }, () => ({
+      siteName: "", buildings: 0, carpetArea: 0, builtUpArea: 0, basementUpArea: 0, basement: 0, floors: 0, workStations: 0, employees: 0, operatingShifts: 1, shifts: [{ startTime: "", endTime: "" }], grade: "Select", tier: "", surveyDate: "", surveyBy: "", clientVisitingCard: null, locationPhoto: null, moreInfo: ""
+    })));
   };
 
   const goToNextPremises = () => {
+    console.log("data");
+    
     if (currentPremisesIndex < numOfPremises - 1) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
     }
@@ -40,16 +50,22 @@ const Survey = () => {
   const goToPreviousPremises = () => {
     if (currentPremisesIndex > 0) {
       setCurrentPremisesIndex(currentPremisesIndex - 1);
+    } else {
+      handlePrevious();
     }
   };
 
+  const handlePremisesDataChange = (index, data) => {
+    setPremisesData((prevData) => {
+      const newData = [...prevData];
+      newData[index] = { ...newData[index], ...data }; // Update specific premises data
+      return newData;
+    });
+  };
   return (
     <>
-
-    
       {!showNextForm ? (
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
-       
           <Row className="mb-3">
             <Form.Group as={Col} md="4" controlId="validationCustom01">
               <Form.Label>Client Name</Form.Label>
@@ -57,8 +73,8 @@ const Survey = () => {
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
-              <Form.Label>Site name</Form.Label>
-              <Form.Control required type="text" placeholder="Site name" />
+              <Form.Label>Site Name</Form.Label>
+              <Form.Control required type="text" placeholder="Site Name" />
               <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom03">
@@ -72,7 +88,6 @@ const Survey = () => {
             </Form.Group>
           </Row>
 
-     
           <Row className="mb-3">
             <Form.Group as={Col} md="3" controlId="validationCustom04">
               <Form.Label>City</Form.Label>
@@ -122,7 +137,6 @@ const Survey = () => {
             </div>
           ))}
 
-       
           <Row className="mb-3">
             <h2>Sent Proposal To</h2>
             {['Site Incharge', 'Commercial Incharge', 'Location Incharge'].map((incharge, index) => (
@@ -156,7 +170,6 @@ const Survey = () => {
               <Form.Select required>
                 <option>--Select--</option>
                 <option value="1">Premises</option>
-               
               </Form.Select>
             </Form.Group>
 
@@ -169,36 +182,28 @@ const Survey = () => {
                 onChange={handlePremisesChange}
               />
             </Form.Group>
-            </Row>
-
-           
-
-     
+          </Row>
+          
           <Button type="button" onClick={handleNext} className="me-2">
             Next
           </Button>
           <Button type="submit">Save & Continue</Button>
         </Form>
-        
       ) : (
         <div>
           {currentPremisesIndex < numOfPremises && (
-            <Premises key={currentPremisesIndex} onPrevious={handlePrevious} />
+            <Premises
+              key={currentPremisesIndex}
+              currentPremisesIndex={currentPremisesIndex}
+              numOfPremises={numOfPremises}
+              // formData={premisesData[currentPremisesIndex]} // Pass current form data
+              // setFormData={(data) => handlePremisesDataChange(currentPremisesIndex, data)} // Update specific premises data
+              onPrevious={goToPreviousPremises} // Updated: navigate within premises or to Survey
+              onNext={goToNextPremises} // Updated: control forward navigation
+              allPremisesData= {allPremisesData}
+              setAllPremiseData={setAllPremiseData}
+            />
           )}
-
-          <Button
-            onClick={goToPreviousPremises}
-            disabled={currentPremisesIndex === 0}
-            className="me-2"
-          >
-            Previous
-          </Button>
-          <Button
-            onClick={goToNextPremises}
-            disabled={currentPremisesIndex === numOfPremises - 1}
-          >
-            Next
-          </Button>
         </div>
       )}
     </>

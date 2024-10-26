@@ -18,8 +18,7 @@ import Material from "./pages/Material";
 import EditTemporaryClient from "./pages/EditTemporaryClient";
 import Survey from "./pages/Survey";
 import Premises from "./pages/Premises";
-
-
+import Buildings from "./pages/Buildings";
 
 function App() {
   return (
@@ -43,6 +42,8 @@ function App() {
           <Route path="/machinery" element={<Machinery/>}/>
           <Route path="/material" element={<Material/>}/>
           <Route path="/premises" element={<Premises/>}/>
+          <Route path="/buildings" element={<Buildings/>}/>
+         
 
           <Route path="*" element={<> not found</>} />
         </Routes>
