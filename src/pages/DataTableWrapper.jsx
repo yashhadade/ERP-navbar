@@ -19,5 +19,5 @@ const DataTableWrapper = ({ data, className, options, children }) => {
     </table>
   );
 };
-7
+
 export default DataTableWrapper;
