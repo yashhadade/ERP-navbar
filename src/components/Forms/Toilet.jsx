@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
+import { FormContext } from '../../FormContext/FormContextProvider';
 
 const Toilet = () => {
     const [validated, setValidated] = useState(false);
+    const [allToiletData,setAllToiletData]=useState(FormContext);
     const [formData, setFormData] = useState({
         name: '',
         carpetArea: '',
@@ -13,6 +15,8 @@ const Toilet = () => {
         exhaustOption: '',
         washbasins: '',
         averageUsers: '',
+        remarks:'',
+        ambiance:'',
         toiletries: {
             handWipe: false,
             handWash: false,
@@ -181,15 +185,44 @@ const Toilet = () => {
                             checked={formData.toiletries.bodyWash}
                             onChange={handleChange}
                         />
-                         </Form.Group>
-                        {["Urinals", "locationPhoto"].map(field => (
-                            <Form.Group as={Col} md="4" key={field} controlId={field}>
-                                <Form.Label>{field === "Urinals" ? "Upload Urinal Photo" : "Upload Washbasins Photo"}</Form.Label>
-                                <Form.Control type="file" onChange={e => handleFileUpload(e, field)} />
-                                {formData[field] && <img src={formData[field]} alt={field} style={{ width: "100px", height: "auto" }} />}
-                            </Form.Group>
-                        ))}
-                   
+                    </Form.Group>
+                    {["Urinals", "locationPhoto"].map(field => (
+                        <Form.Group as={Col} md="4" key={field} controlId={field}>
+                            <Form.Label>{field === "Urinals" ? "Upload Urinal Photo" : "Upload Washbasins Photo"}</Form.Label>
+                            <Form.Control type="file" onChange={e => handleFileUpload(e, field)} />
+                            {formData[field] && <img src={formData[field]} alt={field} style={{ width: "100px", height: "auto" }} />}
+                        </Form.Group>
+                    ))}
+
+                </Row>
+                <Row>
+                    <Form.Group as={Col} md="4" controlId="Cubicles">
+                        <Form.Label>Upload the Photo of Cubicles</Form.Label>
+                        <Form.Control type="file" onChange={e => handleFileUpload(e, "Cubicles")} />
+                        {formData["Cubicles"] && <img src={formData["Cubicles"]} alt="Cubicles" style={{ width: "100px", height: "auto" }} />}
+                    </Form.Group>
+                    <Form.Group as={Col} md="4" controlId="validationCustom09">
+                        <Form.Label>Remarks</Form.Label>
+                        <Form.Control
+                            required
+                            type="text"
+                            placeholder="Remarks"
+                            name="remarks"
+                            value={formData.remarks}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group as={Col} md="4" controlId="validationCustom09">
+                        <Form.Label>Ambiance</Form.Label>
+                        <Form.Control
+                            required
+                            type="text"
+                            placeholder="Ambiance"
+                            name="ambiance"
+                            value={formData.ambiance}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
                 </Row>
                 <Button type="submit">Submit</Button>
             </Form>
