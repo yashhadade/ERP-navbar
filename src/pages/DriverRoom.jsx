@@ -5,17 +5,17 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
     const [formData, setFormData] = useState({
         name: "",
         carpetArea: 0,
-        flooringType: "Select",
+        flooringType: "",
         ceilingHeight: 0,
         addPhoto: null,
         ambiance: "",
-        facilitiesProvided: "radio",
+        facilitiesProvided:"",
         crockery: "radio",
         remarks: "",
         AC: "radio",
     });
 
-    const [showModal, setShowModal] = useState(false); 
+    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -30,11 +30,11 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
         e.preventDefault();
         setAllDriverRoomData(prevData => {
             const newData = [...prevData];
-            newData[currentDriverRoomIndex] = formData; 
+            newData[currentDriverRoomIndex] = formData; // Save current form data
             return newData;
         });
         console.log("Driver Room Data:", formData);
-        onNext(); 
+        onNext(); // Call onNext to navigate to the next form
     };
 
     return (
@@ -68,7 +68,6 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                     <Form.Group as={Col} md="6" controlId="formFlooringType">
                         <Form.Label>Flooring Type</Form.Label>
                         <Form.Control as="select" name="flooringType" value={formData.flooringType} onChange={handleInputChange}>
-                            <option value="Select">Select</option>
                             <option value="Tile">Tile</option>
                             <option value="Wood">Wood</option>
                             <option value="Carpet">Carpet</option>
@@ -112,35 +111,35 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                     <Form.Group as={Col} md="6" controlId="formFacilitiesProvided">
                         <Form.Label>Facilities Provided</Form.Label>
                         <Form.Check
-                            type="radio"
-                            label="Tea Coffee Machine"
+                            type="checkbox"
+                            label="Tea Coffe Machin"
                             name="facilitiesProvided"
-                            value="Tea Coffee Machine"
-                            checked={formData.facilitiesProvided === "Tea Coffee Machine"}
+                            value="Tea Coffe Machin"
+                            checked={formData.facilitiesProvided === "Tea Coffe Machin"}
                             onChange={handleInputChange}
                         />
                         <Form.Check
-                            type="radio"
+                            type="checkbox"
                             label="Tea Coffee Services"
                             name="facilitiesProvided"
                             value="Tea Coffee Services"
                             checked={formData.facilitiesProvided === "Tea Coffee Services"}
                             onChange={handleInputChange}
                         />
-                         <Form.Check
-                            type="radio"
-                            label="Package Drinking Water"
+                        <Form.Check
+                            type="checkbox"
+                            label="PACKAGE DRINKING WATER "
                             name="facilitiesProvided"
-                            value="Package Drinking Water"
-                            checked={formData.facilitiesProvided === "Package Drinking Water"}
+                            value="PACKAGE DRINKING WATER "
+                            checked={formData.facilitiesProvided === "PACKAGE DRINKING WATER "}
                             onChange={handleInputChange}
                         />
                         <Form.Check
-                            type="radio"
-                            label="Normal water"
+                            type="checkbox"
+                            label="NORMAL WATER "
                             name="facilitiesProvided"
-                            value="Normal Water"
-                            checked={formData.facilitiesProvided === "Normal Water"}
+                            value="NORMAL WATER"
+                            checked={formData.facilitiesProvided === "NORMAL WATER"}
                             onChange={handleInputChange}
                         />
                     </Form.Group>
@@ -176,7 +175,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                         />
                     </Form.Group>
                     <Form.Group as={Col} md="6" controlId="formAC">
-                        <Form.Label>Air Conditioning</Form.Label>
+                        <Form.Label>Have AC</Form.Label>
                         <Form.Check
                             type="radio"
                             label="Yes"
@@ -200,7 +199,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                     <Button variant="secondary" onClick={onPrevious} disabled={currentDriverRoomIndex === 0}>
                         Previous
                     </Button>
-                    <Button variant="primary" type="submit">
+                    <Button variant="secondary" type="submit">
                         Next
                     </Button>
                 </div>

@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row, Modal } from 'react-bootstrap';
-import { FormContext } from "../FormContext/FormContextProvider";
-import { useNavigate } from "react-router-dom";
 
-
-const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, basementForms, BasementData,}) => {
-  const { setAllBasementData, allBuildingData , useContext} = useContext(FormContext);
+const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, setAllBasementData, allBasementsData }) => {
   const [formData, setFormData] = useState({
-    type: "--Select--", name: "", carpetArea: 0, flooringType: "", ceilingHeight: 0, photo: null,remarks: "",
+    type: "", name: "", carpetArea: 0, flooringType: "", ceilingHeight: 0, photo: null,remarks: "",
     ambiance: "", numberOfPumpRooms: 0, numberOfDriversRooms: 0, numberOfStoreRooms: 0,numberOfReceptions: 0,
     numberOfLounges: 0, numberOfLobbies: 0, numberOfElectricalRooms: 0, numberOfGentsToilets: 0,
     numberOfLadiesToilets: 0, numberOfAdditionalToilets: 0, numberOfCarParks: 0, numberOfGenerators: 0,
@@ -39,11 +35,9 @@ const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, ba
       e.stopPropagation();
     }
     setValidated(true);
-    setAllBasementData(basementForms);
+    setAllBasementData(prev => [...prev, formData]);
     onNext();
   };
-
-
 
   const renderFormField = (name, label, type = "text", props = {}) => (
     <Form.Group as={Col} md="4" controlId={name}>
@@ -63,26 +57,10 @@ const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, ba
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <h1 className="form-title">Basement & Floor Form</h1>
 
-{/* updated */}
-
-       {/* Render multiple basement forms based on numOfBasements */}
-       {[...Array(numOfBasements)].map((_, index) => (
-        <div key={index}>
-          
-          <h2>Basement {index + 1}</h2>
-          <Row className="mb-3">
-            {/* Form fields for each basement... */}
-          </Row>
-        </div>
-      ))}
-
-{/* updated */}
-
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="type">
             <Form.Label>Type</Form.Label>
             <Form.Select name="type" value={formData.type} onChange={handleInputChange} required>
-              <option>--Select--</option>
               <option>Basement</option>
               <option>Floor</option>
             </Form.Select>
@@ -96,7 +74,6 @@ const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, ba
           <Form.Group as={Col} md="4" controlId="flooringType">
             <Form.Label>Flooring Type</Form.Label>
             <Form.Select name="flooringType" value={formData.flooringType} onChange={handleInputChange} required>
-              <option>--Select--</option>
               <option>Tile</option>
               <option>Wood</option>
               <option>Carpet</option>
@@ -154,7 +131,7 @@ const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, ba
         <Button variant="secondary" onClick={onPrevious} className="me-2" style={{ float: "left" }}>
           Previous
         </Button>
-        <Button variant="primary" type="submit" className="me-2" style={{ float: "right" }}>
+        <Button variant="secondary" type="submit" className="me-2" style={{ float: "right" }}>
           Next
         </Button>
       </Form>
