@@ -79,7 +79,7 @@ const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, se
               <option>Tile</option>
               <option>Wood</option>
               <option>Carpet</option>
-              {/* Add more options as needed */}
+             
             </Form.Select>
           </Form.Group>
           {renderFormField("ceilingHeight", "Ceiling Height (ft)", "number", { required: true })}

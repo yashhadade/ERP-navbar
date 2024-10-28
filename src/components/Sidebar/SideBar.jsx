@@ -34,6 +34,7 @@ const routes = [
     name: "Survey",
     icon: <BiAnalyse />,
   },
+  
 
   {
     path: "/basement",
@@ -41,6 +42,11 @@ const routes = [
     icon: <DiAws />,
   },
 
+  {
+    path: "/driverroom",
+    name: "DriverRoom",
+    icon: <DiAppstore />,
+  },
   
   {
     path: "/file-manager",

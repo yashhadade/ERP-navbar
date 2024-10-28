@@ -34,7 +34,8 @@ const Building = ({ index, buildingData, setBuildingData, totalBuildings, setVal
 
   return (
     <div>
-      <h2 className="form-title">Building Form</h2>
+     <h1 className="form-title text-center">Building Form</h1>
+
       <Row className="mb-3">
         <Form.Group as={Col} md="6" controlId={`buildingName-${index}`}>
           <Form.Label>Name of Building</Form.Label>
@@ -204,20 +205,21 @@ const Building = ({ index, buildingData, setBuildingData, totalBuildings, setVal
         </Form.Group>
       </Row>
 
-      <h3>Building Layout</h3>
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`compound-${index}`}>
-          <Form.Label>Compound</Form.Label>
-          <Form.Control
-            type="number"
-            name="compound"
-            value={buildingData?.buildingLayout.compound}
-            onChange={(e) => handleInputChange({
-              target: {
-                name: "buildingLayout",
-                value: { ...buildingData?.buildingLayout, compound: e.target.value }
-              }
-            })}
+     
+      <h3 style={{ textAlign: "left" }}>Building Layout</h3>
+<Row className="mb-3">
+  <Form.Group as={Col} md="6" controlId={`compound-${index}`}>
+    <Form.Label>Compound</Form.Label>
+    <Form.Control
+      type="number"
+      name="compound"
+      value={buildingData?.buildingLayout.compound}
+      onChange={(e) => handleInputChange({
+        target: {
+          name: "buildingLayout",
+          value: { ...buildingData?.buildingLayout, compound: e.target.value }
+        }
+      })}
             required
           />
         </Form.Group>
@@ -322,9 +324,9 @@ const Building = ({ index, buildingData, setBuildingData, totalBuildings, setVal
         </Form.Group>
       </Row>
 
-      <h3>Parking Management System</h3>
+      <h3 style={{ textAlign: "left" }}>Parking Management System</h3>
       <Form.Group as={Col} md="6">
-        <Form.Label>Have Parking Management System?</Form.Label>
+        <Form.Label >Have Parking Management System?</Form.Label>
         <Form.Check
           type="radio"
           label="Yes"
@@ -356,7 +358,7 @@ const Building = ({ index, buildingData, setBuildingData, totalBuildings, setVal
         </Form.Group>
       )}
 
-      <h3>Garden Area</h3>
+      <h3 style={{ textAlign: "left" }}>Garden Area</h3>
       <Form.Group as={Col} md="6">
         <Form.Label>Have Garden Area?</Form.Label>
         <Form.Check

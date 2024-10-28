@@ -7,7 +7,7 @@ const Survey = () => {
   const [showNextForm, setShowNextForm] = useState(false);
   const [numOfPremises, setNumOfPremises] = useState(0);
   const [currentPremisesIndex, setCurrentPremisesIndex] = useState(0);
-  const [allPremisesData,setAllPremiseData]= useState([]);
+  const [allPremisesData, setAllPremiseData] = useState([]);
 
   const [premisesData, setPremisesData] = useState([
     { siteName: "", buildings: 0, carpetArea: 0, builtUpArea: 0, basementUpArea: 0, basement: 0, floors: 0, workStations: 0, employees: 0, operatingShifts: 1, shifts: [{ startTime: "", endTime: "" }], grade: "Select", tier: "", surveyDate: "", surveyBy: "", clientVisitingCard: null, locationPhoto: null, moreInfo: "" }
@@ -41,7 +41,7 @@ const Survey = () => {
 
   const goToNextPremises = () => {
     console.log("data");
-    
+
     if (currentPremisesIndex < numOfPremises - 1) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
     }
@@ -183,7 +183,7 @@ const Survey = () => {
               />
             </Form.Group>
           </Row>
-          
+
           <Button type="button" onClick={handleNext} className="me-2">
             Next
           </Button>
@@ -200,7 +200,7 @@ const Survey = () => {
               // setFormData={(data) => handlePremisesDataChange(currentPremisesIndex, data)} // Update specific premises data
               onPrevious={goToPreviousPremises} // Updated: navigate within premises or to Survey
               onNext={goToNextPremises} // Updated: control forward navigation
-              allPremisesData= {allPremisesData}
+              allPremisesData={allPremisesData}
               setAllPremiseData={setAllPremiseData}
             />
           )}

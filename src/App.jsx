@@ -20,6 +20,7 @@ import Survey from "./pages/Survey";
 import Premises from "./pages/Premises";
 import Buildings from "./pages/Buildings";
 import Basement from "./pages/Basement";
+import DriverRoom from "./pages/DriverRoom";
 
 function App() {
   return (
@@ -45,6 +46,8 @@ function App() {
           <Route path="/premises" element={<Premises/>}/>
           <Route path="/buildings" element={<Buildings/>}/>
           <Route path="/basement" element={<Basement/>}/>
+          <Route path="/driverroom" element={<DriverRoom/>}/>
+       
          
 
           <Route path="*" element={<> not found</>} />
