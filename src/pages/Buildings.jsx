@@ -20,6 +20,14 @@ const Buildings = ({ onPrevious, onNext }) => {
   const [numBasements, setNumBasements] = useState(0); //updated
   const [showBasementForm, setShowBasementForm] = useState(false); //updated
 
+  const [formData, setFormData] = useState({
+    buildingName: "", carpetArea: 0, builtUpArea: 0, numEmployees: 0, numWorkstations: 0, numElevations: 0,
+    numEscalators: 0, numStaircases: 0, facadeType: "--Select--", facadeSqft: 0, compoundSqft: 0, compoundFlooring: 0,
+    gradedBuilding: "--Select--", classOfBuilding: "--Select--", ageOfBuilding: "", compound: 0, basement: 0, stiltPark: 0,
+    floors: 0, terrace: 0, numParking: 0, numTwoWheelers: 0, parkingManagement: "--Select--", parkingMode: "--Select--", 
+    securitySystem: "--Select--", fireSafety: "--Select--", energyConservation: "--Select--", waterConservation: "--Select",
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBuildingData((prev) => ({ ...prev, [name]: value }));
@@ -69,7 +77,7 @@ const Buildings = ({ onPrevious, onNext }) => {
     }
   };
 
-  console.log(numOfPremises,currentPremisesIndex);
+  console.log(buildingNo);
 
   const hanldePreviousForm = () => {
     if (buildingNo > 1) {
@@ -281,8 +289,19 @@ const Buildings = ({ onPrevious, onNext }) => {
         </Form.Group>
       </Row>
       {/* building layout ---will add---- */}
-
+      <h2>Building Layout</h2>
       <Row className="mb-3">
+        <Form.Group as={Col} md="4" controlId="compound">
+          <Form.Label>Compound</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="compound"
+            value={buildingData?.compound || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
         <Form.Group as={Col} md="4" controlId="basement">
           <Form.Label>Basement</Form.Label>
           <Form.Control
@@ -292,6 +311,39 @@ const Buildings = ({ onPrevious, onNext }) => {
             value={buildingData?.basement || ""}
             onChange={handleInputChange}
             placeholder="Basement"
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="stiltPark">
+          <Form.Label>Stilt Parking</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="stiltPark"
+            value={buildingData?.stiltPark || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="floors">
+          <Form.Label>Floors</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="floors"
+            value={buildingData?.floors || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="terrace">
+          <Form.Label>Top Floor Terrace</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="terrace"
+            value={buildingData?.terrace || ""}
+            onChange={handleInputChange}
           />
         </Form.Group>
 
@@ -421,6 +473,7 @@ const Buildings = ({ onPrevious, onNext }) => {
         </Button>
       </div>
     </Form>
+
   );
 };
 
