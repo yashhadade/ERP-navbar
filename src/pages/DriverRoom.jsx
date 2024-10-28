@@ -15,7 +15,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
         AC: "radio",
     });
 
-    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
+    const [showModal, setShowModal] = useState(false); 
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -30,11 +30,11 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
         e.preventDefault();
         setAllDriverRoomData(prevData => {
             const newData = [...prevData];
-            newData[currentDriverRoomIndex] = formData; // Save current form data
+            newData[currentDriverRoomIndex] = formData; 
             return newData;
         });
         console.log("Driver Room Data:", formData);
-        onNext(); // Call onNext to navigate to the next form
+        onNext(); 
     };
 
     return (
@@ -116,7 +116,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             label="Tea Coffee Machine"
                             name="facilitiesProvided"
                             value="Tea Coffee Machine"
-                            checked={formData.facilitiesProvided === "yes"}
+                            checked={formData.facilitiesProvided === "Tea Coffee Machine"}
                             onChange={handleInputChange}
                         />
                         <Form.Check
@@ -124,15 +124,23 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             label="Tea Coffee Services"
                             name="facilitiesProvided"
                             value="Tea Coffee Services"
-                            checked={formData.facilitiesProvided === "no"}
+                            checked={formData.facilitiesProvided === "Tea Coffee Services"}
                             onChange={handleInputChange}
                         />
                          <Form.Check
                             type="radio"
-                            label="Tea Coffee Services"
+                            label="Package Drinking Water"
                             name="facilitiesProvided"
-                            value="Tea Coffee Services"
-                            checked={formData.facilitiesProvided === "no"}
+                            value="Package Drinking Water"
+                            checked={formData.facilitiesProvided === "Package Drinking Water"}
+                            onChange={handleInputChange}
+                        />
+                        <Form.Check
+                            type="radio"
+                            label="Normal water"
+                            name="facilitiesProvided"
+                            value="Normal Water"
+                            checked={formData.facilitiesProvided === "Normal Water"}
                             onChange={handleInputChange}
                         />
                     </Form.Group>

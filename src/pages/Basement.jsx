@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row, Modal } from 'react-bootstrap';
+import { FormContext } from "../FormContext/FormContextProvider";
+import { useNavigate } from "react-router-dom";
 
-const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, setAllBasementData, allBasementsData }) => {
+
+const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, basementForms, setAllBasementData, allBasementsData }) => {
+  const { setAllBasementData, allBuildingData } = useContext(FormContext);
   const [formData, setFormData] = useState({
     type: "--Select--", name: "", carpetArea: 0, flooringType: "", ceilingHeight: 0, photo: null,remarks: "",
     ambiance: "", numberOfPumpRooms: 0, numberOfDriversRooms: 0, numberOfStoreRooms: 0,numberOfReceptions: 0,
@@ -35,9 +39,11 @@ const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, se
       e.stopPropagation();
     }
     setValidated(true);
-    setAllBasementData(prev => [...prev, formData]);
+    setAllBasementData(basementForms);
     onNext();
   };
+
+  
 
   const renderFormField = (name, label, type = "text", props = {}) => (
     <Form.Group as={Col} md="4" controlId={name}>
@@ -56,6 +62,21 @@ const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, se
     <>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <h1 className="form-title">Basement & Floor Form</h1>
+
+{/* updated */}
+
+       {/* Render multiple basement forms based on numOfBasements */}
+       {[...Array(numOfBasements)].map((_, index) => (
+        <div key={index}>
+          
+          <h2>Basement {index + 1}</h2>
+          <Row className="mb-3">
+            {/* Form fields for each basement... */}
+          </Row>
+        </div>
+      ))}
+
+{/* updated */}
 
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="type">

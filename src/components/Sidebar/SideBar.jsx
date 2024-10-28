@@ -35,6 +35,11 @@ const routes = [
     icon: <BiAnalyse />,
   },
   
+  {
+    path: "/buildings",
+    name: "Buildings",
+    icon: <BiAccessibility />,
+  },
 
   {
     path: "/basement",

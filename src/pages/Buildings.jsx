@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
+import Basement from "./Basement";
 import { useLocation } from "react-router-dom";
 import { FormContext } from "../FormContext/FormContextProvider";
 
@@ -9,6 +10,8 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
   const location = useLocation();
   const [buildingData, setBuildingData] = useState({});
   const [buildingNo, setBuildingNo] = useState(1);
+  const [numBasements, setNumBasements] = useState(0); //updated
+  const [showBasementForm, setShowBasementForm] = useState(false); //updated
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,6 +21,7 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
   const handleRadioChange = (e) => {
     const { name, value } = e.target;
     setBuildingData((prev) => ({ ...prev, [name]: value }));
+    setNumBasements(value);  //updated
   };
 
   const handleSubmit = (e) => {
@@ -33,25 +37,37 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
       return updatedData;
     });
 
-    if (buildingNo < location.state.buildingCount) {
+    if (buildingNo < location?.state?.buildingCount) {
+      
       setBuildingNo(buildingNo + 1);
       setBuildingData(allBuildingData[buildingNo] || {}); // Load data for the next building if it exists
+    } else {
+      setShowBasementForm(true); //updated
+
     }
   };
 
+  console.log(buildingNo);
+  
   const hanldePreviousForm = ()=>{
     if (buildingNo > 1) {
       setBuildingNo(buildingNo - 1);
       setBuildingData(allBuildingData[buildingNo - 2] || {}); // Load data for the previous building if it exists
     }
-  }
+  };
+
+  const handleBasementSubmit = () => {
+    setShowBasementForm(false); // updated
+  };
   console.log(buildingNo);
 
   return (
+
+  
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <h1 className="form-title">
         Building {buildingNo} Form for Premises{" "}
-        {location.state.currentPremisesIndex}
+        {location?.state?.currentPremisesIndex}
       </h1>
 
       <Row className="mb-3">
@@ -245,17 +261,18 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
           />
         </Form.Group>
       </Row>
+{/* building layout ---will add---- */}
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="4" controlId="buildingLayout">
-          <Form.Label>Building Layout</Form.Label>
+        <Form.Group as={Col} md="4" controlId="basement">
+          <Form.Label>Basement</Form.Label>
           <Form.Control
             requiredd
-            type="text"
-            name="buildingLayout"
-            value={buildingData?.buildingLayout || ""}
+            type="number"
+            name="basement"
+            value={buildingData?.basement || ""}
             onChange={handleInputChange}
-            placeholder="e.g., Basement, Stilt Parking, Floors..."
+            placeholder="Basement"
           />
         </Form.Group>
 
@@ -385,6 +402,7 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
         </Button>
       </div>
     </Form>
+    
   );
 };
 
