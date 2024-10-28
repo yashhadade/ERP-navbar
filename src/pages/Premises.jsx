@@ -89,6 +89,9 @@ const Premises = ({ onPrevious, onNext }) => {
       const updatedData = [...prev, formData]; // Log the updated data
       return updatedData; // Save formData to allPremisesData
     });
+
+    // todo:
+
     if (formData.buildings > 0) {
       setShowBuildingForm(formData.buildings);
 
@@ -99,7 +102,8 @@ const Premises = ({ onPrevious, onNext }) => {
         },
       });
     } else {
-      onNext();
+      // todo: Add last procedure what will happen if there is no premises left show the data
+      // onNext();
     }
   };
 
@@ -259,7 +263,7 @@ const Premises = ({ onPrevious, onNext }) => {
           // onClick={formData.buildings < 0? buildingOpen: onNext}
           onClick={onNextForm}
           style={{ float: "right" }} // Position Next button to the right
-          disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
+          // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
         >
           Next
         </Button>

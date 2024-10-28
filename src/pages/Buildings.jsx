@@ -1,11 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import Basement from "./Basement";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FormContext } from "../FormContext/FormContextProvider";
 
-const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
-  const { setAllBuildingData, allBuildingData } = useContext(FormContext);
+const Buildings = ({ onPrevious, onNext }) => {
+  const {
+    setAllBuildingData,
+    allBuildingData,
+    numOfPremises,
+    currentPremisesIndex,
+    setCurrentPremisesIndex,
+  } = useContext(FormContext);
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const location = useLocation();
   const [buildingData, setBuildingData] = useState({});
@@ -21,7 +28,7 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
   const handleRadioChange = (e) => {
     const { name, value } = e.target;
     setBuildingData((prev) => ({ ...prev, [name]: value }));
-    setNumBasements(value);  //updated
+    setNumBasements(value); //updated
   };
 
   const handleSubmit = (e) => {
@@ -33,23 +40,38 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
   const handleNextForm = async () => {
     await setAllBuildingData((prev) => {
       const updatedData = [...prev];
-      updatedData[buildingNo - 1] = buildingData;  // Store current data at the index for the building
+      updatedData[buildingNo - 1] = buildingData; // Store current data at the index for the building
       return updatedData;
     });
+    console.log(buildingData?.basements);
+    
+
+    if (buildingData?.basements > 0) {
+      console.log("basement");
+      
+    }
 
     if (buildingNo < location?.state?.buildingCount) {
+      console.log("here");
       
       setBuildingNo(buildingNo + 1);
       setBuildingData(allBuildingData[buildingNo] || {}); // Load data for the next building if it exists
-    } else {
-      setShowBasementForm(true); //updated
+    } else if (numOfPremises => currentPremisesIndex) {
+      console.log(true);
 
+      setCurrentPremisesIndex(currentPremisesIndex + 1);
+      navigate("/premises");
+      setShowBasementForm(true); //updated
+      console.log("need to go back");
+    }else{
+      console.log("else");
+      
     }
   };
 
-  console.log(buildingNo);
-  
-  const hanldePreviousForm = ()=>{
+  console.log(numOfPremises,currentPremisesIndex);
+
+  const hanldePreviousForm = () => {
     if (buildingNo > 1) {
       setBuildingNo(buildingNo - 1);
       setBuildingData(allBuildingData[buildingNo - 2] || {}); // Load data for the previous building if it exists
@@ -59,11 +81,8 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
   const handleBasementSubmit = () => {
     setShowBasementForm(false); // updated
   };
-  console.log(buildingNo);
 
   return (
-
-  
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <h1 className="form-title">
         Building {buildingNo} Form for Premises{" "}
@@ -261,7 +280,7 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
           />
         </Form.Group>
       </Row>
-{/* building layout ---will add---- */}
+      {/* building layout ---will add---- */}
 
       <Row className="mb-3">
         <Form.Group as={Col} md="4" controlId="basement">
@@ -402,7 +421,6 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
         </Button>
       </div>
     </Form>
-    
   );
 };
 
