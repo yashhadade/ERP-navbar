@@ -1,448 +1,391 @@
-import React from "react";
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import React, { useContext, useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
+import { FormContext } from "../FormContext/FormContextProvider";
 
-const Building = ({ index, buildingData, setBuildingData, totalBuildings, setValidated, setPremisesData,
-    currentBuildingsIndex, formData, onNext, seatBuildingData, onPrevious, numOfBuildings,
- }) => {
+const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
+  const { setAllBuildingData, allBuildingData } = useContext(FormContext);
+  const [validated, setValidated] = useState(false);
+  const location = useLocation();
+  const [buildingData, setBuildingData] = useState({});
+  const [buildingNo, setBuildingNo] = useState(1);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setBuildingData(prev => ({ ...prev, [name]: value }));
+    setBuildingData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileUpload = (e, field) => {
-    setBuildingData(prev => ({
-      ...prev, [field]: URL.createObjectURL(e.target.files[0])
-    }));
+  const handleRadioChange = (e) => {
+    const { name, value } = e.target;
+    setBuildingData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) e.stopPropagation();
     setValidated(true);
-  
-    // Save data for the current premises index
-    setPremisesData(prevData => {
-      const newData = [...prevData];
-      newData[currentBuildingsIndex] = formData; // Save current form data
-      return newData;
-    });
-  
-    console.log("Form submitted:", formData);
-    // Call the onNext function after submitting
-    onNext();
   };
 
+  const handleNextForm = async () => {
+    await setAllBuildingData((prev) => {
+      const updatedData = [...prev];
+      updatedData[buildingNo - 1] = buildingData;  // Store current data at the index for the building
+      return updatedData;
+    });
+
+    if (buildingNo < location.state.buildingCount) {
+      setBuildingNo(buildingNo + 1);
+      setBuildingData(allBuildingData[buildingNo] || {}); // Load data for the next building if it exists
+    }
+  };
+
+  const hanldePreviousForm = ()=>{
+    if (buildingNo > 1) {
+      setBuildingNo(buildingNo - 1);
+      setBuildingData(allBuildingData[buildingNo - 2] || {}); // Load data for the previous building if it exists
+    }
+  }
+  console.log(buildingNo);
+
   return (
-    <div>
-     <h1 className="form-title text-center">Building Form</h1>
+    <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <h1 className="form-title">
+        Building {buildingNo} Form for Premises{" "}
+        {location.state.currentPremisesIndex}
+      </h1>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`buildingName-${index}`}>
+        <Form.Group as={Col} md="4" controlId="buildingName">
           <Form.Label>Name of Building</Form.Label>
           <Form.Control
+            requiredd
             type="text"
             name="buildingName"
-            value={buildingData?.buildingName}
+            value={buildingData?.buildingName || ""}
             onChange={handleInputChange}
-            required
           />
         </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`carpetArea-${index}`}>
+
+        <Form.Group as={Col} md="4" controlId="carpetArea">
           <Form.Label>Carpet Area (sq. ft)</Form.Label>
           <Form.Control
+            requiredd
             type="number"
             name="carpetArea"
-            value={buildingData?.carpetArea}
+            value={buildingData?.carpetArea || ""}
             onChange={handleInputChange}
-            required
           />
         </Form.Group>
-      </Row>
 
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`builtUpArea-${index}`}>
+        <Form.Group as={Col} md="4" controlId="builtUpArea">
           <Form.Label>Built-Up Area (sq. ft)</Form.Label>
           <Form.Control
+            requiredd
             type="number"
             name="builtUpArea"
-            value={buildingData?.builtUpArea}
+            value={buildingData?.builtUpArea || ""}
             onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`employees-${index}`}>
-          <Form.Label>No of Employees</Form.Label>
-          <Form.Control
-            type="number"
-            name="employees"
-            value={buildingData?.employees}
-            onChange={handleInputChange}
-            required
           />
         </Form.Group>
       </Row>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`workStations-${index}`}>
-          <Form.Label>No of Workstations</Form.Label>
+        <Form.Group as={Col} md="4" controlId="numEmployees">
+          <Form.Label>Number of Employees</Form.Label>
           <Form.Control
+            requiredd
             type="number"
-            name="workStations"
-            value={buildingData?.workStations}
+            name="numEmployees"
+            value={buildingData?.numEmployees || ""}
             onChange={handleInputChange}
-            required
           />
         </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`elevations-${index}`}>
-          <Form.Label>No of Elevations</Form.Label>
+
+        <Form.Group as={Col} md="4" controlId="numWorkstations">
+          <Form.Label>Number of Workstations</Form.Label>
           <Form.Control
+            requiredd
             type="number"
-            name="elevations"
-            value={buildingData?.elevations}
+            name="numWorkstations"
+            value={buildingData?.numWorkstations || ""}
             onChange={handleInputChange}
-            required
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="numElevations">
+          <Form.Label>Number of Elevations</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="numElevations"
+            value={buildingData?.numElevations || ""}
+            onChange={handleInputChange}
           />
         </Form.Group>
       </Row>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`escalators-${index}`}>
-          <Form.Label>No of Escalators</Form.Label>
+        <Form.Group as={Col} md="4" controlId="numEscalators">
+          <Form.Label>Number of Escalators</Form.Label>
           <Form.Control
+            requiredd
             type="number"
-            name="escalators"
-            value={buildingData?.escalators}
+            name="numEscalators"
+            value={buildingData?.numEscalators || ""}
             onChange={handleInputChange}
-            required
           />
         </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`staircases-${index}`}>
-          <Form.Label>No of Staircases</Form.Label>
-          <Form.Control
-            type="number"
-            name="staircases"
-            value={buildingData?.staircases}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-      </Row>
 
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`facadeType-${index}`}>
-          <Form.Label>Type of Facade</Form.Label>
-          <Form.Control as="select" name="facadeType" value={buildingData?.facadeType} onChange={handleInputChange}>
+        <Form.Group as={Col} md="4" controlId="numStaircases">
+          <Form.Label>Number of Staircases</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="numStaircases"
+            value={buildingData?.numStaircases || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="facadeType">
+          <Form.Label>Facade Type</Form.Label>
+          <Form.Control
+            as="select"
+            name="facadeType"
+            value={buildingData?.facadeType || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
             <option value="f1">F1</option>
             <option value="f2">F2</option>
             <option value="f3">F3</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`facadePhoto-${index}`}>
-          <Form.Label>Upload Facade Photo</Form.Label>
-          <Form.Control type="file" onChange={(e) => handleFileUpload(e, 'facadePhoto')} />
-          {buildingData?.facadePhoto && <img src={buildingData?.facadePhoto} alt="Facade" style={{ width: "100px", height: "auto" }} />}
-        </Form.Group>
       </Row>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`facadeSqFt-${index}`}>
-          <Form.Label>Facade Sq Ft</Form.Label>
+        <Form.Group as={Col} md="4" controlId="facadeSqft">
+          <Form.Label>Facade Sqft</Form.Label>
           <Form.Control
+            requiredd
             type="number"
-            name="facadeSqFt"
-            value={buildingData?.facadeSqFt}
+            name="facadeSqft"
+            value={buildingData?.facadeSqft || ""}
             onChange={handleInputChange}
-            required
           />
         </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`compoundSqFt-${index}`}>
-          <Form.Label>Compound Sq Ft</Form.Label>
-          <Form.Control
-            type="number"
-            name="compoundSqFt"
-            value={buildingData?.compoundSqFt}
-            onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-      </Row>
 
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`compoundFlooring-${index}`}>
+        <Form.Group as={Col} md="4" controlId="compoundSqft">
+          <Form.Label>Compound Sqft</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="compoundSqft"
+            value={buildingData?.compoundSqft || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="compoundFlooring">
           <Form.Label>Compound Flooring</Form.Label>
-          <Form.Control as="select" name="compoundFlooring" value={buildingData?.compoundFlooring} onChange={handleInputChange}>
+          <Form.Control
+            as="select"
+            name="compoundFlooring"
+            value={buildingData?.compoundFlooring || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
             <option value="cf1">CF1</option>
             <option value="cf2">CF2</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`gradedBuilding-${index}`}>
-          <Form.Label>Graded Building</Form.Label>
-          <Form.Control as="select" name="gradedBuilding" value={buildingData?.gradedBuilding} onChange={handleInputChange}>
-            <option value="Select">Select</option>
-            <option value="Grade A">Grade A</option>
-            <option value="Grade B">Grade B</option>
-          </Form.Control>
-        </Form.Group>
       </Row>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`classOfBuilding-${index}`}>
+        <Form.Group as={Col} md="4" controlId="gradedBuilding">
+          <Form.Label>Graded Building</Form.Label>
+          <Form.Control
+            as="select"
+            name="gradedBuilding"
+            value={buildingData?.gradedBuilding || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </Form.Control>
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="classOfBuilding">
           <Form.Label>Class of Building</Form.Label>
-          <Form.Control as="select" name="classOfBuilding" value={buildingData?.classOfBuilding} onChange={handleInputChange}>
+          <Form.Control
+            as="select"
+            name="classOfBuilding"
+            value={buildingData?.classOfBuilding || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
             <option value="heritage">Heritage</option>
             <option value="new">New</option>
           </Form.Control>
         </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`ageOfBuilding-${index}`}>
-          <Form.Label>Age of Building</Form.Label>
+
+        <Form.Group as={Col} md="4" controlId="ageOfBuilding">
+          <Form.Label>Age of Building (years)</Form.Label>
           <Form.Control
+            requiredd
             type="number"
             name="ageOfBuilding"
-            value={buildingData?.ageOfBuilding}
+            value={buildingData?.ageOfBuilding || ""}
             onChange={handleInputChange}
-            required
-          />
-        </Form.Group>
-      </Row>
-
-     
-      <h3 style={{ textAlign: "left" }}>Building Layout</h3>
-<Row className="mb-3">
-  <Form.Group as={Col} md="6" controlId={`compound-${index}`}>
-    <Form.Label>Compound</Form.Label>
-    <Form.Control
-      type="number"
-      name="compound"
-      value={buildingData?.buildingLayout.compound}
-      onChange={(e) => handleInputChange({
-        target: {
-          name: "buildingLayout",
-          value: { ...buildingData?.buildingLayout, compound: e.target.value }
-        }
-      })}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`basement-${index}`}>
-          <Form.Label>Basement</Form.Label>
-          <Form.Control
-            type="number"
-            name="basement"
-            value={buildingData?.buildingLayout.basement}
-            onChange={(e) => handleInputChange({
-              target: {
-                name: "buildingLayout",
-                value: { ...buildingData?.buildingLayout, basement: e.target.value }
-              }
-            })}
-            required
           />
         </Form.Group>
       </Row>
 
       <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`stiltParking-${index}`}>
-          <Form.Label>Stilt Parking</Form.Label>
+        <Form.Group as={Col} md="4" controlId="buildingLayout">
+          <Form.Label>Building Layout</Form.Label>
           <Form.Control
-            type="number"
-            name="stiltParking"
-            value={buildingData?.buildingLayout.stiltParking}
-            onChange={(e) => handleInputChange({
-              target: {
-                name: "buildingLayout",
-                value: { ...buildingData?.buildingLayout, stiltParking: e.target.value }
-              }
-            })}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`floors-${index}`}>
-          <Form.Label>Floors</Form.Label>
-          <Form.Control
-            type="number"
-            name="floors"
-            value={buildingData?.buildingLayout.floors}
-            onChange={(e) => handleInputChange({
-              target: {
-                name: "buildingLayout",
-                value: { ...buildingData?.buildingLayout, floors: e.target.value }
-              }
-            })}
-            required
-          />
-        </Form.Group>
-      </Row>
-
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`topFloorTerrace-${index}`}>
-          <Form.Label>Top Floor Terrace</Form.Label>
-          <Form.Control
-            type="number"
-            name="topFloorTerrace"
-            value={buildingData?.buildingLayout.topFloorTerrace}
-            onChange={(e) => handleInputChange({
-              target: {
-                name: "buildingLayout",
-                value: { ...buildingData?.buildingLayout, topFloorTerrace: e.target.value }
-              }
-            })}
-            required
-          />
-        </Form.Group>
-        <Form.Group as={Col} md="6" controlId={`noOfParking-${index}`}>
-          <Form.Label>No of Parking</Form.Label>
-          <Form.Control
-            type="number"
-            name="parking"
-            value={buildingData?.buildingLayout.parking}
-            onChange={(e) => handleInputChange({
-              target: {
-                name: "buildingLayout",
-                value: { ...buildingData?.buildingLayout, parking: e.target.value }
-              }
-            })}
-            required
-          />
-        </Form.Group>
-      </Row>
-
-      <Row className="mb-3">
-        <Form.Group as={Col} md="6" controlId={`noOfTwoWheelers-${index}`}>
-          <Form.Label>No of Two Wheelers</Form.Label>
-          <Form.Control
-            type="number"
-            name="twoWheelers"
-            value={buildingData?.buildingLayout.twoWheelers}
-            onChange={(e) => handleInputChange({
-              target: {
-                name: "buildingLayout",
-                value: { ...buildingData?.buildingLayout, twoWheelers: e.target.value }
-              }
-            })}
-            required
-          />
-        </Form.Group>
-      </Row>
-
-      <h3 style={{ textAlign: "left" }}>Parking Management System</h3>
-      <Form.Group as={Col} md="6">
-        <Form.Label >Have Parking Management System?</Form.Label>
-        <Form.Check
-          type="radio"
-          label="Yes"
-          name={`parkingManagement-${index}`}
-          value="yes"
-          checked={buildingData?.hasParkingManagementSystem === "yes"}
-          onChange={() => setBuildingData(prev => ({ ...prev, hasParkingManagementSystem: "yes" }))}
-        />
-        <Form.Check
-          type="radio"
-          label="No"
-          name={`parkingManagement-${index}`}
-          value="no"
-          checked={buildingData?.hasParkingManagementSystem === "no"}
-          onChange={() => setBuildingData(prev => ({ ...prev, hasParkingManagementSystem: "no" }))}
-        />
-      </Form.Group>
-
-      {buildingData?.hasParkingManagementSystem === "yes" && (
-        <Form.Group as={Col} md="6" controlId={`parkingManagementCompany-${index}`}>
-          <Form.Label>Company Name of Parking Management System</Form.Label>
-          <Form.Control
+            requiredd
             type="text"
-            name="parkingManagementCompany"
-            value={buildingData?.parkingManagementCompany}
+            name="buildingLayout"
+            value={buildingData?.buildingLayout || ""}
             onChange={handleInputChange}
-            required
+            placeholder="e.g., Basement, Stilt Parking, Floors..."
           />
         </Form.Group>
-      )}
 
-      <h3 style={{ textAlign: "left" }}>Garden Area</h3>
-      <Form.Group as={Col} md="6">
-        <Form.Label>Have Garden Area?</Form.Label>
-        <Form.Check
-          type="radio"
-          label="Yes"
-          name={`gardenArea-${index}`}
-          value="yes"
-          checked={buildingData?.hasGardenArea === "yes"}
-          onChange={() => setBuildingData(prev => ({ ...prev, hasGardenArea: "yes" }))}
-        />
-        <Form.Check
-          type="radio"
-          label="No"
-          name={`gardenArea-${index}`}
-          value="no"
-          checked={buildingData?.hasGardenArea === "no"}
-          onChange={() => setBuildingData(prev => ({ ...prev, hasGardenArea: "no" }))}
-        />
-      </Form.Group>
-
-      {buildingData?.hasGardenArea === "yes" && (
-        <Form.Group as={Col} md="6" controlId={`gardenAreaSqft-${index}`}>
-          <Form.Label>Garden Area Sqft</Form.Label>
+        <Form.Group as={Col} md="4" controlId="numParking">
+          <Form.Label>No. of Parking</Form.Label>
           <Form.Control
+            requiredd
             type="number"
-            name="gardenAreaSqFt"
-            value={buildingData?.gardenAreaSqFt}
+            name="numParking"
+            value={buildingData?.numParking || ""}
             onChange={handleInputChange}
-            required
           />
         </Form.Group>
 
-        
-      )}
+        <Form.Group as={Col} md="4" controlId="numTwoWheelers">
+          <Form.Label>No. of Two Wheelers</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="numTwoWheelers"
+            value={buildingData?.numTwoWheelers || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+      </Row>
 
-<form>
-<Button
-        variant="secondary"
-        onClick={onPrevious}
-        className="me-2"
-        style={{ float: "left" }} 
-        disabled={currentBuildingsIndex === ""} 
-      >
-        Previous
-      </Button>
+      <Row className="mb-3">
+        <Form.Group as={Col} md="4" controlId="parkingManagement">
+          <Form.Label>Parking Management System</Form.Label>
+          <Form.Control
+            as="select"
+            name="parkingManagement"
+            value={buildingData?.parkingManagement || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
+            <option value="automated">Automated</option>
+            <option value="manual">Manual</option>
+          </Form.Control>
+        </Form.Group>
 
-      <Button
-       
-        onClick={onNext}
-        style={{ float: "right" }} 
-        disabled={currentBuildingsIndex === numOfBuildings - 1} // Disable Next on last form
-      >
-        Next
-      </Button>
-</form>
-    </div>
+        <Form.Group as={Col} md="4" controlId="parkingMode">
+          <Form.Label>Parking Mode</Form.Label>
+          <Form.Control
+            as="select"
+            name="parkingMode"
+            value={buildingData?.parkingMode || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
+            <option value="dedicated">Dedicated</option>
+            <option value="nonDedicated">Non-Dedicated</option>
+          </Form.Control>
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="securitySystem">
+          <Form.Label>Security System</Form.Label>
+          <Form.Control
+            as="select"
+            name="securitySystem"
+            value={buildingData?.securitySystem || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
+            <option value="cctv">CCTV</option>
+            <option value="guards">Guards</option>
+          </Form.Control>
+        </Form.Group>
+      </Row>
+
+      <Row className="mb-3">
+        <Form.Group as={Col} md="4" controlId="fireSafety">
+          <Form.Label>Fire Safety System</Form.Label>
+          <Form.Control
+            as="select"
+            name="fireSafety"
+            value={buildingData?.fireSafety || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
+            <option value="sprinklers">Sprinklers</option>
+            <option value="alarms">Alarms</option>
+          </Form.Control>
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="energyConservation">
+          <Form.Label>Energy Conservation System</Form.Label>
+          <Form.Control
+            as="select"
+            name="energyConservation"
+            value={buildingData?.energyConservation || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
+            <option value="ledLighting">LED Lighting</option>
+            <option value="solar">Solar</option>
+          </Form.Control>
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="waterConservation">
+          <Form.Label>Water Conservation System</Form.Label>
+          <Form.Control
+            as="select"
+            name="waterConservation"
+            value={buildingData?.waterConservation || ""}
+            onChange={handleInputChange}
+            requiredd
+          >
+            <option value="">Select...</option>
+            <option value="rainwaterHarvesting">Rainwater Harvesting</option>
+            <option value="greyWaterReuse">Grey Water Reuse</option>
+          </Form.Control>
+        </Form.Group>
+      </Row>
+
+      <div className="button-group">
+        <Button variant="secondary" onClick={hanldePreviousForm}>
+          Previous
+        </Button>
+        <Button variant="primary" type="submit" onClick={handleNextForm}>
+          Next
+        </Button>
+      </div>
+    </Form>
   );
 };
 
-export default Building;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default Buildings;

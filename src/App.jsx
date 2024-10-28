@@ -19,8 +19,6 @@ import EditTemporaryClient from "./pages/EditTemporaryClient";
 import Survey from "./pages/Survey";
 import Premises from "./pages/Premises";
 import Buildings from "./pages/Buildings";
-import Basement from "./pages/Basement";
-import DriverRoom from "./pages/DriverRoom";
 
 function App() {
   return (
@@ -30,7 +28,6 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/users" element={<Users />} />
           <Route path="/messages" element={<Messages />} />
-          <Route path="/survey" element={<Survey />} />
           <Route path="/file-manager" element={<FileManager />} />
           <Route path="/order" element={<Order />} />
           <Route path="/saved" element={<Saved />} />
@@ -43,11 +40,10 @@ function App() {
           <Route path="/salaryComponents" element={<SalarayComponents/>}/>
           <Route path="/machinery" element={<Machinery/>}/>
           <Route path="/material" element={<Material/>}/>
+          
+          <Route path="/survey" element={<Survey />} />
           <Route path="/premises" element={<Premises/>}/>
           <Route path="/buildings" element={<Buildings/>}/>
-          <Route path="/basement" element={<Basement/>}/>
-          <Route path="/driverroom" element={<DriverRoom/>}/>
-       
          
 
           <Route path="*" element={<> not found</>} />

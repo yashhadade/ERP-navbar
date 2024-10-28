@@ -1,164 +1,274 @@
-import React, { useState, useEffect } from "react";
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import Buildings from './Buildings';
+import React, { useState, useEffect, useContext } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import Buildings from "./Buildings";
+import { FormContext } from "../FormContext/FormContextProvider";
+import { useNavigate } from "react-router-dom";
 
-const Premises = ({ onPrevious,  onNext, currentPremisesIndex, numOfPremises,setAllPremiseData,allPremisesData }) => {
+const Premises = ({ onPrevious, onNext }) => {
+  const { numOfPremises, currentPremisesIndex, setAllPremiseData } =
+    useContext(FormContext);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    siteName: "", buildings: 0, carpetArea: 0, builtUpArea: 0, basementUpArea: 0,
-    basement: 0, floors: 0, workStations: 0, employees: 0, operatingShifts: 1,
-    shifts: [{ startTime: "", endTime: "" }], grade: "Select", tier: "", surveyDate: "",
-    surveyBy: "", clientVisitingCard: null, locationPhoto: null, moreInfo: "", noOfPremises: 1,
+    siteName: "",
+    buildings: 0,
+    carpetArea: 0,
+    builtUpArea: 0,
+    basementUpArea: 0,
+    basement: 0,
+    floors: 0,
+    workStations: 0,
+    employees: 0,
+    operatingShifts: 1,
+    shifts: [{ startTime: "", endTime: "" }],
+    grade: "Select",
+    tier: "",
+    surveyDate: "",
+    surveyBy: "",
+    clientVisitingCard: null,
+    locationPhoto: null,
+    moreInfo: "",
+    noOfPremises: 1,
   });
-const [buildingOpen,setBuildingOpen] = useState();
 
-  
   const [surveyUsers, setSurveyUsers] = useState([]);
   const [validated, setValidated] = useState(false);
+  const [showBuildingForm, setShowBuildingForm] = useState(null);
 
   useEffect(() => {
-    setSurveyUsers(["User 1", "User 2", "User 3"]); // replace with API call if needed
+    setSurveyUsers(["User 1", "User 2", "User 3"]);
   }, []);
 
   useEffect(() => {
-    const newShifts = Array.from({ length: formData.operatingShifts }, (_, i) => ({
-      startTime: formData.shifts[i]?.startTime || "", endTime: formData.shifts[i]?.endTime || ""
-    }));
-    setFormData(prev => ({ ...prev, shifts: newShifts }));
+    const newShifts = Array.from(
+      { length: formData.operatingShifts },
+      (_, i) => ({
+        startTime: formData.shifts[i]?.startTime || "",
+        endTime: formData.shifts[i]?.endTime || "",
+      })
+    );
+    setFormData((prev) => ({ ...prev, shifts: newShifts }));
   }, [formData.operatingShifts]);
 
-  const handleInputChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  const handleShiftChange = (i, field, value) => setFormData(prev => {
-    const shifts = [...prev.shifts];
-    shifts[i][field] = value;
-    return { ...prev, shifts };
-  });
-  const handleFileUpload = (e, field) => setFormData(prev => ({
-    ...prev, [field]: URL.createObjectURL(e.target.files[0])
-  }));
+  const handleInputChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleShiftChange = (i, field, value) =>
+    setFormData((prev) => {
+      const shifts = [...prev.shifts];
+      shifts[i][field] = value;
+      return { ...prev, shifts };
+    });
+  const handleFileUpload = (e, field) =>
+    setFormData((prev) => ({
+      ...prev,
+      [field]: URL.createObjectURL(e.target.files[0]),
+    }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) e.stopPropagation();
     setValidated(true);
-    console.log("Form submitted:", formData);
   };
 
   const renderFormField = (name, label, type = "text", props = {}) => (
     <Form.Group as={Col} md="4" controlId={name}>
       <Form.Label>{label}</Form.Label>
-      <Form.Control type={type} name={name} value={formData[name] || ""} onChange={handleInputChange} {...props} />
+      <Form.Control
+        type={type}
+        name={name}
+        value={formData[name] || ""}
+        onChange={handleInputChange}
+        {...props}
+      />
     </Form.Group>
   );
 
-
-  const onNextForm =async (e) => {
-    console.log("called");
-    
+  const onNextForm = async (e) => {
     e.preventDefault();
-   await setAllPremiseData(prev => {
-            const updatedData = [...prev, formData];
-      console.log("Updated All Premises Data:", updatedData); // Log the updated data
+    await setAllPremiseData((prev) => {
+      const updatedData = [...prev, formData]; // Log the updated data
       return updatedData; // Save formData to allPremisesData
     });
+    if (formData.buildings > 0) {
+      setShowBuildingForm(formData.buildings);
 
-   onNext();
+      navigate("/buildings", {
+        state: {
+          buildingCount: formData.buildings,
+          currentPremisesIndex: currentPremisesIndex,
+        },
+      });
+    } else {
+      onNext();
+    }
   };
 
-  console.log(allPremisesData);
+  console.log(currentPremisesIndex, numOfPremises);
+
   return (
-    <Form noValidate validated={validated} onSubmit={handleSubmit}>
-      <h1 className="form-title">Premises Form {currentPremisesIndex + 1}</h1>
-      
-      <Row className="mb-3">
-        {renderFormField("siteName", "Name of Site", "text", { required: true })}
-        {renderFormField("buildings", "Buildings", "number", { required: true })}
-        {renderFormField("carpetArea", "Carpet Area (sq. ft)", "number", { required: true })}
-      </Row>
+    <>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <h1 className="form-title">Premises Form {currentPremisesIndex}</h1>
 
-      <Row className="mb-3">
-        {renderFormField("builtUpArea", "Built-Up Area (sq. ft)", "number", { required: true })}
-        {renderFormField("basement", "Basement", "number", { required: true })}
-        {renderFormField("basementUpArea", "Basement Up Area (sq. ft)", "number", { required: true })}
-      </Row>
-
-      <Row className="mb-3">
-        {renderFormField("floors", "Floors", "number", { required: true })}
-        {renderFormField("workStations", "Work Stations", "number", { required: true })}
-        {renderFormField("employees", "Employees", "number", { required: true })}
-      </Row>
-
-      <Row className="mb-3">
-        {renderFormField("surveyDate", "Survey Date", "date")}
-        <Form.Group as={Col} md="4" controlId="surveyBy">
-          <Form.Label>Survey By</Form.Label>
-          <Form.Select name="surveyBy" value={formData.surveyBy} onChange={handleInputChange} required>
-            <option>--Select--</option>
-            {surveyUsers.map(user => <option key={user} value={user}>{user}</option>)}
-          </Form.Select>
-        </Form.Group>
-        {renderFormField("operatingShifts", "Operating Shifts", "number", { min: 1, required: true })}
-      </Row>
-
-      {formData?.shifts?.map((shift, i) => (
-        <Row className="mb-3" key={i}>
-          {renderFormField(`shiftStartTime-${i}`, `Shift Start Time ${i + 1}`, "time", {
-            value: shift.startTime,
-            onChange: e => handleShiftChange(i, "startTime", e.target.value),
+        <Row className="mb-3">
+          {renderFormField("siteName", "Name of Site", "text", {
             required: true,
           })}
-          {renderFormField(`shiftEndTime-${i}`, `Shift End Time ${i + 1}`, "time", {
-            value: shift.endTime,
-            onChange: e => handleShiftChange(i, "endTime", e.target.value),
+          {renderFormField("buildings", "Buildings", "number", {
+            required: true,
+          })}
+          {renderFormField("carpetArea", "Carpet Area (sq. ft)", "number", {
             required: true,
           })}
         </Row>
-      ))}
 
-      <Row className="mb-3">
-        <Form.Group as={Col} md="4" controlId="grade">
-          <Form.Label>Grade of Premises</Form.Label>
-          <Form.Select name="grade" value={formData.grade} onChange={handleInputChange} required>
-            <option>--Select--</option>
-            <option>Silver</option>
-            <option>Platinum</option>
-            <option>Gold</option>
-          </Form.Select>
-        </Form.Group>
-        {renderFormField("tier", "Tier of Premises")}
-      </Row>
+        <Row className="mb-3">
+          {renderFormField("builtUpArea", "Built-Up Area (sq. ft)", "number", {
+            required: true,
+          })}
+          {renderFormField("basement", "Basement", "number", {
+            required: true,
+          })}
+          {renderFormField(
+            "basementUpArea",
+            "Basement Up Area (sq. ft)",
+            "number",
+            { required: true }
+          )}
+        </Row>
 
-      <Row className="mb-3">
-        {["clientVisitingCard", "locationPhoto"].map(field => (
-          <Form.Group as={Col} md="4" key={field} controlId={field}>
-            <Form.Label>{field === "clientVisitingCard" ? "Upload Client Visiting Card" : "Upload Location Photo"}</Form.Label>
-            <Form.Control type="file" onChange={e => handleFileUpload(e, field)} />
-            {formData[field] && <img src={formData[field]} alt={field} style={{ width: "100px", height: "auto" }} />}
+        <Row className="mb-3">
+          {renderFormField("floors", "Floors", "number", { required: true })}
+          {renderFormField("workStations", "Work Stations", "number", {
+            required: true,
+          })}
+          {renderFormField("employees", "Employees", "number", {
+            required: true,
+          })}
+        </Row>
+
+        <Row className="mb-3">
+          {renderFormField("surveyDate", "Survey Date", "date")}
+          <Form.Group as={Col} md="4" controlId="surveyBy">
+            <Form.Label>Survey By</Form.Label>
+            <Form.Select
+              name="surveyBy"
+              value={formData.surveyBy}
+              onChange={handleInputChange}
+              required
+            >
+              <option>--Select--</option>
+              {surveyUsers.map((user) => (
+                <option key={user} value={user}>
+                  {user}
+                </option>
+              ))}
+            </Form.Select>
           </Form.Group>
+          {renderFormField("operatingShifts", "Operating Shifts", "number", {
+            min: 1,
+            required: true,
+          })}
+        </Row>
+
+        {formData?.shifts?.map((shift, i) => (
+          <Row className="mb-3" key={i}>
+            {renderFormField(
+              `shiftStartTime-${i}`,
+              `Shift Start Time ${i + 1}`,
+              "time",
+              {
+                value: shift.startTime,
+                onChange: (e) =>
+                  handleShiftChange(i, "startTime", e.target.value),
+                required: true,
+              }
+            )}
+            {renderFormField(
+              `shiftEndTime-${i}`,
+              `Shift End Time ${i + 1}`,
+              "time",
+              {
+                value: shift.endTime,
+                onChange: (e) =>
+                  handleShiftChange(i, "endTime", e.target.value),
+                required: true,
+              }
+            )}
+          </Row>
         ))}
-        {renderFormField("moreInfo", "More Information", "textarea", { as: "textarea", rows: 2 })}
-      </Row>
 
-      <Button
-        variant="secondary"
-        onClick={onPrevious}
-        className="me-2"
-        style={{ float: "left" }} // Position Previous button to the left
-        disabled={currentPremisesIndex === ""} // Disabled on Survey form return condition
-      >
-        Previous
-      </Button>
+        <Row className="mb-3">
+          <Form.Group as={Col} md="4" controlId="grade">
+            <Form.Label>Grade of Premises</Form.Label>
+            <Form.Select
+              name="grade"
+              value={formData.grade}
+              onChange={handleInputChange}
+              required
+            >
+              <option>--Select--</option>
+              <option>Silver</option>
+              <option>Platinum</option>
+              <option>Gold</option>
+            </Form.Select>
+          </Form.Group>
+          {renderFormField("tier", "Tier of Premises")}
+        </Row>
 
-      <Button
-        variant="secondary"
-        className="me-2"
-        // onClick={formData.buildings < 0? buildingOpen: onNext}
-        onClick={onNextForm}
-        style={{ float: "right" }} // Position Next button to the right
-        disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
-      >
-        Next
-      </Button>
-    </Form>
+        <Row className="mb-3">
+          {["clientVisitingCard", "locationPhoto"].map((field) => (
+            <Form.Group as={Col} md="4" key={field} controlId={field}>
+              <Form.Label>
+                {field === "clientVisitingCard"
+                  ? "Upload Client Visiting Card"
+                  : "Upload Location Photo"}
+              </Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e) => handleFileUpload(e, field)}
+              />
+              {formData[field] && (
+                <img
+                  src={formData[field]}
+                  alt={field}
+                  style={{ width: "100px", height: "auto" }}
+                />
+              )}
+            </Form.Group>
+          ))}
+          {renderFormField("moreInfo", "More Information", "textarea", {
+            as: "textarea",
+            rows: 2,
+          })}
+        </Row>
+
+        <Button
+          variant="secondary"
+          onClick={onPrevious}
+          className="me-2"
+          style={{ float: "left" }} // Position Previous button to the left
+          disabled={currentPremisesIndex === ""} // Disabled on Survey form return condition
+        >
+          Previous
+        </Button>
+
+        <Button
+          variant="secondary"
+          className="me-2"
+          // onClick={formData.buildings < 0? buildingOpen: onNext}
+          onClick={onNextForm}
+          style={{ float: "right" }} // Position Next button to the right
+          disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
+        >
+          Next
+        </Button>
+      </Form>
+
+      {/* {showBuildingForm && (
+        <Buildings currentPremisesIndex={currentPremisesIndex} />
+      )} */}
+    </>
   );
 };
 
