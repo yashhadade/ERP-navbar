@@ -60,7 +60,7 @@ const Survey = () => {
 
   const handlePrevious = () => {
     setShowNextForm(false);
-    setCurrentPremisesIndex(0); // Reset to the main form when going back
+    setCurrentPremisesIndex(0); // reset to the main form when going back
   };
 
   const handlePremisesChange = (e) => {
