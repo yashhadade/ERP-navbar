@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import Basement from "./Basement";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FormContext } from "../FormContext/FormContextProvider";
 
@@ -11,32 +10,49 @@ const Buildings = ({ onPrevious, onNext }) => {
     numOfPremises,
     currentPremisesIndex,
     setCurrentPremisesIndex,
+    buildingcount,
+    currentBuildingIndex,
+    setCurrentBuilidingIndex,
   } = useContext(FormContext);
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const location = useLocation();
-  const [buildingData, setBuildingData] = useState({});
-  const [buildingNo, setBuildingNo] = useState(1);
-  const [numBasements, setNumBasements] = useState(0); //updated
-  const [showBasementForm, setShowBasementForm] = useState(false); //updated
+  // const [] = useState({});
 
-  const [formData, setFormData] = useState({
-    buildingName: "", carpetArea: 0, builtUpArea: 0, numEmployees: 0, numWorkstations: 0, numElevations: 0,
-    numEscalators: 0, numStaircases: 0, facadeType: "--Select--", facadeSqft: 0, compoundSqft: 0, compoundFlooring: 0,
-    gradedBuilding: "--Select--", classOfBuilding: "--Select--", ageOfBuilding: "", compound: 0, basement: 0, stiltPark: 0,
-    floors: 0, terrace: 0, numParking: 0, numTwoWheelers: 0, parkingManagement: "--Select--", parkingMode: "--Select--", 
-    securitySystem: "--Select--", fireSafety: "--Select--", energyConservation: "--Select--", waterConservation: "--Select",
+  const [buildingData, setBuildingData] = useState({
+    buildingName: "",
+    carpetArea: 0,
+    builtUpArea: 0,
+    numEmployees: 0,
+    numWorkstations: 0,
+    numElevations: 0,
+    numEscalators: 0,
+    numStaircases: 0,
+    facadeType: "--Select--",
+    facadeSqft: 0,
+    compoundSqft: 0,
+    compoundFlooring: 0,
+    gradedBuilding: "--Select--",
+    classOfBuilding: "--Select--",
+    ageOfBuilding: "",
+    compound: 0,
+    basement: 0,
+    stiltPark: 0,
+    floors: 0,
+    terrace: 0,
+    numParking: 0,
+    numTwoWheelers: 0,
+    parkingManagement: "--Select--",
+    parkingMode: "--Select--",
+    securitySystem: "--Select--",
+    fireSafety: "--Select--",
+    energyConservation: "--Select--",
+    waterConservation: "--Select",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBuildingData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleRadioChange = (e) => {
-    const { name, value } = e.target;
-    setBuildingData((prev) => ({ ...prev, [name]: value }));
-    setNumBasements(value); //updated
   };
 
   const handleSubmit = (e) => {
@@ -48,52 +64,39 @@ const Buildings = ({ onPrevious, onNext }) => {
   const handleNextForm = async () => {
     await setAllBuildingData((prev) => {
       const updatedData = [...prev];
-      updatedData[buildingNo - 1] = buildingData; // Store current data at the index for the building
+      updatedData[currentBuildingIndex - 1] = buildingData; // Store current data at the index for the building
       return updatedData;
     });
-    console.log(buildingData?.basements);
-    
 
-    if (buildingData?.basements > 0) {
-      console.log("basement");
-      
-    }
-
-    if (buildingNo < location?.state?.buildingCount) {
-      console.log("here");
-      
-      setBuildingNo(buildingNo + 1);
-      setBuildingData(allBuildingData[buildingNo] || {}); // Load data for the next building if it exists
-    } else if (numOfPremises => currentPremisesIndex) {
-      console.log(true);
-
+    if (buildingData?.basement > 0 || buildingData?.floors > 0) {
+      navigate("/basement", {
+        state: {
+          baseMentCount: buildingData.basement,
+          floorCount: buildingData.floors,
+        },
+      });
+    } else if (currentBuildingIndex < buildingcount) {
+      setCurrentBuilidingIndex(currentBuildingIndex + 1);
+      setBuildingData(allBuildingData[currentBuildingIndex] || {}); // Load data for the next building if it exists
+    } else if (numOfPremises >= currentPremisesIndex) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
-      setShowBasementForm(true); //updated
-      console.log("need to go back");
-    }else{
-      console.log("else");
-      
+    } else {
     }
   };
 
-  console.log(buildingNo);
 
   const hanldePreviousForm = () => {
-    if (buildingNo > 1) {
-      setBuildingNo(buildingNo - 1);
-      setBuildingData(allBuildingData[buildingNo - 2] || {}); // Load data for the previous building if it exists
+    if (currentBuildingIndex > 1) {
+      setCurrentBuilidingIndex(currentBuildingIndex - 1);
+      setBuildingData(allBuildingData[currentBuildingIndex - 2] || {}); // Load data for the previous building if it exists
     }
-  };
-
-  const handleBasementSubmit = () => {
-    setShowBasementForm(false); // updated
   };
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <h1 className="form-title">
-        Building {buildingNo} Form for Premises{" "}
+        Building {currentBuildingIndex} Form for Premises{" "}
         {location?.state?.currentPremisesIndex}
       </h1>
 
@@ -473,7 +476,6 @@ const Buildings = ({ onPrevious, onNext }) => {
         </Button>
       </div>
     </Form>
-
   );
 };
 

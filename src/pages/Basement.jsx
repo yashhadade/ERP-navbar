@@ -1,19 +1,31 @@
 import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { FormContext } from "../FormContext/FormContextProvider";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const Basement = ({
-  onPrevious,
-  onNext,
-  currentBasementIndex,
-  numOfBasements,
-  basementForms,
-  allBasementsData,
-}) => {
-  const { allBuildingData, setAllBasementData } = useContext(FormContext);
+const Basement = ({ onPrevious, numOfBasements }) => {
+  const {
+    allBasementsData,
+    setAllBasementsData,
+    currentBaseMentIndex,
+    setCurrentBaseMEntIndex,
+    basmentCount,
+    setCurrentBuilidingIndex,
+    currentBuildingIndex,
+    setBaseMentCount,
+  } = useContext(FormContext);
+
+  const location = useLocation();
+
+  const { baseMentCount, floorCount } = location?.state;
+  const navigate = useNavigate();
+  const [currentFormCount, setCurrentFormCount] = useState(1);
+  const [currentType, setCurrentType] = useState(
+    baseMentCount > 0 ? "Basement" : "Floor"
+  );
+
   const [formData, setFormData] = useState({
-    type: "--Select--",
+    type: "",
     name: "",
     carpetArea: 0,
     flooringType: "",
@@ -66,9 +78,56 @@ const Basement = ({
       e.stopPropagation();
     }
     setValidated(true);
-    setAllBasementData(basementForms);
-    onNext();
   };
+
+  const handleNextForm = async (e) => {
+    e.preventDefault();
+    await setAllBasementsData((prev) => {
+      const updatedData = [...prev];
+
+      updatedData[currentBaseMentIndex - 1] = formData; // Store current data at the index for the building
+      return updatedData;
+    });
+
+    if (currentType === "Basement" && currentFormCount < baseMentCount) {
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setCurrentFormCount((prevCount) => prevCount + 1);
+    } else if (
+      currentType === "Basement" &&
+      currentFormCount == baseMentCount
+    ) {
+      setCurrentType("Floor");
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setCurrentFormCount(1);
+    } else if (currentType === "Floor" && currentFormCount < floorCount) {
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setCurrentFormCount((prevCount) => prevCount + 1);
+    } else {
+      setCurrentBuilidingIndex((prevCount) => prevCount + 1);
+      navigate("/buildings");
+    }
+  };
+
+  const handlePreviousForm = () => {
+    if (currentFormCount > 1) {
+      setCurrentBaseMEntIndex((prev) => prev - 1);
+      setCurrentFormCount((prevCount) => prevCount - 1);
+      // Load previous form data if it exists in `allBasementsData`
+      setFormData(allBasementsData[currentBaseMentIndex - 2] || {});
+    } else if (currentType == "Floor" && currentFormCount === 1) {
+      // Switch back to basements when moving back from the first floor form
+      setCurrentType("Basement");
+      setCurrentFormCount(baseMentCount);
+      setCurrentBaseMEntIndex(baseMentCount);
+      // Load the last basement form data
+      setFormData(allBasementsData[baseMentCount - 1] || {});
+    } else if (currentType == "Basement" && currentFormCount === 1) {
+      
+      navigate("/buildings");
+    }
+  };
+
+  console.log(currentBaseMentIndex, currentFormCount);
 
   const renderFormField = (name, label, type = "text", props = {}) => (
     <Form.Group as={Col} md="4" controlId={name}>
@@ -93,10 +152,12 @@ const Basement = ({
         {/* Render multiple basement forms based on numOfBasements */}
         {[...Array(numOfBasements)].map((_, index) => (
           <div key={index}>
-            <h2>Basement {index + 1}</h2>
             <Row className="mb-3">{/* Form fields for each basement... */}</Row>
           </div>
         ))}
+        <h2>
+          {currentType} {currentFormCount}
+        </h2>
 
         {/* updated */}
 
@@ -105,21 +166,24 @@ const Basement = ({
             <Form.Label>Type</Form.Label>
             <Form.Select
               name="type"
-              value={formData.type}
+              value={formData?.type}
               onChange={handleInputChange}
-              required
+              defaultValue={currentType}
+              requiredd
             >
-              <option>--Select--</option>
-              <option>Basement</option>
-              <option>Floor</option>
+              <option value="Floor">Floor</option>
+              <option value="Basement">Basement</option>
+              <option value="select" disabled>
+                Select Type
+              </option>
             </Form.Select>
           </Form.Group>
-          {renderFormField("name", "Name", "text", { required: true })}
+          {renderFormField("name", "Name", "text", { requiredd: true })}
         </Row>
 
         <Row className="mb-3">
           {renderFormField("carpetArea", "Carpet Area (sq. ft)", "number", {
-            required: true,
+            requiredd: true,
           })}
           <Form.Group as={Col} md="4" controlId="flooringType">
             <Form.Label>Flooring Type</Form.Label>
@@ -127,7 +191,7 @@ const Basement = ({
               name="flooringType"
               value={formData.flooringType}
               onChange={handleInputChange}
-              required
+              requiredd
             >
               <option>--Select--</option>
               <option>Tile</option>
@@ -136,7 +200,7 @@ const Basement = ({
             </Form.Select>
           </Form.Group>
           {renderFormField("ceilingHeight", "Ceiling Height (ft)", "number", {
-            required: true,
+            requiredd: true,
           })}
         </Row>
 
@@ -245,7 +309,7 @@ const Basement = ({
 
         <Button
           variant="secondary"
-          onClick={onPrevious}
+          onClick={handlePreviousForm}
           className="me-2"
           style={{ float: "left" }}
         >
@@ -256,6 +320,7 @@ const Basement = ({
           type="submit"
           className="me-2"
           style={{ float: "right" }}
+          onClick={handleNextForm}
         >
           Next
         </Button>
