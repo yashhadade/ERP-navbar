@@ -4,8 +4,8 @@ import { FormContext } from "../FormContext/FormContextProvider";
 import { useNavigate } from "react-router-dom";
 
 
-const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, basementForms, setAllBasementData, allBasementsData }) => {
-  const { setAllBasementData, allBuildingData } = useContext(FormContext);
+const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, basementForms, BasementData,}) => {
+  const { setAllBasementData, allBuildingData , useContext} = useContext(FormContext);
   const [formData, setFormData] = useState({
     type: "--Select--", name: "", carpetArea: 0, flooringType: "", ceilingHeight: 0, photo: null,remarks: "",
     ambiance: "", numberOfPumpRooms: 0, numberOfDriversRooms: 0, numberOfStoreRooms: 0,numberOfReceptions: 0,
@@ -43,7 +43,7 @@ const Basement = ({ onPrevious, onNext, currentBasementIndex, numOfBasements, ba
     onNext();
   };
 
-  
+
 
   const renderFormField = (name, label, type = "text", props = {}) => (
     <Form.Group as={Col} md="4" controlId={name}>
