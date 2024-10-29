@@ -14,6 +14,9 @@ const FormContextProvider = ({ children }) => {
     const [floornBasementCount, setFloornBasementCount] = useState({basement:0, floor:0});
   const [currentBaseMentIndex, setCurrentBaseMEntIndex] = useState(1);
   const [allToiletData,setAllToiletData]=useState([]);
+
+  console.log("survey",surveyData,"premies",allPremisesData,"building",allBuildingData,"Basement",allBasementsData);
+  
   return (
     <FormContext.Provider
       value={{

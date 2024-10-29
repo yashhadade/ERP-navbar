@@ -126,9 +126,6 @@ const Survey = () => {
       alert("Survey added")
     }
     };
-
-    
-  console.log(surveyForm?.premises);
   
   return (
     <>
