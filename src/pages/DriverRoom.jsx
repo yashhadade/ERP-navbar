@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row, Modal } from 'react-bootstrap';
 
-const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoom, setAllDriverRoomData, allPremisesData }) => {
+const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRoomData }) => {
     const [validated, setValidated] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
@@ -16,12 +16,12 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
             packageDrinkingWater: false,
             normalWater: false,
         },
-        crockery:"",
+        crockery: {},
         remarks: "",
         AC: '',
     });
 
-    const [showModal, setShowModal] = useState(false); // state to manage modal visibility
+    const [showModal, setShowModal] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -31,14 +31,6 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                 ...prevData,
                 facilitiesProvided: {
                     ...prevData.facilitiesProvided,
-                    [name]: checked,
-                },
-            }));
-        } else if (name.startsWith('crockery')) {
-            setFormData(prevData => ({
-                ...prevData,
-                crockery: {
-                    ...prevData.crockery,
                     [name]: checked,
                 },
             }));
@@ -61,11 +53,11 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
 
         setAllDriverRoomData(prevData => {
             const newData = [...prevData];
-            newData[currentDriverRoomIndex] = formData; // Save current form data
+            newData[currentDriverRoomIndex] = formData; 
             return newData;
         });
         console.log("Driver Room Data:", formData);
-        onNext(); 
+        onNext();
     };
 
     return (
@@ -73,7 +65,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
             <h2 className="form-title" style={{ textAlign: "center" }}>Driver Room Form</h2>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormName">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormName">
                         <Form.Label>Name</Form.Label>
                         <Form.Control
                             required
@@ -83,7 +75,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             onChange={handleInputChange}
                         />
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormCarpetArea">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormCarpetArea">
                         <Form.Label>Carpet Area (sq. ft)</Form.Label>
                         <Form.Control
                             required
@@ -93,10 +85,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             onChange={handleInputChange}
                         />
                     </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormFlooringType">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormFlooringType">
                         <Form.Label>Flooring Type</Form.Label>
                         <Form.Control as="select" name="flooringType" value={formData.flooringType} onChange={handleInputChange}>
                             <option value="Tile">Tile</option>
@@ -104,7 +93,10 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             <option value="Carpet">Carpet</option>
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormCeilingHeight">
+                </Row>
+
+                <Row className="mb-3">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormCeilingHeight">
                         <Form.Label>Ceiling Height (ft)</Form.Label>
                         <Form.Control
                             required
@@ -114,20 +106,17 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             onChange={handleInputChange}
                         />
                     </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormAddPhoto">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormAddPhoto">
                         <Form.Label>Upload Photo</Form.Label>
                         <Form.Control type="file" onChange={handleFileUpload} />
                         {formData.addPhoto && (
                             <div>
-                                <Button variant="link" onClick={() => setShowModal(true)}>View Photo</Button>
+                                {/* <Button variant="link" onClick={() => setShowModal(true)}>View Photo</Button> */}
                                 <img src={formData.addPhoto} alt="Room Thumbnail" style={{ width: "100px", height: "auto", marginTop: "10px" }} />
                             </div>
                         )}
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormAmbiance">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormAmbiance">
                         <Form.Label>Ambiance</Form.Label>
                         <Form.Control
                             type="text"
@@ -139,7 +128,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                 </Row>
 
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormFacilitiesProvided">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormFacilitiesProvided">
                         <Form.Label>Facilities Provided</Form.Label>
                         <Form.Check
                             type="checkbox"
@@ -170,7 +159,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             onChange={handleInputChange}
                         />
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormCrockery">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormCrockery">
                         <Form.Label>Crockery</Form.Label>
                         <Form.Check
                             type="checkbox"
@@ -187,19 +176,8 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             onChange={handleInputChange}
                         />
                     </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormRemarks">
-                        <Form.Label>Remarks</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            name="remarks"
-                            value={formData.remarks}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="driverRoomFormAC">
+                
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormAC">
                         <Form.Label>Have AC</Form.Label>
                         <Form.Check
                             type="radio"
@@ -218,6 +196,20 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             onChange={handleInputChange}
                         />
                     </Form.Group>
+                   
+                </Row>
+
+                <Row className="mb-3">
+                <Form.Group as={Col} md="4" controlId="driverRoomFormRemarks">
+                        <Form.Label>Remarks</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            name="remarks"
+                            value={formData.remarks}
+                            onChange={handleInputChange}
+                        />
+                    </Form.Group>
+                    
                 </Row>
 
                 <div className="d-flex justify-content-between">
