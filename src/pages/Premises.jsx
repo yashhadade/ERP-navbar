@@ -63,6 +63,7 @@ const Premises = ({ onPrevious }) => {
       shifts[i][field] = value;
       return { ...prev, shifts };
     });
+    
   const handleFileUpload = (e, field) =>
     setFormData((prev) => ({
       ...prev,
@@ -268,18 +269,14 @@ const Premises = ({ onPrevious }) => {
         <Button
           variant="secondary"
           className="me-2"
-          // onClick={formData.buildings < 0? buildingOpen: onNext}
           onClick={onNextForm}
-          style={{ float: "right" }} // Position Next button to the right
+          style={{ float: "right" }}
           // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
         >
           Next
         </Button>
       </Form>
 
-      {/* {showBuildingForm && (
-        <Buildings currentPremisesIndex={currentPremisesIndex} />
-      )} */}
     </>
   );
 };
