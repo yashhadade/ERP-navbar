@@ -21,6 +21,7 @@ import Premises from "./pages/Premises";
 import Buildings from "./pages/Buildings";
 import Basement from "./pages/Basement";
 import DriverRoom from "./pages/DriverRoom";
+import Toilet from "./components/Forms/Toilet";
 
 function App() {
   return (
@@ -48,6 +49,8 @@ function App() {
           <Route path="/buildings" element={<Buildings/>}/>
           <Route path="/basement" element={<Basement/>}/>
           <Route path="/driverroom" element={<DriverRoom/>}/>         
+          <Route path="/toilet" element={<Toilet/>}/>
+         
 
           <Route path="*" element={<> not found</>} />
         </Routes>
