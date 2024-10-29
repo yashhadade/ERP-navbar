@@ -449,7 +449,7 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
         <Button variant="secondary" onClick={hanldePreviousForm}>
           Previous
         </Button>
-        <Button variant="primary" type="submit" onClick={handleNextForm}>
+        <Button  style={{ float: "right" }} variant="secondary" type="submit" onClick={handleNextForm}>
           Next
         </Button>
       </div>
