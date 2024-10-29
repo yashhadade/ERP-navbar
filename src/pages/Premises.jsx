@@ -11,7 +11,7 @@ const Premises = ({ onPrevious }) => {
     buildingcount,
     setBuildingCount,
     currentBuildingIndex,
-    currentBuilidingIndex,
+    currentBuilidingIndex,numOfPremises
   } = useContext(FormContext);
   const navigate = useNavigate();
 
@@ -44,27 +44,52 @@ const Premises = ({ onPrevious }) => {
     setSurveyUsers(["User 1", "User 2", "User 3"]);
   }, []);
 
-  useEffect(() => {
-    const newShifts = Array.from(
-      { length: formData.operatingShifts },
-      (_, i) => ({
-        startTime: formData.shifts[i]?.startTime || "",
-        endTime: formData.shifts[i]?.endTime || "",
-      })
+
+
+
+    useEffect(() => {
+      const newShifts = Array.from(
+        { length: formData.operatingShifts },
+        (_, i) => ({
+          startTime: formData.shifts[i]?.startTime || "",
+          endTime: formData.shifts[i]?.endTime || "",
+        })
+      );
+      setFormData((prev) => ({ ...prev, shifts: newShifts }));
+    }, [formData.operatingShifts]);
+
+    const handleInputChange = (e) =>
+      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const handleShiftChange = (i, field, value) =>
+      setFormData((prev) => {
+        const shifts = [...prev.shifts];
+        shifts[i][field] = value;
+        return { ...prev, shifts };
+      });
+    const handleFileUpload = (e, field) =>
+      setFormData((prev) => ({
+        ...prev,
+        [field]: URL.createObjectURL(e.target.files[0]),
+      }));
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (e.currentTarget.checkValidity() === false) e.stopPropagation();
+      setValidated(true);
+    };
+
+    const renderFormField = (name, label, type = "text", props = {}) => (
+      <Form.Group as={Col} md="4" controlId={name}>
+        <Form.Label>{label}</Form.Label>
+        <Form.Control
+          type={type}
+          name={name}
+          value={formData[name] || ""}
+          onChange={handleInputChange}
+          {...props}
+        />
+      </Form.Group>
     );
-    setFormData((prev) => ({ ...prev, shifts: newShifts }));
-  }, [formData.operatingShifts]);
-
-  const handleInputChange = (e) =>
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleShiftChange = (i, field, value) =>
-    setFormData((prev) => {
-      const shifts = [...prev.shifts];
-      shifts[i][field] = value;
-      return { ...prev, shifts };
-    });
-
   const onNextForm = async (e) => {
    
     e.preventDefault();
@@ -82,8 +107,6 @@ const Premises = ({ onPrevious }) => {
       // onNext();
     }
   };
-
-
 
     console.log(currentPremisesIndex, numOfPremises);
 
@@ -198,19 +221,8 @@ const Premises = ({ onPrevious }) => {
             {renderFormField("tier", "Tier of Premises")}
           </Row>
 
-        <Button
-          variant="secondary"
-          className="me-2"
-          // onClick={formData.buildings < 0? buildingOpen: onNext}
-          onClick={onNextForm}
-          style={{ float: "right" }} // Position Next button to the right
-          // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
-        >
-          Next
-        </Button>
-      </Form>
 
-          {/* <Button
+          <Button
             variant="secondary"
             onClick={onPrevious}
             className="me-2"
@@ -230,7 +242,7 @@ const Premises = ({ onPrevious }) => {
           >
             Next
           </Button>
-        </Form> */}
+        </Form>
 
         {/* {showBuildingForm && (
           <Buildings currentPremisesIndex={currentPremisesIndex} />

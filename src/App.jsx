@@ -21,7 +21,11 @@ import Premises from "./pages/Premises";
 import Buildings from "./pages/Buildings";
 import Basement from "./pages/Basement";
 import DriverRoom from "./pages/DriverRoom";
+<<<<<<< HEAD
 
+=======
+import Toilet from "./components/Forms/Toilet";
+>>>>>>> 799cbbce9c8df49569e71dcf95d15c2ceb6d8dab
 
 function App() {
   return (
@@ -47,8 +51,14 @@ function App() {
           <Route path="/premises" element={<Premises/>}/>
           <Route path="/buildings" element={<Buildings/>}/>
           <Route path="/basement" element={<Basement/>}/>
+<<<<<<< HEAD
           <Route path="/driverroom" element={<DriverRoom/>}/>  
                  
+=======
+          <Route path="/driverroom" element={<DriverRoom/>}/>         
+          <Route path="/toilet" element={<Toilet/>}/>
+         
+>>>>>>> 799cbbce9c8df49569e71dcf95d15c2ceb6d8dab
 
           <Route path="*" element={<> not found</>} />
         </Routes>
