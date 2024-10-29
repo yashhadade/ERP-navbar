@@ -89,11 +89,7 @@ const Survey = () => {
     setValidated(true);
   };
 
-  // const handleNext = () => {
-  //   setShowNextForm(true);
-
-  //   navigate("/premises");
-  // };
+  
 
   const handlePrevious = () => {
     setShowNextForm(false);
@@ -102,19 +98,6 @@ const Survey = () => {
 
   
 
-  // const goToNextPremises = () => {
-  //   if (currentPremisesIndex < numOfPremises - 1) {
-  //     setCurrentPremisesIndex(currentPremisesIndex + 1);
-  //   }
-  // };
-
-  // const goToPreviousPremises = () => {
-  //   if (currentPremisesIndex > 0) {
-  //     setCurrentPremisesIndex(currentPremisesIndex - 1);
-  //   } else {
-  //     handlePrevious();
-  //   }
-  // };
 
 
   const handleChange = (e) => {
@@ -191,7 +174,7 @@ console.log(surveyData);
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom03">
               <Form.Label>Business Category</Form.Label>
-              <Form.Select required >
+              <Form.Select required  >
                 <option>Open this select menu</option>
                 <option value="1">Category One</option>
                 <option value="2">Category Two</option>
