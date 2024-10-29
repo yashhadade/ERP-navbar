@@ -104,13 +104,13 @@ const Survey = () => {
     }
   };
 
-  const handlePremisesDataChange = (index, data) => {
-    setPremisesData((prevData) => {
-      const newData = [...prevData];
-      newData[index] = { ...newData[index], ...data }; // Update specific premises data
-      return newData;
-    });
-  };
+  // const handlePremisesDataChange = (index, data) => {
+  //   setPremisesData((prevData) => {
+  //     const newData = [...prevData];
+  //     newData[index] = { ...newData[index], ...data }; // Update specific premises data
+  //     return newData;
+  //   });
+  // };
   return (
     <>
       {!showNextForm ? (

@@ -1,107 +1,89 @@
-  import React, { useState, useEffect, useContext } from "react";
-  import { Button, Col, Form, Row } from "react-bootstrap";
-  import Buildings from "./Buildings";
-  import { FormContext } from "../FormContext/FormContextProvider";
-  import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { FormContext } from "../FormContext/FormContextProvider";
+import { useNavigate } from "react-router-dom";
 
-  const Premises = ({ onPrevious, onNext }) => {
-    const { numOfPremises, currentPremisesIndex, setAllPremiseData } =
-      useContext(FormContext);
-    const navigate = useNavigate();
+const Premises = ({ onPrevious }) => {
+  const {
+    currentPremisesIndex,
+    setAllPremiseData,
+    setCurrentPremisesIndex,
+    buildingcount,
+    setBuildingCount,
+    currentBuildingIndex,
+    currentBuilidingIndex,
+  } = useContext(FormContext);
+  const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-      siteName: "",
-      buildings: 0,
-      carpetArea: 0,
-      builtUpArea: 0,
-      basementUpArea: 0,
-      basement: 0,
-      floors: 0,
-      workStations: 0,
-      employees: 0,
-      operatingShifts: 1,
-      shifts: [{ startTime: "", endTime: "" }],
-      grade: "Select",
-      tier: "",
-      surveyDate: "",
-      surveyBy: "",
-      clientVisitingCard: null,
-      locationPhoto: null,
-      moreInfo: "",
-      noOfPremises: 1,
+  const [formData, setFormData] = useState({
+    siteName: "",
+    buildings: 0,
+    carpetArea: 0,
+    builtUpArea: 0,
+    basementUpArea: 0,
+    basement: 0,
+    floors: 0,
+    workStations: 0,
+    employees: 0,
+    operatingShifts: 1,
+    shifts: [{ startTime: "", endTime: "" }],
+    grade: "Select",
+    tier: "",
+    surveyDate: "",
+    surveyBy: "",
+    clientVisitingCard: null,
+    locationPhoto: null,
+    moreInfo: "",
+    noOfPremises: 1,
+  });
+
+  const [surveyUsers, setSurveyUsers] = useState([]);
+  const [validated, setValidated] = useState(false);
+
+  useEffect(() => {
+    setSurveyUsers(["User 1", "User 2", "User 3"]);
+  }, []);
+
+  useEffect(() => {
+    const newShifts = Array.from(
+      { length: formData.operatingShifts },
+      (_, i) => ({
+        startTime: formData.shifts[i]?.startTime || "",
+        endTime: formData.shifts[i]?.endTime || "",
+      })
+    );
+    setFormData((prev) => ({ ...prev, shifts: newShifts }));
+  }, [formData.operatingShifts]);
+
+  const handleInputChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleShiftChange = (i, field, value) =>
+    setFormData((prev) => {
+      const shifts = [...prev.shifts];
+      shifts[i][field] = value;
+      return { ...prev, shifts };
     });
 
-    const [surveyUsers, setSurveyUsers] = useState([]);
-    const [validated, setValidated] = useState(false);
-    const [showBuildingForm, setShowBuildingForm] = useState(null);
+  const onNextForm = async (e) => {
+   
+    e.preventDefault();
+    await setAllPremiseData((prev) => {
+      const updatedData = [...prev, formData]; // Log the updated data
+      return updatedData; // Save formData to allPremisesData
+    });
 
-    useEffect(() => {
-      setSurveyUsers(["User 1", "User 2", "User 3"]);
-    }, []);
+    setBuildingCount(formData.buildings);
+    setCurrentPremisesIndex(currentPremisesIndex);
+    if (formData.buildings > 0) {
+      navigate("/buildings");
+    } else {
+      // todo: Add last procedure what will happen if there is no premises left show the data
+      // onNext();
+    }
+  };
 
-    useEffect(() => {
-      const newShifts = Array.from(
-        { length: formData.operatingShifts },
-        (_, i) => ({
-          startTime: formData.shifts[i]?.startTime || "",
-          endTime: formData.shifts[i]?.endTime || "",
-        })
-      );
-      setFormData((prev) => ({ ...prev, shifts: newShifts }));
-    }, [formData.operatingShifts]);
 
-    const handleInputChange = (e) =>
-      setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    const handleShiftChange = (i, field, value) =>
-      setFormData((prev) => {
-        const shifts = [...prev.shifts];
-        shifts[i][field] = value;
-        return { ...prev, shifts };
-      });
-    const handleFileUpload = (e, field) =>
-      setFormData((prev) => ({
-        ...prev,
-        [field]: URL.createObjectURL(e.target.files[0]),
-      }));
-
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      if (e.currentTarget.checkValidity() === false) e.stopPropagation();
-      setValidated(true);
-    };
-
-    const renderFormField = (name, label, type = "text", props = {}) => (
-      <Form.Group as={Col} md="4" controlId={name}>
-        <Form.Label>{label}</Form.Label>
-        <Form.Control
-          type={type}
-          name={name}
-          value={formData[name] || ""}
-          onChange={handleInputChange}
-          {...props}
-        />
-      </Form.Group>
-    );
-
-    const onNextForm = async (e) => {
-      e.preventDefault();
-      await setAllPremiseData((prev) => {
-        const updatedData = [...prev, formData]; // Log the updated data
-        return updatedData; // Save formData to allPremisesData
-      });
-      if (formData.buildings > 0) {
-        setShowBuildingForm(formData.buildings);
-
-        navigate("/buildings", {
-          state: {
-            buildingCount: formData.buildings,
-            currentPremisesIndex: currentPremisesIndex,
-          },
-        });
-      } else {
-        onNext();
-      }
-    };
 
     console.log(currentPremisesIndex, numOfPremises);
 
@@ -216,34 +198,19 @@
             {renderFormField("tier", "Tier of Premises")}
           </Row>
 
-          <Row className="mb-3">
-            {["clientVisitingCard", "locationPhoto"].map((field) => (
-              <Form.Group as={Col} md="4" key={field} controlId={field}>
-                <Form.Label>
-                  {field === "clientVisitingCard"
-                    ? "Upload Client Visiting Card"
-                    : "Upload Location Photo"}
-                </Form.Label>
-                <Form.Control
-                  type="file"
-                  onChange={(e) => handleFileUpload(e, field)}
-                />
-                {formData[field] && (
-                  <img
-                    src={formData[field]}
-                    alt={field}
-                    style={{ width: "100px", height: "auto" }}
-                  />
-                )}
-              </Form.Group>
-            ))}
-            {renderFormField("moreInfo", "More Information", "textarea", {
-              as: "textarea",
-              rows: 2,
-            })}
-          </Row>
+        <Button
+          variant="secondary"
+          className="me-2"
+          // onClick={formData.buildings < 0? buildingOpen: onNext}
+          onClick={onNextForm}
+          style={{ float: "right" }} // Position Next button to the right
+          // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
+        >
+          Next
+        </Button>
+      </Form>
 
-          <Button
+          {/* <Button
             variant="secondary"
             onClick={onPrevious}
             className="me-2"
@@ -263,7 +230,7 @@
           >
             Next
           </Button>
-        </Form>
+        </Form> */}
 
         {/* {showBuildingForm && (
           <Buildings currentPremisesIndex={currentPremisesIndex} />

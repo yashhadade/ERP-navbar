@@ -7,8 +7,11 @@ const FormContextProvider = ({ children }) => {
   const [allBuildingData, setAllBuildingData] = useState([]);
   const [numOfPremises, setNumOfPremises] = useState(0);
   const [currentPremisesIndex, setCurrentPremisesIndex] = useState(1);
-
-  
+  const [buildingcount, setBuildingCount] = useState(0);
+  const [currentBuildingIndex, setCurrentBuilidingIndex] = useState(1);
+  const [allBasementsData, setAllBasementsData] = useState([]);
+  const [basmentCount, setBaseMentCount] = useState(0);
+  const [currentBaseMentIndex, setCurrentBaseMEntIndex] = useState(1);
   return (
     <FormContext.Provider
       value={{
@@ -20,6 +23,16 @@ const FormContextProvider = ({ children }) => {
         setCurrentPremisesIndex,
         allBuildingData,
         setAllBuildingData,
+        buildingcount,
+        setBuildingCount,
+        currentBuildingIndex,
+        setCurrentBuilidingIndex,
+        allBasementsData,
+        setAllBasementsData,
+        basmentCount,
+        setBaseMentCount,
+        currentBaseMentIndex,
+        setCurrentBaseMEntIndex,
       }}
     >
       {children}
