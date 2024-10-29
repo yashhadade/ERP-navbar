@@ -62,7 +62,7 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRo
 
     return (
         <div>
-            <h2 className="form-title" style={{ textAlign: "center" }}>Driver Room Form</h2>
+            <h1 className="form-title" style={{ textAlign: "center" }}>Driver Room Form</h1>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row className="mb-3">
                     <Form.Group as={Col} md="4" controlId="driverRoomFormName">
