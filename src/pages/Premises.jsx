@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 const Premises = ({ onPrevious }) => {
   const {
-    currentPremisesIndex,
     setAllPremiseData,
+    allPremisesData,
     setCurrentPremisesIndex,
-    buildingcount,
     setBuildingCount,
-    currentBuildingIndex,
-    currentBuilidingIndex,numOfPremises
+    currentPremisesIndex,
+    numOfPremises
   } = useContext(FormContext);
   const navigate = useNavigate();
 
@@ -91,22 +90,30 @@ const Premises = ({ onPrevious }) => {
       </Form.Group>
     );
   const onNextForm = async (e) => {
-   
     e.preventDefault();
-    await setAllPremiseData((prev) => {
-      const updatedData = [...prev, formData]; // Log the updated data
-      return updatedData; // Save formData to allPremisesData
-    });
-
+    await setAllPremiseData((prev) => [...prev, formData]);
+    
     setBuildingCount(formData.buildings);
-    setCurrentPremisesIndex(currentPremisesIndex);
-    if (formData.buildings > 0) {
-      navigate("/buildings");
-    } else {
-      // todo: Add last procedure what will happen if there is no premises left show the data
-      // onNext();
+
+    if(formData.buildings > 0){
+      navigate("/buildings")
+
+    }else if (currentPremisesIndex < numOfPremises) {
+    setCurrentPremisesIndex(prev => prev+1)    
+    
+    }else{
+      alert("Premises form done");
     }
+
+
   };
+  
+  const hanldePreviousForm = () => {
+    if (currentPremisesIndex > 0) {
+      setCurrentPremisesIndex(currentPremisesIndex - 1);
+      setFormData(allPremisesData[currentPremisesIndex - 2] || {}); // Load data for the previous building if it exists
+    }
+  };  
 
     console.log(currentPremisesIndex, numOfPremises);
 
@@ -238,7 +245,7 @@ const Premises = ({ onPrevious }) => {
             // onClick={formData.buildings < 0? buildingOpen: onNext}
             onClick={onNextForm}
             style={{ float: "right" }} // Position Next button to the right
-            disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
+            // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
           >
             Next
           </Button>

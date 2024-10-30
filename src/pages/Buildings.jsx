@@ -12,7 +12,7 @@ const Buildings = ({ onPrevious, onNext }) => {
     setCurrentPremisesIndex,
     buildingcount,
     currentBuildingIndex,
-    setCurrentBuilidingIndex,
+    setCurrentBuilidingIndex,floornBasementCount, setFloornBasementCount
   } = useContext(FormContext);
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
@@ -62,29 +62,27 @@ const Buildings = ({ onPrevious, onNext }) => {
   };
 
   const handleNextForm = async () => {
-    await setAllBuildingData((prev) => {
-      const updatedData = [...prev];
-      updatedData[currentBuildingIndex - 1] = buildingData; // Store current data at the index for the building
-      return updatedData;
-    });
+    await setAllBuildingData((prev)=> [...prev,buildingData]);
 
+    
     if (buildingData?.basement > 0 || buildingData?.floors > 0) {
-      navigate("/basement", {
-        state: {
-          baseMentCount: buildingData.basement,
-          floorCount: buildingData.floors,
-        },
-      });
+
+      setFloornBasementCount({basement:buildingData?.basement, floor:buildingData?.floors})
+
+      navigate("/basement");
     } else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex(currentBuildingIndex + 1);
       setBuildingData(allBuildingData[currentBuildingIndex] || {}); // Load data for the next building if it exists
-    } else if (numOfPremises >= currentPremisesIndex) {
+    } else if (numOfPremises > currentPremisesIndex) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
+      alert("Premises form done")
     }
   };
 
+  console.log(floornBasementCount);
+  
 
   const hanldePreviousForm = () => {
     if (currentBuildingIndex > 1) {
@@ -97,7 +95,7 @@ const Buildings = ({ onPrevious, onNext }) => {
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <h1 className="form-title">
         Building {currentBuildingIndex} Form for Premises{" "}
-        {location?.state?.currentPremisesIndex}
+        {currentPremisesIndex}
       </h1>
 
       <Row className="mb-3">
@@ -471,7 +469,7 @@ const Buildings = ({ onPrevious, onNext }) => {
         <Button variant="secondary" onClick={hanldePreviousForm}>
           Previous
         </Button>
-        <Button  style={{ float: "right" }} variant="secondary" type="submit" onClick={handleNextForm}>
+        <Button variant="primary" type="submit" style={{float:"right"}} className="me-3" onClick={handleNextForm}>
           Next
         </Button>
       </div>

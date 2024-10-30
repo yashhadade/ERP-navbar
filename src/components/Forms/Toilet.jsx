@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, {
+    useContext, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormContext } from '../../FormContext/FormContextProvider';
-
+import { useNavigate } from "react-router-dom";
 const Toilet = () => {
     const [validated, setValidated] = useState(false);
-    const [allToiletData,setAllToiletData]=useState(FormContext);
+
+    const navigate = useNavigate();
+    const [currentFormCount, setCurrentFormCount] = useState(1);
     const [formData, setFormData] = useState({
         name: '',
         carpetArea: '',
@@ -23,6 +26,34 @@ const Toilet = () => {
             bodyWash: false,
         },
     });
+    
+    const {
+        allToiletData,
+        setAllToiletData,
+        currectToiletIndex,
+        setCurrectToiletIndex,
+        toiletDiverRoomCount,
+        setToiletDiverRoomCount,
+        numOfPremises,
+        setCurrentBaseMEntIndex,
+        currentBuildingIndex,
+        setCurrentBuilidingIndex,
+        currentPremisesIndex,
+        setCurrentPremisesIndex,
+        buildingcount,
+        setNumOfPremises,
+        currentBaseMentIndex,
+        floornBasementCount,
+        
+      } = useContext(FormContext);
+      const {gentsToilet,ladiesToilet ,driverRoom}=toiletDiverRoomCount;
+      console.log("Gentes Toilet "+gentsToilet);
+      console.log("Ladies Toilet "+ladiesToilet);
+      console.log("Driver Room  "+driverRoom);
+      const [currentType, setCurrentType] = useState(
+        gentsToilet > 0 ? "Gentes" : "Ladies"
+      );
+
     // Photo
     const handleFileUpload = (e, field) => setFormData(prev => ({
         ...prev, [field]: URL.createObjectURL(e.target.files[0])
@@ -47,20 +78,90 @@ const Toilet = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
             e.preventDefault();
             e.stopPropagation();
         }
-        setValidated(true);
+        // TOdo validation of the form and it should be false on next 
+        //  setValidated(true); 
 
-        console.log(formData);
-    };
+
+    }
+    const handleNext = async()=>{
+        
+
+        await setAllToiletData((prev) => {
+            const updatedData = [...prev, formData]; // Log the updated data
+            return updatedData; // Save formData to allPremisesData
+          });
+          setFormData({
+            name: '',
+            carpetArea: '',
+            ceilingHeight: '',
+            acOption: '',
+            cubicles: '',
+            urinals: '',
+            exhaustOption: '',
+            washbasins: '',
+            averageUsers: '',
+            remarks:'',
+            ambiance:'',
+            toiletries: {
+                handWipe: false,
+                handWash: false,
+                bodyWash: false,
+            },
+        });
+            
+        if (currentType === "Gentes" && currentFormCount < gentsToilet) {
+            console.log(currectToiletIndex , currentFormCount);
+            
+            setCurrectToiletIndex((prev) => prev + 1);
+            setCurrentFormCount((prevCount) => prevCount + 1);
+          } else if (  
+            currentType === "Gentes" &&
+            currentFormCount == gentsToilet
+          ) {
+            console.log(currectToiletIndex , currentFormCount);
+
+            setCurrentType("Ladies");
+            setCurrectToiletIndex((prev) => prev + 1);
+            setCurrentFormCount(1);
+          } else if (currentType === "Ladies" && currentFormCount < ladiesToilet) {
+            setCurrectToiletIndex((prev) => prev + 1);
+            setCurrentFormCount((prevCount) => prevCount + 1);
+          } 
+          else if (driverRoom>0){
+            navigate("/driverroom")
+          }
+          else if(currentBaseMentIndex<floornBasementCount.basement||currentBaseMentIndex<floornBasementCount.floor){
+            setCurrentBaseMEntIndex((prevCount)=>prevCount+1)
+            navigate("/basement")
+          }
+          else if(currentBuildingIndex < buildingcount){
+            setCurrentBuilidingIndex((prevCount) => prevCount + 1);
+            navigate("/buildings");
+          }else if (numOfPremises > currentPremisesIndex) {
+            setCurrentPremisesIndex(currentPremisesIndex + 1);
+            navigate("/premises");
+          } else {
+            alert("Premises form done")
+          }{
+            
+          }
+        } 
+
+    console.log(currentBuildingIndex , buildingcount);
+    
+    function hanldePreviousForm(){
+        console.log("Previous")
+    }
 
     return (
         <div>
-            <h1>Toilet Form</h1>
+            <h1>{currentType} Toilet {currentFormCount} Form</h1>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row className="mb-3">
                     <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -224,7 +325,13 @@ const Toilet = () => {
                         />
                     </Form.Group>
                 </Row>
-                <Button type="submit">Submit</Button>
+                <Button variant="secondary" onClick={hanldePreviousForm}>
+          Previous
+        </Button>
+                <Button  variant="primary"
+          type="submit"
+          className="me-2"
+          style={{ float: "right" }} onClick={handleNext}>Next</Button>
             </Form>
         </div>
     );

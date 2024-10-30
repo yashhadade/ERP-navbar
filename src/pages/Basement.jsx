@@ -3,25 +3,27 @@ import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { FormContext } from "../FormContext/FormContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Basement = ({ onPrevious, numOfBasements }) => {
+const Basement = () => {
   const {
     allBasementsData,
     setAllBasementsData,
     currentBaseMentIndex,
     setCurrentBaseMEntIndex,
-    basmentCount,
     setCurrentBuilidingIndex,
-    currentBuildingIndex,
-    setBaseMentCount,
+    buildingcount,currentBuildingIndex,
+    floornBasementCount, numOfPremises,setCurrentPremisesIndex,currentPremisesIndex,setCurrentDriverRoomtIndex,setToiletDiverRoomCount,toiletDiverRoomCount
   } = useContext(FormContext);
 
   const location = useLocation();
 
-  const { baseMentCount, floorCount } = location?.state;
+  const {basement, floor } = floornBasementCount;
+
+  console.log(basement ,floornBasementCount);
+  
   const navigate = useNavigate();
   const [currentFormCount, setCurrentFormCount] = useState(1);
   const [currentType, setCurrentType] = useState(
-    baseMentCount > 0 ? "Basement" : "Floor"
+    basement > 0 ? "Basement" : "Floor"
   );
 
   const [formData, setFormData] = useState({
@@ -84,30 +86,51 @@ const Basement = ({ onPrevious, numOfBasements }) => {
     e.preventDefault();
     await setAllBasementsData((prev) => {
       const updatedData = [...prev];
-
       updatedData[currentBaseMentIndex - 1] = formData; // Store current data at the index for the building
       return updatedData;
     });
-
-    if (currentType === "Basement" && currentFormCount < baseMentCount) {
+    setToiletDiverRoomCount({driverRoom:formData?.numberOfDriversRooms,gentsToilet:formData?.numberOfGentsToilets,ladiesToilet:formData?.numberOfLadiesToilets})
+    if(formData.numberOfGentsToilets>0||formData.numberOfLadiesToilets>0){
+      navigate("/toilet")
+    }else if(formData.numberOfDriversRooms>0){
+      navigate("/driverroom");
+    }//if the type Basement Current from count will be check wheter it is getter than basement or not if yes than incriement the value 
+    else if (currentType === "Basement" && currentFormCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
     } else if (
       currentType === "Basement" &&
-      currentFormCount == baseMentCount
+      currentFormCount == basement
     ) {
       setCurrentType("Floor");
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount(1);
-    } else if (currentType === "Floor" && currentFormCount < floorCount) {
+    } else if (currentType === "Floor" && currentFormCount < floor) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
-    } else {
+    } else if(currentBuildingIndex <  buildingcount){
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
+    }else if ( currentPremisesIndex < numOfPremises ) {
+      setCurrentPremisesIndex(currentPremisesIndex + 1);
+      navigate("/premises");
+    } else {
+      alert("Premises form done")
+    }{
+      
     }
-  };
-
+    
+    
+    
+    // if(numOfPremises > currentPremisesIndex) {
+      //   setCurrentPremisesIndex(currentPremisesIndex + 1);
+      //   navigate("/premises");
+      // } else {
+        //   alert("Premises form done")
+        // }
+      };
+      console.log(toiletDiverRoomCount);
+      
   const handlePreviousForm = () => {
     if (currentFormCount > 1) {
       setCurrentBaseMEntIndex((prev) => prev - 1);
@@ -117,17 +140,15 @@ const Basement = ({ onPrevious, numOfBasements }) => {
     } else if (currentType == "Floor" && currentFormCount === 1) {
       // Switch back to basements when moving back from the first floor form
       setCurrentType("Basement");
-      setCurrentFormCount(baseMentCount);
-      setCurrentBaseMEntIndex(baseMentCount);
+      setCurrentFormCount(basement);
+      setCurrentBaseMEntIndex(basement);
       // Load the last basement form data
-      setFormData(allBasementsData[baseMentCount - 1] || {});
+      setFormData(allBasementsData[basement - 1] || {});
     } else if (currentType == "Basement" && currentFormCount === 1) {
-      
       navigate("/buildings");
     }
   };
 
-  console.log(currentBaseMentIndex, currentFormCount);
 
   const renderFormField = (name, label, type = "text", props = {}) => (
     <Form.Group as={Col} md="4" controlId={name}>
@@ -147,14 +168,7 @@ const Basement = ({ onPrevious, numOfBasements }) => {
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <h1 className="form-title">Basement & Floor Form</h1>
 
-        {/* updated */}
-
-        {/* Render multiple basement forms based on numOfBasements */}
-        {[...Array(numOfBasements)].map((_, index) => (
-          <div key={index}>
-            <Row className="mb-3">{/* Form fields for each basement... */}</Row>
-          </div>
-        ))}
+       
         <h2>
           {currentType} {currentFormCount}
         </h2>

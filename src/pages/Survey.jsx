@@ -11,16 +11,12 @@ const Survey = () => {
  
 
   const {
-    numOfPremises,
     surveyData,
-    setSurveData,
-    currentPremisesIndex,
-    setCurrentPremisesIndex,
-    setAllPremiseData,
-    exportDataToExcel,    //updated
+    setSurveData,setNumOfPremises,
+    setCurrentPremisesIndex
   } = useContext(FormContext);
 
-  console.log(numOfPremises);
+
   const [surveyForm, setSurveyForm] = useState({
     clientName: "",
     siteName: "",
@@ -56,31 +52,9 @@ const Survey = () => {
       additionalThree: false,
     },
     premisesType: "",
-    numOfPremises:0,
+    premises:0,
   });
   
-  // const [premisesData, setPremisesData] = useState([
-  //   {
-  //     siteName: "",
-  //     buildings: 0,
-  //     carpetArea: 0,
-  //     builtUpArea: 0,
-  //     basementUpArea: 0,
-  //     basement: 0,
-  //     floors: 0,
-  //     workStations: 0,
-  //     employees: 0,
-  //     operatingShifts: 1,
-  //     shifts: [{ startTime: "", endTime: "" }],
-  //     grade: "Select",
-  //     tier: "",
-  //     surveyDate: "",
-  //     surveyBy: "",
-  //     clientVisitingCard: null,
-  //     locationPhoto: null,
-  //     moreInfo: "",
-  //   },
-  // ]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -91,33 +65,10 @@ const Survey = () => {
     setValidated(true);
   };
 
-  // const handleNext = () => {
-  //   setShowNextForm(true);
-
-  //   navigate("/premises");
-  // };
-
   const handlePrevious = () => {
     setShowNextForm(false);
     setCurrentPremisesIndex(0); // reset to the main form when going back
   };
-
-  
-
-  // const goToNextPremises = () => {
-  //   if (currentPremisesIndex < numOfPremises - 1) {
-  //     setCurrentPremisesIndex(currentPremisesIndex + 1);
-  //   }
-  // };
-
-  // const goToPreviousPremises = () => {
-  //   if (currentPremisesIndex > 0) {
-  //     setCurrentPremisesIndex(currentPremisesIndex - 1);
-  //   } else {
-  //     handlePrevious();
-  //   }
-  // };
-
 
   const handleChange = (e) => {
     const { name, type, checked } = e.target;
@@ -161,26 +112,21 @@ const Survey = () => {
     }
   };
 
-  // const handlePremisesDataChange = (index, data) => {
-  //   setPremisesData((prevData) => {
-  //     const newData = [...prevData];
-  //     newData[index] = { ...newData[index], ...data }; // Update specific premises data
-  //     return newData;
-  //   });
-  // };
+
   const onNextForm = async (e) => {
     e.preventDefault();
     await setSurveData((prev) => {
-      const updatedData = [...prev, surveyForm]; // Log the updated data
-      return updatedData; // save formData to allPremisesData
+      const updatedData = [...prev, surveyForm];
+      return updatedData;
     });
-    navigate("/premises");
     
-  };
-  
-
-console.log(surveyData);
-
+    if(surveyForm.premises > 0){
+      setNumOfPremises(surveyForm?.premises)
+      navigate("/premises");
+    }else{
+      alert("Survey added")
+    }
+    };
   
   return (
     <>
@@ -206,7 +152,7 @@ console.log(surveyData);
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom03">
               <Form.Label>Business Category</Form.Label>
-              <Form.Select required >
+              <Form.Select required  >
                 <option>Open this select menu</option>
                 <option value="1">Category One</option>
                 <option value="2">Category Two</option>
@@ -214,7 +160,7 @@ console.log(surveyData);
               </Form.Select>
             </Form.Group>
           </Row>
-
+           
           <Row className="mb-3">
             <Form.Group as={Col} md="3" controlId="validationCustom04">
               <Form.Label>City</Form.Label>
@@ -239,6 +185,7 @@ console.log(surveyData);
               <Form.Control type="text" placeholder="Zip" required name="zip" value={surveyForm.zip} onChange={(e)=>handleChange(e)} minLength={6} maxLength={6}/>
             </Form.Group>
           </Row>
+          <hr></hr>
           <Row className="mb-3">
             <h2>Site Incharge</h2>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -251,9 +198,10 @@ console.log(surveyData);
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
               <Form.Label>Phone</Form.Label>
-              <Form.Control required type="text" placeholder="site Incharge Phone" name="siteInchargePhone" value={surveyForm.siteInchargePhone} onChange={(e)=>handleChange(e)} />
+              <Form.Control required type="text" placeholder="site Incharge Phone" name="siteInchargePhone" value={surveyForm.siteInchargePhone} onChange={(e)=>handleChange(e)} minLength={10} maxLength={10}/>
             </Form.Group>
             </Row>
+            <hr></hr>
             <Row className="mb-3">
             <h2>Commercial Incharge</h2>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -266,9 +214,10 @@ console.log(surveyData);
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
               <Form.Label>Phone</Form.Label>
-              <Form.Control required type="text" placeholder="Commercial Incharge Phone" name="commercialInchargePhone" value={surveyForm.commercialInchargePhone} onChange={(e)=>handleChange(e)} />
+              <Form.Control required type="text" placeholder="Commercial Incharge Phone" name="commercialInchargePhone" value={surveyForm.commercialInchargePhone} onChange={(e)=>handleChange(e)} minLength={10} maxLength={10}/>
             </Form.Group>
             </Row>
+            <hr></hr>
             <Row className="mb-3">
             <h2>Location Incharge</h2>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -281,9 +230,10 @@ console.log(surveyData);
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
               <Form.Label>Phone</Form.Label>
-              <Form.Control required type="text" placeholder="location Incharge Phone" name="locationInchargePhone" value={surveyForm.locationInchargePhone} onChange={(e)=>handleChange(e)} />
+              <Form.Control required type="text" placeholder="location Incharge Phone" name="locationInchargePhone" value={surveyForm.locationInchargePhone} onChange={(e)=>handleChange(e)} minLength={10} maxLength={10} />
             </Form.Group>
             </Row>
+            <hr></hr>
             <Row className="mb-3">
             <h2>Referral Incharge</h2>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -296,15 +246,14 @@ console.log(surveyData);
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
               <Form.Label>Phone</Form.Label>
-              <Form.Control required type="text" placeholder="Referral Incharge Phone" name="referralInchargePhone" value={surveyForm.referralInchargePhone} onChange={(e)=>handleChange(e)} />
+              <Form.Control required type="text" placeholder="Referral Incharge Phone" name="referralInchargePhone" value={surveyForm.referralInchargePhone} onChange={(e)=>handleChange(e)} minLength={10} maxLength={10} />
             </Form.Group>
             </Row>
-          
+            <hr></hr>
 
           <Row className="mb-3">
             <h2>Sent Proposal To</h2>
-            {["siteIncharge", "commercialIncharge", "locationIncharge"].map(
-              (incharge, index) => (
+            {["siteIncharge", "commercialIncharge", "locationIncharge"].map((incharge, index) => (
                 <Form.Group
                   as={Col}
                   md="4"
@@ -366,7 +315,7 @@ console.log(surveyData);
               )
             )}
           </Row>
-
+          <hr></hr>
           <Row className="mb-3">
             <Form.Group as={Col} md="4" controlId="validationCustom07">
               <Form.Label>Type of Premises</Form.Label>
@@ -382,14 +331,14 @@ console.log(surveyData);
                 required
                 type="number"
                 placeholder="No. of Premises"
-                name="numOfPremises"
-                value={surveyForm.numOfPremises}
+                name="premises"
+                value={surveyForm.premises}
                 onChange={(e)=>handleChange(e)}
               />
             </Form.Group>
           </Row>
 
-          <Button type="button" onClick={onNextForm} className="me-2">
+          <Button type="button" onClick={onNextForm} className="me-2" style={{ float: "right" }}>
           Save & Continue
           </Button>
           
