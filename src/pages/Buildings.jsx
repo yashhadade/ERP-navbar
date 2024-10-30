@@ -1,21 +1,56 @@
 import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FormContext } from "../FormContext/FormContextProvider";
 
-const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
-  const { setAllBuildingData, allBuildingData } = useContext(FormContext);
+const Buildings = ({ onPrevious, onNext }) => {
+  const {
+    setAllBuildingData,
+    allBuildingData,
+    numOfPremises,
+    currentPremisesIndex,
+    setCurrentPremisesIndex,
+    buildingcount,
+    currentBuildingIndex,
+    setCurrentBuilidingIndex,
+  } = useContext(FormContext);
+  const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const location = useLocation();
-  const [buildingData, setBuildingData] = useState({});
-  const [buildingNo, setBuildingNo] = useState(1);
+  // const [] = useState({});
+
+  const [buildingData, setBuildingData] = useState({
+    buildingName: "",
+    carpetArea: 0,
+    builtUpArea: 0,
+    numEmployees: 0,
+    numWorkstations: 0,
+    numElevations: 0,
+    numEscalators: 0,
+    numStaircases: 0,
+    facadeType: "--Select--",
+    facadeSqft: 0,
+    compoundSqft: 0,
+    compoundFlooring: 0,
+    gradedBuilding: "--Select--",
+    classOfBuilding: "--Select--",
+    ageOfBuilding: "",
+    compound: 0,
+    basement: 0,
+    stiltPark: 0,
+    floors: 0,
+    terrace: 0,
+    numParking: 0,
+    numTwoWheelers: 0,
+    parkingManagement: "--Select--",
+    parkingMode: "--Select--",
+    securitySystem: "--Select--",
+    fireSafety: "--Select--",
+    energyConservation: "--Select--",
+    waterConservation: "--Select",
+  });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setBuildingData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleRadioChange = (e) => {
     const { name, value } = e.target;
     setBuildingData((prev) => ({ ...prev, [name]: value }));
   };
@@ -29,29 +64,40 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
   const handleNextForm = async () => {
     await setAllBuildingData((prev) => {
       const updatedData = [...prev];
-      updatedData[buildingNo - 1] = buildingData;  // Store current data at the index for the building
+      updatedData[currentBuildingIndex - 1] = buildingData; // Store current data at the index for the building
       return updatedData;
     });
 
-    if (buildingNo < location.state.buildingCount) {
-      setBuildingNo(buildingNo + 1);
-      setBuildingData(allBuildingData[buildingNo] || {}); // Load data for the next building if it exists
+    if (buildingData?.basement > 0 || buildingData?.floors > 0) {
+      navigate("/basement", {
+        state: {
+          baseMentCount: buildingData.basement,
+          floorCount: buildingData.floors,
+        },
+      });
+    } else if (currentBuildingIndex < buildingcount) {
+      setCurrentBuilidingIndex(currentBuildingIndex + 1);
+      setBuildingData(allBuildingData[currentBuildingIndex] || {}); // Load data for the next building if it exists
+    } else if (numOfPremises >= currentPremisesIndex) {
+      setCurrentPremisesIndex(currentPremisesIndex + 1);
+      navigate("/premises");
+    } else {
     }
   };
 
-  const hanldePreviousForm = ()=>{
-    if (buildingNo > 1) {
-      setBuildingNo(buildingNo - 1);
-      setBuildingData(allBuildingData[buildingNo - 2] || {}); // Load data for the previous building if it exists
+
+  const hanldePreviousForm = () => {
+    if (currentBuildingIndex > 1) {
+      setCurrentBuilidingIndex(currentBuildingIndex - 1);
+      setBuildingData(allBuildingData[currentBuildingIndex - 2] || {}); // Load data for the previous building if it exists
     }
-  }
-  console.log(buildingNo);
+  };
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <h1 className="form-title">
-        Building {buildingNo} Form for Premises{" "}
-        {location.state.currentPremisesIndex}
+        Building {currentBuildingIndex} Form for Premises{" "}
+        {location?.state?.currentPremisesIndex}
       </h1>
 
       <Row className="mb-3">
@@ -245,17 +291,62 @@ const Buildings = ({ currentPremisesIndex, onPrevious, onNext }) => {
           />
         </Form.Group>
       </Row>
-
+      {/* building layout ---will add---- */}
+      <h2>Building Layout</h2>
       <Row className="mb-3">
-        <Form.Group as={Col} md="4" controlId="buildingLayout">
-          <Form.Label>Building Layout</Form.Label>
+        <Form.Group as={Col} md="4" controlId="compound">
+          <Form.Label>Compound</Form.Label>
           <Form.Control
             requiredd
-            type="text"
-            name="buildingLayout"
-            value={buildingData?.buildingLayout || ""}
+            type="number"
+            name="compound"
+            value={buildingData?.compound || ""}
             onChange={handleInputChange}
-            placeholder="e.g., Basement, Stilt Parking, Floors..."
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="basement">
+          <Form.Label>Basement</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="basement"
+            value={buildingData?.basement || ""}
+            onChange={handleInputChange}
+            placeholder="Basement"
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="stiltPark">
+          <Form.Label>Stilt Parking</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="stiltPark"
+            value={buildingData?.stiltPark || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="floors">
+          <Form.Label>Floors</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="floors"
+            value={buildingData?.floors || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="terrace">
+          <Form.Label>Top Floor Terrace</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="terrace"
+            value={buildingData?.terrace || ""}
+            onChange={handleInputChange}
           />
         </Form.Group>
 

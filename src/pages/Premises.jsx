@@ -1,12 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import Buildings from "./Buildings";
 import { FormContext } from "../FormContext/FormContextProvider";
 import { useNavigate } from "react-router-dom";
 
-const Premises = ({ onPrevious, onNext }) => {
-  const { numOfPremises, currentPremisesIndex, setAllPremiseData } =
-    useContext(FormContext);
+const Premises = ({ onPrevious }) => {
+  const {
+    currentPremisesIndex,
+    setAllPremiseData,
+    setCurrentPremisesIndex,
+    buildingcount,
+    setBuildingCount,
+    currentBuildingIndex,
+    currentBuilidingIndex,
+  } = useContext(FormContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -33,7 +39,6 @@ const Premises = ({ onPrevious, onNext }) => {
 
   const [surveyUsers, setSurveyUsers] = useState([]);
   const [validated, setValidated] = useState(false);
-  const [showBuildingForm, setShowBuildingForm] = useState(null);
 
   useEffect(() => {
     setSurveyUsers(["User 1", "User 2", "User 3"]);
@@ -52,6 +57,7 @@ const Premises = ({ onPrevious, onNext }) => {
 
   const handleInputChange = (e) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
   const handleShiftChange = (i, field, value) =>
     setFormData((prev) => {
       const shifts = [...prev.shifts];
@@ -84,26 +90,22 @@ const Premises = ({ onPrevious, onNext }) => {
   );
 
   const onNextForm = async (e) => {
+   
     e.preventDefault();
     await setAllPremiseData((prev) => {
       const updatedData = [...prev, formData]; // Log the updated data
       return updatedData; // Save formData to allPremisesData
     });
-    if (formData.buildings > 0) {
-      setShowBuildingForm(formData.buildings);
 
-      navigate("/buildings", {
-        state: {
-          buildingCount: formData.buildings,
-          currentPremisesIndex: currentPremisesIndex,
-        },
-      });
+    setBuildingCount(formData.buildings);
+    setCurrentPremisesIndex(currentPremisesIndex);
+    if (formData.buildings > 0) {
+      navigate("/buildings");
     } else {
-      onNext();
+      // todo: Add last procedure what will happen if there is no premises left show the data
+      // onNext();
     }
   };
-
-  console.log(currentPremisesIndex, numOfPremises);
 
   return (
     <>
@@ -259,7 +261,7 @@ const Premises = ({ onPrevious, onNext }) => {
           // onClick={formData.buildings < 0? buildingOpen: onNext}
           onClick={onNextForm}
           style={{ float: "right" }} // Position Next button to the right
-          disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
+          // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
         >
           Next
         </Button>
