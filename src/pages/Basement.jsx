@@ -11,7 +11,7 @@ const Basement = () => {
     setCurrentBaseMEntIndex,
     setCurrentBuilidingIndex,
     buildingcount,currentBuildingIndex,
-    floornBasementCount, numOfPremises,setCurrentPremisesIndex,currentPremisesIndex
+    floornBasementCount, numOfPremises,setCurrentPremisesIndex,currentPremisesIndex,setCurrentDriverRoomtIndex,setToiletDiverRoomCount,toiletDiverRoomCount
   } = useContext(FormContext);
 
   const location = useLocation();
@@ -84,9 +84,18 @@ const Basement = () => {
 
   const handleNextForm = async (e) => {
     e.preventDefault();
-    await setAllBasementsData((prev) =>[...prev,formData]);
-
-    if (currentType === "Basement" && currentFormCount < basement) {
+    await setAllBasementsData((prev) => {
+      const updatedData = [...prev];
+      updatedData[currentBaseMentIndex - 1] = formData; // Store current data at the index for the building
+      return updatedData;
+    });
+    setToiletDiverRoomCount({driverRoom:formData?.numberOfDriversRooms,gentsToilet:formData?.numberOfGentsToilets,ladiesToilet:formData?.numberOfLadiesToilets})
+    if(formData.numberOfGentsToilets>0||formData.numberOfLadiesToilets>0){
+      navigate("/toilet")
+    }else if(formData.numberOfDriversRooms>0){
+      navigate("/driverroom");
+    }//if the type Basement Current from count will be check wheter it is getter than basement or not if yes than incriement the value 
+    else if (currentType === "Basement" && currentFormCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
     } else if (
@@ -107,13 +116,21 @@ const Basement = () => {
       navigate("/premises");
     } else {
       alert("Premises form done")
+    }{
+      
     }
-
-
-  };
-
-  console.log(currentBuildingIndex > buildingcount , currentBuildingIndex , buildingcount)
-
+    
+    
+    
+    // if(numOfPremises > currentPremisesIndex) {
+      //   setCurrentPremisesIndex(currentPremisesIndex + 1);
+      //   navigate("/premises");
+      // } else {
+        //   alert("Premises form done")
+        // }
+      };
+      console.log(toiletDiverRoomCount);
+      
   const handlePreviousForm = () => {
     if (currentFormCount > 1) {
       setCurrentBaseMEntIndex((prev) => prev - 1);

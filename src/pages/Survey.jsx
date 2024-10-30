@@ -145,7 +145,7 @@ const Survey = () => {
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom03">
               <Form.Label>Business Category</Form.Label>
-              <Form.Select required >
+              <Form.Select required  >
                 <option>Open this select menu</option>
                 <option value="1">Category One</option>
                 <option value="2">Category Two</option>
@@ -153,7 +153,7 @@ const Survey = () => {
               </Form.Select>
             </Form.Group>
           </Row>
-
+           
           <Row className="mb-3">
             <Form.Group as={Col} md="3" controlId="validationCustom04">
               <Form.Label>City</Form.Label>
@@ -178,6 +178,7 @@ const Survey = () => {
               <Form.Control type="text" placeholder="Zip" required name="zip" value={surveyForm.zip} onChange={(e)=>handleChange(e)} minLength={6} maxLength={6}/>
             </Form.Group>
           </Row>
+          <hr></hr>
           <Row className="mb-3">
             <h2>Site Incharge</h2>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -190,9 +191,10 @@ const Survey = () => {
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
               <Form.Label>Phone</Form.Label>
-              <Form.Control required type="text" placeholder="site Incharge Phone" name="siteInchargePhone" value={surveyForm.siteInchargePhone} onChange={(e)=>handleChange(e)} />
+              <Form.Control required type="text" placeholder="site Incharge Phone" name="siteInchargePhone" value={surveyForm.siteInchargePhone} onChange={(e)=>handleChange(e)} minLength={10} maxLength={10}/>
             </Form.Group>
             </Row>
+            <hr></hr>
             <Row className="mb-3">
             <h2>Commercial Incharge</h2>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -205,9 +207,10 @@ const Survey = () => {
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
               <Form.Label>Phone</Form.Label>
-              <Form.Control required type="text" placeholder="Commercial Incharge Phone" name="commercialInchargePhone" value={surveyForm.commercialInchargePhone} onChange={(e)=>handleChange(e)} />
+              <Form.Control required type="text" placeholder="Commercial Incharge Phone" name="commercialInchargePhone" value={surveyForm.commercialInchargePhone} onChange={(e)=>handleChange(e)} minLength={10} maxLength={10}/>
             </Form.Group>
             </Row>
+            <hr></hr>
             <Row className="mb-3">
             <h2>Location Incharge</h2>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -220,9 +223,10 @@ const Survey = () => {
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
               <Form.Label>Phone</Form.Label>
-              <Form.Control required type="text" placeholder="location Incharge Phone" name="locationInchargePhone" value={surveyForm.locationInchargePhone} onChange={(e)=>handleChange(e)} />
+              <Form.Control required type="text" placeholder="location Incharge Phone" name="locationInchargePhone" value={surveyForm.locationInchargePhone} onChange={(e)=>handleChange(e)} minLength={10} maxLength={10} />
             </Form.Group>
             </Row>
+            <hr></hr>
             <Row className="mb-3">
             <h2>Referral Incharge</h2>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -235,15 +239,14 @@ const Survey = () => {
             </Form.Group>
             <Form.Group as={Col} md="4" controlId="validationCustom02">
               <Form.Label>Phone</Form.Label>
-              <Form.Control required type="text" placeholder="Referral Incharge Phone" name="referralInchargePhone" value={surveyForm.referralInchargePhone} onChange={(e)=>handleChange(e)} />
+              <Form.Control required type="text" placeholder="Referral Incharge Phone" name="referralInchargePhone" value={surveyForm.referralInchargePhone} onChange={(e)=>handleChange(e)} minLength={10} maxLength={10} />
             </Form.Group>
             </Row>
-          
+            <hr></hr>
 
           <Row className="mb-3">
             <h2>Sent Proposal To</h2>
-            {["siteIncharge", "commercialIncharge", "locationIncharge"].map(
-              (incharge, index) => (
+            {["siteIncharge", "commercialIncharge", "locationIncharge"].map((incharge, index) => (
                 <Form.Group
                   as={Col}
                   md="4"
@@ -305,7 +308,7 @@ const Survey = () => {
               )
             )}
           </Row>
-
+          <hr></hr>
           <Row className="mb-3">
             <Form.Group as={Col} md="4" controlId="validationCustom07">
               <Form.Label>Type of Premises</Form.Label>

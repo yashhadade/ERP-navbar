@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row, Modal } from 'react-bootstrap';
+import FormContextProvider from "../FormContext/FormContextProvider";
 
 const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRoomData }) => {
     const [validated, setValidated] = useState(false);
@@ -20,8 +21,9 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRo
         remarks: "",
         AC: '',
     });
-
-    const [showModal, setShowModal] = useState(false);
+;
+  
+    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -140,8 +142,9 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRo
                         <Form.Check
                             type="checkbox"
                             label="Tea Coffee Services"
-                            name="teaCoffeeServices"
-                            checked={formData.facilitiesProvided.teaCoffeeServices}
+                            name="facilitiesProvided"
+                            value="Tea Coffee Services" nnb
+                            checked={formData.facilitiesProvided === "Tea Coffee Services"}
                             onChange={handleInputChange}
                         />
                         <Form.Check
