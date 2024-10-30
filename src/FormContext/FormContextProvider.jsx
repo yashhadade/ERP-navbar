@@ -12,10 +12,16 @@ const FormContextProvider = ({ children }) => {
   const [currentBuildingIndex, setCurrentBuilidingIndex] = useState(1);
   const [allBasementsData, setAllBasementsData] = useState([]);
     const [floornBasementCount, setFloornBasementCount] = useState({basement:0, floor:0});
+    const [toiletDiverRoomCount,setToiletDiverRoomCount]=useState({gentsToilet:0,ladiesToilet:0,driverRoom:0});
+    
+    const [currentDriverRoomtIndex,setCurrentDriverRoomtIndex]=useState(1);
+   
   const [currentBaseMentIndex, setCurrentBaseMEntIndex] = useState(1);
+  const [currectToiletIndex,setCurrectToiletIndex]=useState(1);
+  // const [currectLadiesToiletIndex,setCurrectLadiesToiletIndex]=useState(1);
   const [allToiletData,setAllToiletData]=useState([]);
 
-  console.log("survey",surveyData,"premies",allPremisesData,"building",allBuildingData,"Basement",allBasementsData);
+  console.log("survey",surveyData,"premies",allPremisesData,"building",allBuildingData,"Basement",allBasementsData ,"Toilet" ,allToiletData);
   
   return (
     <FormContext.Provider
@@ -42,6 +48,13 @@ const FormContextProvider = ({ children }) => {
         setCurrentBaseMEntIndex,
         allToiletData,
         setAllToiletData,
+        toiletDiverRoomCount,
+        setToiletDiverRoomCount,
+        currentDriverRoomtIndex,
+        setCurrentDriverRoomtIndex,
+        currectToiletIndex,
+        setCurrectToiletIndex,
+        
       }}
     >
       {children}

@@ -64,6 +64,7 @@ const Buildings = ({ onPrevious, onNext }) => {
   const handleNextForm = async () => {
     await setAllBuildingData((prev)=> [...prev,buildingData]);
 
+    
     if (buildingData?.basement > 0 || buildingData?.floors > 0) {
 
       setFloornBasementCount({basement:buildingData?.basement, floor:buildingData?.floors})
