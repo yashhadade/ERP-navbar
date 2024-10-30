@@ -2,11 +2,8 @@ import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row, Modal } from 'react-bootstrap';
 import FormContextProvider from "../FormContext/FormContextProvider";
 
-const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoom, setAllDriverRoomData, allPremisesData }) => {
-    // const {
-    //     toiletDiverRoomCount,
-    // }=useContext(FormContextProvider)
-   
+const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRoomData }) => {
+    const [validated, setValidated] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         carpetArea: '',
