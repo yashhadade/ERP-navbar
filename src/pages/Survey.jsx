@@ -8,6 +8,7 @@ const Survey = () => {
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [showNextForm, setShowNextForm] = useState(false);
+ 
 
   const {
     numOfPremises,
@@ -16,6 +17,7 @@ const Survey = () => {
     currentPremisesIndex,
     setCurrentPremisesIndex,
     setAllPremiseData,
+    exportDataToExcel,    //updated
   } = useContext(FormContext);
 
   console.log(numOfPremises);
@@ -170,7 +172,7 @@ const Survey = () => {
     e.preventDefault();
     await setSurveData((prev) => {
       const updatedData = [...prev, surveyForm]; // Log the updated data
-      return updatedData; // Save formData to allPremisesData
+      return updatedData; // save formData to allPremisesData
     });
     navigate("/premises");
     
@@ -182,7 +184,13 @@ console.log(surveyData);
   
   return (
     <>
-      
+{/*btn to export data*/ }
+ <button onClick={exportDataToExcel}>
+      Export Data to Excel
+    </button> 
+
+
+ 
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
            <h1>Survey Form</h1>
           <Row className="mb-3">
@@ -389,5 +397,7 @@ console.log(surveyData);
           </>
   );
 };
+// }; 
+
 
 export default Survey;
