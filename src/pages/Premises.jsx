@@ -113,10 +113,7 @@ const Premises = ({ onPrevious }) => {
       setCurrentPremisesIndex(currentPremisesIndex - 1);
       setFormData(allPremisesData[currentPremisesIndex - 2] || {}); // Load data for the previous building if it exists
     }
-  };
-  
-  console.log(currentPremisesIndex,numOfPremises);
-  
+  };  
 
   return (
     <>

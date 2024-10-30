@@ -10,8 +10,8 @@ const Basement = ({ onPrevious, numOfBasements }) => {
     currentBaseMentIndex,
     setCurrentBaseMEntIndex,
     setCurrentBuilidingIndex,
-    buildingcount,
-    floornBasementCount, setFloornBasementCount
+    buildingcount,currentBuildingIndex,
+    floornBasementCount, numOfPremises,setCurrentPremisesIndex,currentPremisesIndex
   } = useContext(FormContext);
 
   const location = useLocation();
@@ -86,7 +86,6 @@ const Basement = ({ onPrevious, numOfBasements }) => {
     e.preventDefault();
     await setAllBasementsData((prev) => {
       const updatedData = [...prev];
-
       updatedData[currentBaseMentIndex - 1] = formData; // Store current data at the index for the building
       return updatedData;
     });
@@ -104,9 +103,16 @@ const Basement = ({ onPrevious, numOfBasements }) => {
     } else if (currentType === "Floor" && currentFormCount < floor) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
-    } else if(currentBaseMentIndex > buildingcount){
+    } else if(currentBuildingIndex > buildingcount){
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
+    }else if (numOfPremises > currentPremisesIndex) {
+      setCurrentPremisesIndex(currentPremisesIndex + 1);
+      navigate("/premises");
+    } else {
+      alert("Premises form done")
+    }{
+
     }
 
 
