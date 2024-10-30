@@ -245,7 +245,7 @@ const Premises = ({ onPrevious }) => {
             // onClick={formData.buildings < 0? buildingOpen: onNext}
             onClick={onNextForm}
             style={{ float: "right" }} // Position Next button to the right
-            disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
+            // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
           >
             Next
           </Button>

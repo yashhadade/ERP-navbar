@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { FormContext } from "../FormContext/FormContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Basement = ({ onPrevious, numOfBasements }) => {
+const Basement = () => {
   const {
     allBasementsData,
     setAllBasementsData,
@@ -84,11 +84,7 @@ const Basement = ({ onPrevious, numOfBasements }) => {
 
   const handleNextForm = async (e) => {
     e.preventDefault();
-    await setAllBasementsData((prev) => {
-      const updatedData = [...prev];
-      updatedData[currentBaseMentIndex - 1] = formData; // Store current data at the index for the building
-      return updatedData;
-    });
+    await setAllBasementsData((prev) =>[...prev,formData]);
 
     if (currentType === "Basement" && currentFormCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
@@ -103,27 +99,20 @@ const Basement = ({ onPrevious, numOfBasements }) => {
     } else if (currentType === "Floor" && currentFormCount < floor) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
-    } else if(currentBuildingIndex > buildingcount){
+    } else if(currentBuildingIndex <  buildingcount){
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
-    }else if (numOfPremises > currentPremisesIndex) {
+    }else if ( currentPremisesIndex < numOfPremises ) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
       alert("Premises form done")
-    }{
-
     }
 
 
-
-    // if(numOfPremises > currentPremisesIndex) {
-    //   setCurrentPremisesIndex(currentPremisesIndex + 1);
-    //   navigate("/premises");
-    // } else {
-    //   alert("Premises form done")
-    // }
   };
+
+  console.log(currentBuildingIndex > buildingcount , currentBuildingIndex , buildingcount)
 
   const handlePreviousForm = () => {
     if (currentFormCount > 1) {
@@ -162,14 +151,7 @@ const Basement = ({ onPrevious, numOfBasements }) => {
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <h1 className="form-title">Basement & Floor Form</h1>
 
-        {/* updated */}
-
-        {/* Render multiple basement forms based on numOfBasements */}
-        {[...Array(numOfBasements)].map((_, index) => (
-          <div key={index}>
-            <Row className="mb-3">{/* Form fields for each basement... */}</Row>
-          </div>
-        ))}
+       
         <h2>
           {currentType} {currentFormCount}
         </h2>
