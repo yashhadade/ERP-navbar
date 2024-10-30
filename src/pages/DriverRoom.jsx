@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row, Modal } from 'react-bootstrap';
+import FormContextProvider from "../FormContext/FormContextProvider";
 
-const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRoomData }) => {
-    const [validated, setValidated] = useState(false);
+const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoom, setAllDriverRoomData, allPremisesData }) => {
+    // const {
+    //     toiletDiverRoomCount,
+    // }=useContext(FormContextProvider)
+   
     const [formData, setFormData] = useState({
         name: "",
         carpetArea: '',
@@ -20,8 +24,9 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRo
         remarks: "",
         AC: '',
     });
-
-    const [showModal, setShowModal] = useState(false);
+;
+  
+    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;

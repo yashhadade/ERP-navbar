@@ -11,7 +11,7 @@ const Basement = ({ onPrevious, numOfBasements }) => {
     setCurrentBaseMEntIndex,
     setCurrentBuilidingIndex,
     buildingcount,currentBuildingIndex,
-    floornBasementCount, numOfPremises,setCurrentPremisesIndex,currentPremisesIndex
+    floornBasementCount, numOfPremises,setCurrentPremisesIndex,currentPremisesIndex,setCurrentDriverRoomtIndex,setToiletDiverRoomCount,toiletDiverRoomCount
   } = useContext(FormContext);
 
   const location = useLocation();
@@ -89,8 +89,13 @@ const Basement = ({ onPrevious, numOfBasements }) => {
       updatedData[currentBaseMentIndex - 1] = formData; // Store current data at the index for the building
       return updatedData;
     });
-
-    if (currentType === "Basement" && currentFormCount < basement) {
+    setToiletDiverRoomCount({driverRoom:formData?.numberOfDriversRooms,gentsToilet:formData?.numberOfGentsToilets,ladiesToilet:formData?.numberOfLadiesToilets})
+    if(formData.numberOfGentsToilets>0||formData.numberOfLadiesToilets>0){
+      navigate("/toilet")
+    }else if(formData.numberOfDriversRooms>0){
+      navigate("/driverroom");
+    }//if the type Basement Current from count will be check wheter it is getter than basement or not if yes than incriement the value 
+    else if (currentType === "Basement" && currentFormCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
     } else if (
@@ -112,19 +117,20 @@ const Basement = ({ onPrevious, numOfBasements }) => {
     } else {
       alert("Premises form done")
     }{
-
+      
     }
-
-
-
+    
+    
+    
     // if(numOfPremises > currentPremisesIndex) {
-    //   setCurrentPremisesIndex(currentPremisesIndex + 1);
-    //   navigate("/premises");
-    // } else {
-    //   alert("Premises form done")
-    // }
-  };
-
+      //   setCurrentPremisesIndex(currentPremisesIndex + 1);
+      //   navigate("/premises");
+      // } else {
+        //   alert("Premises form done")
+        // }
+      };
+      console.log(toiletDiverRoomCount);
+      
   const handlePreviousForm = () => {
     if (currentFormCount > 1) {
       setCurrentBaseMEntIndex((prev) => prev - 1);
