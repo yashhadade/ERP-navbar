@@ -62,11 +62,7 @@ const Buildings = ({ onPrevious, onNext }) => {
   };
 
   const handleNextForm = async () => {
-    await setAllBuildingData((prev) => {
-      const updatedData = [...prev];
-      updatedData[currentBuildingIndex - 1] = buildingData; // Store current data at the index for the building
-      return updatedData;
-    });
+    await setAllBuildingData((prev)=> [...prev,buildingData]);
 
     if (buildingData?.basement > 0 || buildingData?.floors > 0) {
 
@@ -98,7 +94,7 @@ const Buildings = ({ onPrevious, onNext }) => {
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <h1 className="form-title">
         Building {currentBuildingIndex} Form for Premises{" "}
-        {location?.state?.currentPremisesIndex}
+        {currentPremisesIndex}
       </h1>
 
       <Row className="mb-3">

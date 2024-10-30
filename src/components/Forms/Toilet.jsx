@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, {useContext, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormContext } from '../../FormContext/FormContextProvider';
 
 const Toilet = () => {
     const [validated, setValidated] = useState(false);
-    const [allToiletData,setAllToiletData]=useState(FormContext);
+   
     const [formData, setFormData] = useState({
         name: '',
         carpetArea: '',
@@ -23,6 +23,11 @@ const Toilet = () => {
             bodyWash: false,
         },
     });
+    
+    const {
+        allToiletData,
+        setAllToiletData
+      } = useContext(FormContext);
     // Photo
     const handleFileUpload = (e, field) => setFormData(prev => ({
         ...prev, [field]: URL.createObjectURL(e.target.files[0])
@@ -47,15 +52,21 @@ const Toilet = () => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         const form = e.currentTarget;
         if (form.checkValidity() === false) {
             e.preventDefault();
             e.stopPropagation();
         }
+
         setValidated(true);
 
-        console.log(formData);
+        await setAllToiletData((prev) => {
+            const updatedData = [...prev, formData]; // Log the updated data
+            return updatedData; // Save formData to allPremisesData
+          });
+
+        console.log(allToiletData);
     };
 
     return (
@@ -224,7 +235,7 @@ const Toilet = () => {
                         />
                     </Form.Group>
                 </Row>
-                <Button type="submit">Submit</Button>
+                <Button type="submit" onClick={handleSubmit}>Submit</Button>
             </Form>
         </div>
     );

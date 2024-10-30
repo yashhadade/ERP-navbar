@@ -140,8 +140,9 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRo
                         <Form.Check
                             type="checkbox"
                             label="Tea Coffee Services"
-                            name="teaCoffeeServices"
-                            checked={formData.facilitiesProvided.teaCoffeeServices}
+                            name="facilitiesProvided"
+                            value="Tea Coffee Services" nnb
+                            checked={formData.facilitiesProvided === "Tea Coffee Services"}
                             onChange={handleInputChange}
                         />
                         <Form.Check
