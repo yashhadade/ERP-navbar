@@ -12,7 +12,7 @@ const Buildings = ({ onPrevious, onNext }) => {
     setCurrentPremisesIndex,
     buildingcount,
     currentBuildingIndex,
-    setCurrentBuilidingIndex,
+    setCurrentBuilidingIndex,floornBasementCount, setFloornBasementCount
   } = useContext(FormContext);
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
@@ -69,22 +69,23 @@ const Buildings = ({ onPrevious, onNext }) => {
     });
 
     if (buildingData?.basement > 0 || buildingData?.floors > 0) {
-      navigate("/basement", {
-        state: {
-          baseMentCount: buildingData.basement,
-          floorCount: buildingData.floors,
-        },
-      });
+
+      setFloornBasementCount({basement:buildingData?.basement, floor:buildingData?.floors})
+
+      navigate("/basement");
     } else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex(currentBuildingIndex + 1);
       setBuildingData(allBuildingData[currentBuildingIndex] || {}); // Load data for the next building if it exists
-    } else if (numOfPremises >= currentPremisesIndex) {
+    } else if (numOfPremises > currentPremisesIndex) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
+      alert("Premises form done")
     }
   };
 
+  console.log(floornBasementCount);
+  
 
   const hanldePreviousForm = () => {
     if (currentBuildingIndex > 1) {
@@ -471,7 +472,7 @@ const Buildings = ({ onPrevious, onNext }) => {
         <Button variant="secondary" onClick={hanldePreviousForm}>
           Previous
         </Button>
-        <Button variant="primary" type="submit" onClick={handleNextForm}>
+        <Button variant="primary" type="submit" style={{float:"right"}} className="me-3" onClick={handleNextForm}>
           Next
         </Button>
       </div>

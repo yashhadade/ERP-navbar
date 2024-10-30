@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 
 const Premises = ({ onPrevious }) => {
   const {
-    currentPremisesIndex,
     setAllPremiseData,
+    allPremisesData,
     setCurrentPremisesIndex,
-    buildingcount,
     setBuildingCount,
-    currentBuildingIndex,
-    currentBuilidingIndex,
+    currentPremisesIndex,
+    numOfPremises
   } = useContext(FormContext);
   const navigate = useNavigate();
 
@@ -64,6 +63,7 @@ const Premises = ({ onPrevious }) => {
       shifts[i][field] = value;
       return { ...prev, shifts };
     });
+    
   const handleFileUpload = (e, field) =>
     setFormData((prev) => ({
       ...prev,
@@ -90,27 +90,38 @@ const Premises = ({ onPrevious }) => {
   );
 
   const onNextForm = async (e) => {
-   
     e.preventDefault();
-    await setAllPremiseData((prev) => {
-      const updatedData = [...prev, formData]; // Log the updated data
-      return updatedData; // Save formData to allPremisesData
-    });
-
+    await setAllPremiseData((prev) => [...prev, formData]);
+    
     setBuildingCount(formData.buildings);
-    setCurrentPremisesIndex(currentPremisesIndex);
-    if (formData.buildings > 0) {
-      navigate("/buildings");
-    } else {
-      // todo: Add last procedure what will happen if there is no premises left show the data
-      // onNext();
+
+    if(formData.buildings > 0){
+      navigate("/buildings")
+
+    }else if (currentPremisesIndex < numOfPremises) {
+    setCurrentPremisesIndex(prev => prev+1)    
+    
+    }else{
+      alert("Premises form done");
+    }
+
+
+  };
+  
+  const hanldePreviousForm = () => {
+    if (currentPremisesIndex > 0) {
+      setCurrentPremisesIndex(currentPremisesIndex - 1);
+      setFormData(allPremisesData[currentPremisesIndex - 2] || {}); // Load data for the previous building if it exists
     }
   };
+  
+  console.log(currentPremisesIndex,numOfPremises);
+  
 
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <h1 className="form-title">Premises Form {currentPremisesIndex}</h1>
+        <h1 className="form-title">Premises Form {currentPremisesIndex }</h1>
 
         <Row className="mb-3">
           {renderFormField("siteName", "Name of Site", "text", {
@@ -247,7 +258,7 @@ const Premises = ({ onPrevious }) => {
 
         <Button
           variant="secondary"
-          onClick={onPrevious}
+          onClick={hanldePreviousForm}
           className="me-2"
           style={{ float: "left" }} // Position Previous button to the left
           disabled={currentPremisesIndex === ""} // Disabled on Survey form return condition
@@ -258,18 +269,14 @@ const Premises = ({ onPrevious }) => {
         <Button
           variant="secondary"
           className="me-2"
-          // onClick={formData.buildings < 0? buildingOpen: onNext}
           onClick={onNextForm}
-          style={{ float: "right" }} // Position Next button to the right
+          style={{ float: "right" }}
           // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
         >
           Next
         </Button>
       </Form>
 
-      {/* {showBuildingForm && (
-        <Buildings currentPremisesIndex={currentPremisesIndex} />
-      )} */}
     </>
   );
 };

@@ -10,15 +10,12 @@ const Survey = () => {
   const [showNextForm, setShowNextForm] = useState(false);
 
   const {
-    numOfPremises,
     surveyData,
-    setSurveData,
-    currentPremisesIndex,
-    setCurrentPremisesIndex,
-    setAllPremiseData,
+    setSurveData,setNumOfPremises,
+    setCurrentPremisesIndex
   } = useContext(FormContext);
 
-  console.log(numOfPremises);
+
   const [surveyForm, setSurveyForm] = useState({
     clientName: "",
     siteName: "",
@@ -54,31 +51,9 @@ const Survey = () => {
       additionalThree: false,
     },
     premisesType: "",
-    numOfPremises:0,
+    premises:0,
   });
   
-  // const [premisesData, setPremisesData] = useState([
-  //   {
-  //     siteName: "",
-  //     buildings: 0,
-  //     carpetArea: 0,
-  //     builtUpArea: 0,
-  //     basementUpArea: 0,
-  //     basement: 0,
-  //     floors: 0,
-  //     workStations: 0,
-  //     employees: 0,
-  //     operatingShifts: 1,
-  //     shifts: [{ startTime: "", endTime: "" }],
-  //     grade: "Select",
-  //     tier: "",
-  //     surveyDate: "",
-  //     surveyBy: "",
-  //     clientVisitingCard: null,
-  //     locationPhoto: null,
-  //     moreInfo: "",
-  //   },
-  // ]);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -89,16 +64,10 @@ const Survey = () => {
     setValidated(true);
   };
 
-  
-
   const handlePrevious = () => {
     setShowNextForm(false);
     setCurrentPremisesIndex(0); // reset to the main form when going back
   };
-
-  
-
-
 
   const handleChange = (e) => {
     const { name, type, checked } = e.target;
@@ -142,26 +111,24 @@ const Survey = () => {
     }
   };
 
-  // const handlePremisesDataChange = (index, data) => {
-  //   setPremisesData((prevData) => {
-  //     const newData = [...prevData];
-  //     newData[index] = { ...newData[index], ...data }; // Update specific premises data
-  //     return newData;
-  //   });
-  // };
+
   const onNextForm = async (e) => {
     e.preventDefault();
     await setSurveData((prev) => {
-      const updatedData = [...prev, surveyForm]; // Log the updated data
-      return updatedData; // Save formData to allPremisesData
+      const updatedData = [...prev, surveyForm];
+      return updatedData;
     });
-    navigate("/premises");
     
-  };
-  
+    if(surveyForm.premises > 0){
+      setNumOfPremises(surveyForm?.premises)
+      navigate("/premises");
+    }else{
+      alert("Survey added")
+    }
+    };
 
-console.log(surveyData);
-
+    
+  console.log(surveyForm?.premises);
   
   return (
     <>
@@ -282,8 +249,7 @@ console.log(surveyData);
 
           <Row className="mb-3">
             <h2>Sent Proposal To</h2>
-            {["siteIncharge", "commercialIncharge", "locationIncharge"].map(
-              (incharge, index) => (
+            {["siteIncharge", "commercialIncharge", "locationIncharge"].map((incharge, index) => (
                 <Form.Group
                   as={Col}
                   md="4"
@@ -361,14 +327,14 @@ console.log(surveyData);
                 required
                 type="number"
                 placeholder="No. of Premises"
-                name="numOfPremises"
-                value={surveyForm.numOfPremises}
+                name="premises"
+                value={surveyForm.premises}
                 onChange={(e)=>handleChange(e)}
               />
             </Form.Group>
           </Row>
 
-          <Button type="button" onClick={onNextForm} className="me-2">
+          <Button type="button" onClick={onNextForm} className="me-2" style={{ float: "right" }}>
           Save & Continue
           </Button>
           
