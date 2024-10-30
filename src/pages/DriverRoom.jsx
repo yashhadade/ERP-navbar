@@ -1,25 +1,42 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Row, Modal } from 'react-bootstrap';
 
-const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoom, setAllDriverRoomData, allPremisesData }) => {
+const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, setAllDriverRoomData }) => {
+    const [validated, setValidated] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
-        carpetArea: 0,
-        flooringType: "",
-        ceilingHeight: 0,
+        carpetArea: '',
+        flooringType: "Tile",
+        ceilingHeight: '',
         addPhoto: null,
         ambiance: "",
-        facilitiesProvided:"",
-        crockery: "radio",
+        facilitiesProvided: {
+            teaCoffeeMachine: false,
+            teaCoffeeServices: false,
+            packageDrinkingWater: false,
+            normalWater: false,
+        },
+        crockery: {},
         remarks: "",
-        AC: "radio",
+        AC: '',
     });
 
-    const [showModal, setShowModal] = useState(false); // State to manage modal visibility
+    const [showModal, setShowModal] = useState(false);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevData => ({ ...prevData, [name]: value }));
+        const { name, value, type, checked } = e.target;
+
+        if (type === 'checkbox') {
+            setFormData(prevData => ({
+                ...prevData,
+                facilitiesProvided: {
+                    ...prevData.facilitiesProvided,
+                    [name]: checked,
+                },
+            }));
+        } else {
+            setFormData(prevData => ({ ...prevData, [name]: value }));
+        }
     };
 
     const handleFileUpload = (e) => {
@@ -27,45 +44,48 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        setValidated(true);
+
         setAllDriverRoomData(prevData => {
             const newData = [...prevData];
-            newData[currentDriverRoomIndex] = formData; // Save current form data
+            newData[currentDriverRoomIndex] = formData; 
             return newData;
         });
         console.log("Driver Room Data:", formData);
-        onNext(); // Call onNext to navigate to the next form
+        onNext();
     };
 
     return (
         <div>
-            <h2 className="form-title" style={{ textAlign: "center" }}>Driver Room Form</h2>
-            <Form onSubmit={handleSubmit}>
+            <h1 className="form-title" style={{ textAlign: "center" }}>Driver Room Form</h1>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="formName">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormName">
                         <Form.Label>Name</Form.Label>
                         <Form.Control
+                            required
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleInputChange}
-                            required
                         />
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="formCarpetArea">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormCarpetArea">
                         <Form.Label>Carpet Area (sq. ft)</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             name="carpetArea"
                             value={formData.carpetArea}
                             onChange={handleInputChange}
-                            required
                         />
                     </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="formFlooringType">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormFlooringType">
                         <Form.Label>Flooring Type</Form.Label>
                         <Form.Control as="select" name="flooringType" value={formData.flooringType} onChange={handleInputChange}>
                             <option value="Tile">Tile</option>
@@ -73,30 +93,30 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             <option value="Carpet">Carpet</option>
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="formCeilingHeight">
+                </Row>
+
+                <Row className="mb-3">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormCeilingHeight">
                         <Form.Label>Ceiling Height (ft)</Form.Label>
                         <Form.Control
+                            required
                             type="number"
                             name="ceilingHeight"
                             value={formData.ceilingHeight}
                             onChange={handleInputChange}
-                            required
                         />
                     </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="formAddPhoto">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormAddPhoto">
                         <Form.Label>Upload Photo</Form.Label>
                         <Form.Control type="file" onChange={handleFileUpload} />
                         {formData.addPhoto && (
                             <div>
-                                <Button variant="link" onClick={() => setShowModal(true)}>View Photo</Button>
+                                {/* <Button variant="link" onClick={() => setShowModal(true)}>View Photo</Button> */}
                                 <img src={formData.addPhoto} alt="Room Thumbnail" style={{ width: "100px", height: "auto", marginTop: "10px" }} />
                             </div>
                         )}
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="formAmbiance">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormAmbiance">
                         <Form.Label>Ambiance</Form.Label>
                         <Form.Control
                             type="text"
@@ -108,73 +128,56 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                 </Row>
 
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="formFacilitiesProvided">
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormFacilitiesProvided">
                         <Form.Label>Facilities Provided</Form.Label>
                         <Form.Check
                             type="checkbox"
-                            label="Tea Coffe Machin"
-                            name="facilitiesProvided"
-                            value="Tea Coffe Machin"
-                            checked={formData.facilitiesProvided === "Tea Coffe Machin"}
+                            label="Tea Coffee Machine"
+                            name="teaCoffeeMachine"
+                            checked={formData.facilitiesProvided.teaCoffeeMachine}
                             onChange={handleInputChange}
                         />
                         <Form.Check
                             type="checkbox"
                             label="Tea Coffee Services"
-                            name="facilitiesProvided"
-                            value="Tea Coffee Services"
-                            checked={formData.facilitiesProvided === "Tea Coffee Services"}
+                            name="teaCoffeeServices"
+                            checked={formData.facilitiesProvided.teaCoffeeServices}
                             onChange={handleInputChange}
                         />
                         <Form.Check
                             type="checkbox"
-                            label="PACKAGE DRINKING WATER "
-                            name="facilitiesProvided"
-                            value="PACKAGE DRINKING WATER "
-                            checked={formData.facilitiesProvided === "PACKAGE DRINKING WATER "}
+                            label="Package Drinking Water"
+                            name="packageDrinkingWater"
+                            checked={formData.facilitiesProvided.packageDrinkingWater}
                             onChange={handleInputChange}
                         />
                         <Form.Check
                             type="checkbox"
-                            label="NORMAL WATER "
-                            name="facilitiesProvided"
-                            value="NORMAL WATER"
-                            checked={formData.facilitiesProvided === "NORMAL WATER"}
+                            label="Normal Water"
+                            name="normalWater"
+                            checked={formData.facilitiesProvided.normalWater}
                             onChange={handleInputChange}
                         />
                     </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="formCrockery">
-                        <Form.Label>Crockery Provided</Form.Label>
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormCrockery">
+                        <Form.Label>Crockery</Form.Label>
                         <Form.Check
-                            type="radio"
-                            label="Yes"
-                            name="crockery"
-                            value="yes"
-                            checked={formData.crockery === "yes"}
+                            type="checkbox"
+                            label="Washables"
+                            name="washables"
+                            checked={formData.crockery.washables}
                             onChange={handleInputChange}
                         />
                         <Form.Check
-                            type="radio"
-                            label="No"
-                            name="crockery"
-                            value="no"
-                            checked={formData.crockery === "no"}
+                            type="checkbox"
+                            label="Disposables"
+                            name="disposables"
+                            checked={formData.crockery.disposables}
                             onChange={handleInputChange}
                         />
                     </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="formRemarks">
-                        <Form.Label>Remarks</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            name="remarks"
-                            value={formData.remarks}
-                            onChange={handleInputChange}
-                        />
-                    </Form.Group>
-                    <Form.Group as={Col} md="6" controlId="formAC">
+                
+                    <Form.Group as={Col} md="4" controlId="driverRoomFormAC">
                         <Form.Label>Have AC</Form.Label>
                         <Form.Check
                             type="radio"
@@ -193,6 +196,20 @@ const DriverRoom = ({ onPrevious, onNext, currentDriverRoomIndex, numOfDriverRoo
                             onChange={handleInputChange}
                         />
                     </Form.Group>
+                   
+                </Row>
+
+                <Row className="mb-3">
+                <Form.Group as={Col} md="4" controlId="driverRoomFormRemarks">
+                        <Form.Label>Remarks</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            name="remarks"
+                            value={formData.remarks}
+                            onChange={handleInputChange}
+                        />
+                    </Form.Group>
+                    
                 </Row>
 
                 <div className="d-flex justify-content-between">
