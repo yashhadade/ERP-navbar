@@ -131,9 +131,9 @@ const Survey = () => {
   return (
     <>
 {/*btn to export data*/ }
- <button onClick={exportDataToExcel}>
+ {/* <button onClick={exportDataToExcel}>
       Export Data to Excel
-    </button> 
+    </button>  */}
 
 
  

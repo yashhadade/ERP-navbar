@@ -47,9 +47,7 @@ const Toilet = () => {
         
       } = useContext(FormContext);
       const {gentsToilet,ladiesToilet ,driverRoom}=toiletDiverRoomCount;
-      console.log("Gentes Toilet "+gentsToilet);
-      console.log("Ladies Toilet "+ladiesToilet);
-      console.log("Driver Room  "+driverRoom);
+
       const [currentType, setCurrentType] = useState(
         gentsToilet > 0 ? "Gentes" : "Ladies"
       );
@@ -114,9 +112,13 @@ const Toilet = () => {
                 bodyWash: false,
             },
         });
+
+        console.log("currentFormCount "+currentFormCount);
+        console.log("ladiesToilet "+ladiesToilet);
             
         if (currentType === "Gentes" && currentFormCount < gentsToilet) {
             console.log(currectToiletIndex , currentFormCount);
+            setCurrentType("Gentes");
             
             setCurrectToiletIndex((prev) => prev + 1);
             setCurrentFormCount((prevCount) => prevCount + 1);
@@ -124,12 +126,13 @@ const Toilet = () => {
             currentType === "Gentes" &&
             currentFormCount == gentsToilet
           ) {
-            console.log(currectToiletIndex , currentFormCount);
-
             setCurrentType("Ladies");
             setCurrectToiletIndex((prev) => prev + 1);
             setCurrentFormCount(1);
+    
           } else if (currentType === "Ladies" && currentFormCount < ladiesToilet) {
+            console.log("here");
+            
             setCurrectToiletIndex((prev) => prev + 1);
             setCurrentFormCount((prevCount) => prevCount + 1);
           } 
@@ -328,7 +331,7 @@ const Toilet = () => {
                 <Button variant="secondary" onClick={hanldePreviousForm}>
           Previous
         </Button>
-                <Button  variant="primary"
+                <Button  variant="secondary"
           type="submit"
           className="me-2"
           style={{ float: "right" }} onClick={handleNext}>Next</Button>

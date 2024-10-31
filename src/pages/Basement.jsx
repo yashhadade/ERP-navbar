@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row, Modal } from "react-bootstrap";
 import { FormContext } from "../FormContext/FormContextProvider";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 const Basement = () => {
   const {
@@ -10,21 +10,25 @@ const Basement = () => {
     currentBaseMentIndex,
     setCurrentBaseMEntIndex,
     setCurrentBuilidingIndex,
-    buildingcount,currentBuildingIndex,
-    floornBasementCount, numOfPremises,setCurrentPremisesIndex,currentPremisesIndex,setCurrentDriverRoomtIndex,setToiletDiverRoomCount,toiletDiverRoomCount
+    buildingcount,
+    currentBuildingIndex,
+    floornBasementCount,
+    numOfPremises,
+    setCurrentPremisesIndex,
+    currentPremisesIndex,
+    setCurrentDriverRoomtIndex,
+    setToiletDiverRoomCount,
+    toiletDiverRoomCount,
+    currentFormType,
+    setCurrentFormType,currentFormCount, setCurrentFormCount
   } = useContext(FormContext);
 
-  const location = useLocation();
-
-  const {basement, floor } = floornBasementCount;
-
-  console.log(basement ,floornBasementCount);
-  
+  const { basement, floor } = floornBasementCount;
   const navigate = useNavigate();
-  const [currentFormCount, setCurrentFormCount] = useState(1);
   const [currentType, setCurrentType] = useState(
     basement > 0 ? "Basement" : "Floor"
   );
+  
 
   const [formData, setFormData] = useState({
     type: "",
@@ -74,63 +78,78 @@ const Basement = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
+      const form = e.currentTarget;
     if (form.checkValidity() === false) {
+      e.preventDefault();
       e.stopPropagation();
     }
     setValidated(true);
   };
-
+  
   const handleNextForm = async (e) => {
     e.preventDefault();
-    await setAllBasementsData((prev) => {
-      const updatedData = [...prev];
-      updatedData[currentBaseMentIndex - 1] = formData; // Store current data at the index for the building
-      return updatedData;
+    console.log("1");
+    await setAllBasementsData((prev) => [...prev, formData]);
+    setToiletDiverRoomCount({
+      driverRoom: formData?.numberOfDriversRooms,
+      gentsToilet: formData?.numberOfGentsToilets,
+      ladiesToilet: formData?.numberOfLadiesToilets,
     });
-    setToiletDiverRoomCount({driverRoom:formData?.numberOfDriversRooms,gentsToilet:formData?.numberOfGentsToilets,ladiesToilet:formData?.numberOfLadiesToilets})
-    if(formData.numberOfGentsToilets>0||formData.numberOfLadiesToilets>0){
-      navigate("/toilet")
-    }else if(formData.numberOfDriversRooms>0){
+
+    
+    if(basement > 0){
+      setCurrentFormType("Basement")
+    }else if(floor > 0){
+      setCurrentFormType("Floor")
+    }
+
+
+    if (
+      formData.numberOfGentsToilets > 0 ||
+      formData.numberOfLadiesToilets > 0
+    ) {
+      navigate("/toilet");
+    } else if (formData.numberOfDriversRooms > 0) {
       navigate("/driverroom");
-    }//if the type Basement Current from count will be check wheter it is getter than basement or not if yes than incriement the value 
+    } //if the type Basement Current from count will be check wheter it is getter than basement or not if yes than incriement the value
     else if (currentType === "Basement" && currentFormCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
-    } else if (
-      currentType === "Basement" &&
-      currentFormCount == basement
-    ) {
+      console.log("log" , currentType, currentFormType);
+
+    } else if (currentType === "Basement" && currentFormCount == basement) {
+      console.log("log" , currentType, currentFormType);
+      
       setCurrentType("Floor");
+      setCurrentFormType("Floor")
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount(1);
     } else if (currentType === "Floor" && currentFormCount < floor) {
+      console.log("log" , currentType, currentFormType);
+
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
-    } else if(currentBuildingIndex <  buildingcount){
+    } else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
-    }else if ( currentPremisesIndex < numOfPremises ) {
+    } else if (currentPremisesIndex < numOfPremises) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
-      alert("Premises form done")
-    }{
-      
+      alert("Premises form done");
     }
-    
-    
-    
+    {
+    }
+
     // if(numOfPremises > currentPremisesIndex) {
-      //   setCurrentPremisesIndex(currentPremisesIndex + 1);
-      //   navigate("/premises");
-      // } else {
-        //   alert("Premises form done")
-        // }
-      };
-      console.log(toiletDiverRoomCount);
-      
+    //   setCurrentPremisesIndex(currentPremisesIndex + 1);
+    //   navigate("/premises");
+    // } else {
+    //   alert("Premises form done")
+    // }
+  };
+  console.log(currentFormType);
+
   const handlePreviousForm = () => {
     if (currentFormCount > 1) {
       setCurrentBaseMEntIndex((prev) => prev - 1);
@@ -148,7 +167,6 @@ const Basement = () => {
       navigate("/buildings");
     }
   };
-
 
   const renderFormField = (name, label, type = "text", props = {}) => (
     <Form.Group as={Col} md="4" controlId={name}>
@@ -168,9 +186,8 @@ const Basement = () => {
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <h1 className="form-title">Basement & Floor Form</h1>
 
-       
         <h2>
-          {currentType} {currentFormCount}
+          {currentFormType} {currentFormCount}
         </h2>
 
         {/* updated */}
@@ -330,7 +347,7 @@ const Basement = () => {
           Previous
         </Button>
         <Button
-          variant="primary"
+          variant="secondary"
           type="submit"
           className="me-2"
           style={{ float: "right" }}
