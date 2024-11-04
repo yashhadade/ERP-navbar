@@ -54,7 +54,8 @@ const Survey = () => {
     premisesType: "",
     premises:0,
   });
-  
+
+ 
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -111,6 +112,11 @@ const Survey = () => {
       }));
     }
   };
+  //
+  
+// };
+
+  //
 
 
   const onNextForm = async (e) => {
@@ -345,8 +351,8 @@ const Survey = () => {
         </Form>
           </>
   );
-};
-// }; 
+ };
+//  }; 
 
 
 export default Survey;

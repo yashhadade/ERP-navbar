@@ -138,8 +138,7 @@ const Basement = () => {
     } else {
       alert("Premises form done");
     }
-    {
-    }
+    
 
     // if(numOfPremises > currentPremisesIndex) {
     //   setCurrentPremisesIndex(currentPremisesIndex + 1);
