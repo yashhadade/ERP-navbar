@@ -1,5 +1,4 @@
 import React, { createContext, useState } from "react";
-import * as XLSX from "xlsx";
 
 export const FormContext = createContext();
 
@@ -33,20 +32,20 @@ const FormContextProvider = ({ children }) => {
   const [allDriverRoomData, setAllDriverRoomData] = useState([]); //for all driver room data
   const [currentDriverRoomIndex, setCurrentDriverRoomIndex] = useState(1); // to track driverr. index
   const [currentFormType, setCurrentFormType] = useState("");
-  // console.log(
-  //   "survey",
-  //   surveyData,
-  //   "premies",
-  //   allPremisesData,
-  //   "building",
-  //   allBuildingData,
-  //   "Basement",
-  //   allBasementsData,
-  //   "Toilet",
-  //   allToiletData,
-  //   "DriverRoom",
-  //   allDriverRoomData
-  // );
+  console.log(
+    "survey",
+    surveyData,
+    "premies",
+    allPremisesData,
+    "building",
+    allBuildingData,
+    "Basement",
+    allBasementsData,
+    "Toilet",
+    allToiletData,
+    "DriverRoom",
+    allDriverRoomData
+  );
 
   
   return (
