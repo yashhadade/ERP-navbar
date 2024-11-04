@@ -85,11 +85,22 @@ const Buildings = ({ onPrevious, onNext }) => {
   
 
   const hanldePreviousForm = () => {
+    console.log(currentBuildingIndex);
+    
     if (currentBuildingIndex > 1) {
       setCurrentBuilidingIndex(currentBuildingIndex - 1);
-      setBuildingData(allBuildingData[currentBuildingIndex - 2] || {}); // Load data for the previous building if it exists
+      setBuildingData(allBuildingData[currentBuildingIndex - 2] || {}); // load data for the previous building if it exists
     }
-  };
+    else if ( currentBuildingIndex === 1) {
+      console.log(true);
+      
+      navigate("/premises");
+    //  if (!allBuildingData.length){
+    //   navigate("/premises");
+
+     
+    } 
+  }; 
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
