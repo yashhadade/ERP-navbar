@@ -1,5 +1,5 @@
 import React, {
-    useContext, useState } from 'react';
+useContext, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { FormContext } from '../../FormContext/FormContextProvider';
 import { useNavigate } from "react-router-dom";
@@ -82,7 +82,7 @@ const Toilet = () => {
             e.preventDefault();
             e.stopPropagation();
         }
-        // TOdo validation of the form and it should be false on next 
+        // To do validation of the form and it should be false on next 
         //  setValidated(true); 
 
 
@@ -124,7 +124,7 @@ const Toilet = () => {
             setCurrentFormCount((prevCount) => prevCount + 1);
           } else if (  
             currentType === "Gentes" &&
-            currentFormCount == gentsToilet
+            currentFormCount == gentsToilet && ladiesToilet > 0
           ) {
             setCurrentType("Ladies");
             setCurrectToiletIndex((prev) => prev + 1);

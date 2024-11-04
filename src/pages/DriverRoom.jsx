@@ -26,6 +26,7 @@ const DriverRoom = ({ onPrevious }) => {
     floornBasementCount,
     setCurrentFormCount,
     setCurrentType,
+    currentType,
     
   } = useContext(FormContext);
 
@@ -147,6 +148,41 @@ const DriverRoom = ({ onPrevious }) => {
   //
 
   console.log("Driver Room Data:", allDriverRoomData);
+//
+  const hanldePreviousForm = () => {
+   
+    
+    if (currentDriverRoomtIndex > 1) {
+      setCurrentDriverRoomtIndex(currentDriverRoomtIndex - 1);
+      setAllDriverRoomData(allDriverRoomData[currentDriverRoomtIndex - 2] || {}); // load data for the for prev
+    }
+    else if ( currentDriverRoomtIndex === 1) {
+      console.log(true);
+      
+      navigate("/toilet");
+   
+    } 
+    // if (currentFormCount > 1) {
+    //   setCurrentDriverRoomtIndex((prev) => prev - 1);
+    //   setCurrentFormCount((prevCount) => prevCount - 1);
+    //   // Load previous form data if it exists in `allDriverRoomData`
+    //   setFormData(allDriverRoomData[currentDriverRoomtIndex - 2] || {});
+    // } else if (currentType == "Ladies" && currentFormCount === 1) {
+    //   // Switch back to toilets when moving back from the first floor form
+    //   setCurrentType("Toilet");
+    //   setCurrentFormCount(toilet);
+    //   setCurrentDriverRoomtIndex(toilet);
+    //   // Load the last basement form data
+    //   setFormData(allDriverRoomData[toilet - 1] || {});
+    // } else if (currentType == "Toilet" && currentFormCount === 1) {
+    //   navigate("/toilet");
+    // }
+
+
+  }; 
+  //
+
+  
 
   return (
     <div>
@@ -316,7 +352,7 @@ const DriverRoom = ({ onPrevious }) => {
         <div className="d-flex justify-content-between">
           <Button
             variant="secondary"
-            onClick={onPrevious}
+            onClick={hanldePreviousForm}
             // disabled={currentDriverRoomtIndex === 0}
           >
             Previous

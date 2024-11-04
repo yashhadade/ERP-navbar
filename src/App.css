@@ -23,7 +23,7 @@ main {
   color: white;
   height: 100vh;
   overflow-y: auto;
-  position: relative; /* Ensure the sidebar has a positioning context */
+  position: fixed; /* Ensure the sidebar has a positioning context */
   z-index: 10;
 }
 
@@ -134,8 +134,8 @@ main {
   transform: translate(-50%, -50%);
   transition: margin-left 0.5s ease; /* Smooth transition */
   z-index: 5; /* Lower z-index than sidebar */
-  overflow-x: auto;
-  overflow-y: auto;
+  /* overflow-x: auto;
+  overflow-y: auto; */
 }
 .container.sidebar-open {
   margin-left: 100px; 
@@ -218,3 +218,4 @@ h3{
   border-radius: 5px;
  
 }
+
