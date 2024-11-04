@@ -24,14 +24,14 @@ const FormContextProvider = ({ children }) => {
   const [currentDriverRoomtIndex, setCurrentDriverRoomtIndex] = useState(1);
 
   const [currentBaseMentIndex, setCurrentBaseMEntIndex] = useState(1);
-    const [currentFormCount, setCurrentFormCount] = useState(1);
+  const [currentFormCount, setCurrentFormCount] = useState(1);
   const [currectToiletIndex, setCurrectToiletIndex] = useState(1);
-  // const [currectLadiesToiletIndex,setCurrectLadiesToiletIndex]=useState(1);
   const [allToiletData, setAllToiletData] = useState([]);
 
   const [allDriverRoomData, setAllDriverRoomData] = useState([]); //for all driver room data
   const [currentDriverRoomIndex, setCurrentDriverRoomIndex] = useState(1); // to track driverr. index
   const [currentFormType, setCurrentFormType] = useState("");
+  const [currentToiletType, setCurrentToiletType] = useState("");
   console.log(
     "survey",
     surveyData,
@@ -47,7 +47,6 @@ const FormContextProvider = ({ children }) => {
     allDriverRoomData
   );
 
-  
   return (
     <FormContext.Provider
       value={{
@@ -81,7 +80,10 @@ const FormContextProvider = ({ children }) => {
         setCurrentDriverRoomtIndex,
         currectToiletIndex,
         setCurrectToiletIndex,
-        currentFormCount, setCurrentFormCount,
+        currentFormCount,
+        setCurrentFormCount,
+        currentToiletType,
+        setCurrentToiletType,
 
         allDriverRoomData, //driver room data management
         setAllDriverRoomData, //for updating driver room data

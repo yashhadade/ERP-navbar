@@ -166,7 +166,6 @@ useEffect(()=>{
     } else if (currentFormType == "Floor" && currentFormCount === 1) {
       // Switch back to basements when moving back from the first floor form
       setCurrentFormType("Basement");
-      setCurrentFormType("Basement");
       setCurrentFormCount(basement);
       setCurrentBaseMEntIndex(basement);
       // Load the last basement form data
