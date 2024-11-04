@@ -27,7 +27,6 @@ const DriverRoom = ({ onPrevious }) => {
     setCurrentFormCount,
     setCurrentType,
     currentType,
-    
   } = useContext(FormContext);
 
   const navigate = useNavigate();
@@ -85,7 +84,13 @@ const DriverRoom = ({ onPrevious }) => {
     }
     setValidated(true);
   };
-  console.log(currentFormType, currentFormCount, basement);
+  console.log(
+    currentFormType,
+    currentFormCount,
+    basement,
+    floor,
+    currentBaseMentIndex
+  );
 
   const handleNext = async () => {
     await setAllDriverRoomData((prev) => [...prev, formData]);
@@ -111,7 +116,6 @@ const DriverRoom = ({ onPrevious }) => {
     //
 
     if (driverRoom > currentDriverRoomtIndex) {
-      console.log(currentDriverRoomtIndex, currentFormCount);
       setCurrentDriverRoomtIndex((prev) => prev + 1);
     } else if (currentFormType === "Basement" && currentFormCount < basement) {
       setCurrentDriverRoomtIndex(1);
@@ -130,6 +134,12 @@ const DriverRoom = ({ onPrevious }) => {
       setCurrentFormCount((prevCount) => prevCount + 1);
       setCurrentFormType("Floor");
       navigate("/basement");
+    } else if (currentFormType === "Floor" && currentFormCount == floor) {
+      setCurrentDriverRoomtIndex(1);
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setCurrentFormCount(1);
+      setCurrentFormType("Floor");
+      navigate("/basement");
     } else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
@@ -144,24 +154,22 @@ const DriverRoom = ({ onPrevious }) => {
   };
 
   console.log(currentFormType);
-  
+
   //
 
   console.log("Driver Room Data:", allDriverRoomData);
-//
+  //
   const hanldePreviousForm = () => {
-   
-    
     if (currentDriverRoomtIndex > 1) {
       setCurrentDriverRoomtIndex(currentDriverRoomtIndex - 1);
-      setAllDriverRoomData(allDriverRoomData[currentDriverRoomtIndex - 2] || {}); // load data for the for prev
-    }
-    else if ( currentDriverRoomtIndex === 1) {
+      setAllDriverRoomData(
+        allDriverRoomData[currentDriverRoomtIndex - 2] || {}
+      ); // load data for the for prev
+    } else if (currentDriverRoomtIndex === 1) {
       console.log(true);
-      
+
       navigate("/toilet");
-   
-    } 
+    }
     // if (currentFormCount > 1) {
     //   setCurrentDriverRoomtIndex((prev) => prev - 1);
     //   setCurrentFormCount((prevCount) => prevCount - 1);
@@ -177,12 +185,8 @@ const DriverRoom = ({ onPrevious }) => {
     // } else if (currentType == "Toilet" && currentFormCount === 1) {
     //   navigate("/toilet");
     // }
-
-
-  }; 
+  };
   //
-
-  
 
   return (
     <div>

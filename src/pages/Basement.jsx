@@ -60,11 +60,15 @@ const Basement = () => {
   const [showPhoto, setShowPhoto] = useState(false);
 
 useEffect(()=>{
+if(currentFormType===""){
+console.log("true");
+
   if(basement > 0){
     setCurrentFormType("Basement")
   }else if(floor > 0){
     setCurrentFormType("Floor")
   }
+}
 },[])
 
   const handleInputChange = (e) => {
@@ -92,7 +96,7 @@ useEffect(()=>{
   };
 
 
-  
+  console.log(currentFormType, currentFormCount, basement,floor,currentBaseMentIndex);
   
   const handleNextForm = async (e) => {
     e.preventDefault();
@@ -118,8 +122,6 @@ useEffect(()=>{
     }else if(floor > 0){
       setCurrentFormType("Floor")
     }
-
-
     if (
       formData.numberOfGentsToilets > 0 ||
       formData.numberOfLadiesToilets > 0
