@@ -8,6 +8,7 @@ const Survey = () => {
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [showNextForm, setShowNextForm] = useState(false);
+ 
 
   const {
     surveyData,
@@ -53,7 +54,8 @@ const Survey = () => {
     premisesType: "",
     premises:0,
   });
-  
+
+ 
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -110,6 +112,11 @@ const Survey = () => {
       }));
     }
   };
+  //
+  
+// };
+
+  //
 
 
   const onNextForm = async (e) => {
@@ -129,7 +136,13 @@ const Survey = () => {
   
   return (
     <>
-      
+{/*btn to export data*/ }
+ {/* <button onClick={exportDataToExcel}>
+      Export Data to Excel
+    </button>  */}
+
+
+ 
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
            <h1>Survey Form</h1>
           <Row className="mb-3">
@@ -338,6 +351,8 @@ const Survey = () => {
         </Form>
           </>
   );
-};
+ };
+//  }; 
+
 
 export default Survey;
