@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FormContext } from "../FormContext/FormContextProvider";
@@ -60,9 +60,14 @@ const Buildings = ({ onPrevious, onNext }) => {
     if (e.currentTarget.checkValidity() === false) e.stopPropagation();
     setValidated(true);
   };
+console.log(buildingData);
 
   const handleNextForm = async () => {
-    await setAllBuildingData((prev)=> [...prev,buildingData]);
+    await setAllBuildingData((prev) => {
+      const newData = [...prev]; // Create a copy of the previous state
+      newData[currentBuildingIndex - 1] = buildingData; // Update the specific index
+      return newData; // Return the updated array
+    });
 
     
     if (buildingData?.basement > 0 || buildingData?.floors > 0) {
@@ -83,12 +88,20 @@ const Buildings = ({ onPrevious, onNext }) => {
 
   console.log(floornBasementCount);
   
+  useEffect(()=>{
+    console.log(allBuildingData);
+    
+if(allBuildingData.length > 0){
+  console.log("here",currentBuildingIndex , currentBuildingIndex-2);
+  setBuildingData(allBuildingData[currentBuildingIndex - 1] || {});
+}
+  },[])
 
   const hanldePreviousForm = () => {
     console.log(currentBuildingIndex);
     
     if (currentBuildingIndex > 1) {
-      setCurrentBuilidingIndex(currentBuildingIndex - 1);
+      setCurrentBuilidingIndex((prev)=>prev - 1);
       setBuildingData(allBuildingData[currentBuildingIndex - 2] || {}); // load data for the previous building if it exists
     }
     else if ( currentBuildingIndex === 1) {

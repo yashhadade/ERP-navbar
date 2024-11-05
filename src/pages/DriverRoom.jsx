@@ -5,7 +5,7 @@ import FormContextProvider, {
 } from "../FormContext/FormContextProvider";
 import { useNavigate } from "react-router-dom";
 
-const DriverRoom = ({ onPrevious }) => {
+const DriverRoom = (  ) => {
   const {
     allDriverRoomData,
     setAllDriverRoomData,
@@ -24,9 +24,7 @@ const DriverRoom = ({ onPrevious }) => {
     currentFormType,
     setCurrentFormType,
     floornBasementCount,
-    setCurrentFormCount,
-    setCurrentType,
-    currentType,
+    basementCount, setBasementCount,setFloornBasementCount
   } = useContext(FormContext);
 
   const navigate = useNavigate();
@@ -117,30 +115,27 @@ const DriverRoom = ({ onPrevious }) => {
 
     if (driverRoom > currentDriverRoomtIndex) {
       setCurrentDriverRoomtIndex((prev) => prev + 1);
-    } else if (currentFormType === "Basement" && currentFormCount < basement) {
-      setCurrentDriverRoomtIndex(1);
+    }  else if (currentFormType === "Basement" && basementCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
-      setCurrentFormCount((prevCount) => prevCount + 1);
+      setBasementCount((prevCount) => prevCount + 1);
+      setCurrentDriverRoomtIndex(1);
       navigate("/basement");
-    } else if (currentFormType === "Basement" && currentFormCount == basement) {
-      setCurrentDriverRoomtIndex(1);
-      setCurrentBaseMEntIndex((prev) => prev + 1);
-      setCurrentFormCount(1);
+    } else if (currentFormType === "Basement" && basementCount == basement) {
       setCurrentFormType("Floor");
-      navigate("/basement");
-    } else if (currentFormType === "Floor" && currentFormCount < floor) {
-      setCurrentDriverRoomtIndex(1);
       setCurrentBaseMEntIndex((prev) => prev + 1);
-      setCurrentFormCount((prevCount) => prevCount + 1);
-      setCurrentFormType("Floor");
-      navigate("/basement");
-    } else if (currentFormType === "Floor" && currentFormCount == floor) {
       setCurrentDriverRoomtIndex(1);
-      setCurrentBaseMEntIndex((prev) => prev + 1);
-      setCurrentFormCount(1);
-      setCurrentFormType("Floor");
+      setBasementCount(1);
       navigate("/basement");
-    } else if (currentBuildingIndex < buildingcount) {
+    } else if (currentFormType === "Floor" && basementCount < floor) {
+      setCurrentFormType("Floor");
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setBasementCount((prevCount) => prevCount + 1);
+      setCurrentDriverRoomtIndex(1);
+      navigate("/basement");
+  
+    }else if (currentBuildingIndex < buildingcount) {
+      setFloornBasementCount({basement:0, floor:0});
+      setCurrentFormType("")
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
     } else if (numOfPremises > currentPremisesIndex) {
@@ -148,8 +143,6 @@ const DriverRoom = ({ onPrevious }) => {
       navigate("/premises");
     } else {
       alert("Premises form done");
-    }
-    {
     }
   };
 

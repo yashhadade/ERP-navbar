@@ -32,6 +32,9 @@ const FormContextProvider = ({ children }) => {
   const [currentDriverRoomIndex, setCurrentDriverRoomIndex] = useState(1); // to track driverr. index
   const [currentFormType, setCurrentFormType] = useState("");
   const [currentToiletType, setCurrentToiletType] = useState("");
+
+  console.log(allBasementsData,allBuildingData);
+  
   // console.log(
   //   "survey",
   //   surveyData,

@@ -13,7 +13,7 @@ const Survey = () => {
   const {
     surveyData,
     setSurveData,setNumOfPremises,
-    setCurrentPremisesIndex
+    setCurrentPremisesIndex,numOfPremises
   } = useContext(FormContext);
 
 
@@ -126,8 +126,8 @@ const Survey = () => {
       return updatedData;
     });
     
-    if(surveyForm.premises > 0){
-      setNumOfPremises(surveyForm?.premises)
+    setNumOfPremises(surveyForm?.premises)
+    if( numOfPremises > 0 || surveyForm.premises > 0){
       navigate("/premises");
     }else{
       alert("Survey added")
