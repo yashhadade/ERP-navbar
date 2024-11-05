@@ -318,7 +318,7 @@ const Basement = () => {
           )}
           {renderFormField(
             "numberOfStaffDining",
-            "Number of Staff Dining",
+            "Number of Staff Dining", 
             "number"
           )}
         </Row>
@@ -355,11 +355,11 @@ const Basement = () => {
           Next
         </Button>
       </Form>
-
-      {/* modal for viewing the photo */}
+      {/* 
+      modal for viewing the photo */}
       <Modal show={showPhoto} onHide={() => setShowPhoto(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Photo Preview</Modal.Title>
+          <Modal.Title>View Photo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <img
