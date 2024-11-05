@@ -17,15 +17,15 @@ const Toilet = () => {
     currentPremisesIndex,
     setCurrentPremisesIndex,
     buildingcount,
-    setNumOfPremises,
-    currentBaseMentIndex,
-    floornBasementCount,
+    currentFormType,
+    setCurrentFormType,
     currentToiletType,
-    setCurrentToiletType,
+    setCurrentToiletType,setCurrentDriverRoomtIndex,floornBasementCount 
   } = useContext(FormContext);
 
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
+  const { basement, floor } = floornBasementCount;
   const [currentFormCount, setCurrentFormCount] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
@@ -115,39 +115,47 @@ const Toilet = () => {
       },
     });
 
-    console.log("currentFormCount " + currentFormCount);
+    console.log("currentFormCount " + currentFormType);
     console.log("ladiesToilet " + ladiesToilet);
 
     if (currentToiletType === "Gents" && currentFormCount < gentsToilet) {
-      console.log(currectToiletIndex, currentFormCount);
       setCurrentToiletType("Gents");
-
       setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
-    } else if (
-      currentToiletType === "Gents" &&
-      currentFormCount == gentsToilet
-    ) {
+    } else if (currentToiletType === "Gents" && currentFormCount == gentsToilet && ladiesToilet > 0) {
+
       setCurrentToiletType("Ladies");
       setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount(1);
-    } else if (
-      currentToiletType === "Ladies" &&
-      currentFormCount < ladiesToilet
-    ) {
-      console.log("here");
-
-      setCurrectToiletIndex((prev) => prev + 1);
+    } else if (currentToiletType === "Ladies" && currentFormCount < ladiesToilet) {
+        setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
     } else if (driverRoom > 0) {
       navigate("/driverroom");
-    } else if (
-      currentBaseMentIndex < floornBasementCount.basement ||
-      currentBaseMentIndex < floornBasementCount.floor
-    ) {
-      setCurrentBaseMEntIndex((prevCount) => prevCount + 1);
+    } else if (currentFormType === "Basement" && currentFormCount < basement) {
+      setCurrentDriverRoomtIndex(1);
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setCurrentFormCount((prevCount) => prevCount + 1);
       navigate("/basement");
-    } else if (currentBuildingIndex < buildingcount) {
+    } else if (currentFormType === "Basement" && currentFormCount == basement) {
+      setCurrentDriverRoomtIndex(1);
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setCurrentFormCount(1);
+      setCurrentFormType("Floor");
+      navigate("/basement");
+    } else if (currentFormType === "Floor" && currentFormCount < floor) {
+      setCurrentDriverRoomtIndex(1);
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setCurrentFormCount((prevCount) => prevCount + 1);
+      setCurrentFormType("Floor");
+      navigate("/basement");
+    } else if (currentFormType === "Floor" && currentFormCount == floor) {
+      setCurrentDriverRoomtIndex(1);
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setCurrentFormCount(1);
+      setCurrentFormType("Floor");
+      navigate("/basement");
+    }else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
     } else if (numOfPremises > currentPremisesIndex) {
