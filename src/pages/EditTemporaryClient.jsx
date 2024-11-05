@@ -31,7 +31,7 @@ const EditTemporaryClient = () => {
   return (
     <div className="container">
     <div className="TemporaryClient">
-        <h3>Edit Temporary Client</h3>
+        <h4>Edit Temporary Client</h4>
         <label>Client Name</label>
         <input type="text" name="clientName" placeholder="Clinet Name" defaultValue={product.clientName} onChange={handleData} ></input>
         {error && <p style={{ color: 'red' }}>{error}</p>}

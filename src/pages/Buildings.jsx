@@ -314,7 +314,7 @@ if(allBuildingData.length > 0){
         </Form.Group>
       </Row>
       {/* building layout ---will add---- */}
-      <h3>Building Layout</h3>
+      <h4>Building Layout</h4>
       <Row className="mb-3">
         <Form.Group as={Col} md="4" controlId="compound">
           <Form.Label>Compound</Form.Label>

@@ -30,7 +30,7 @@ function TemporaryClient() {
     return (
         <div className="container">
             <div className="TemporaryClient">
-                <h3>Temporary Client</h3>
+                <h4>Temporary Client</h4>
                 <label>Client Name</label>
                 <input 
                     type="text" 
@@ -46,9 +46,9 @@ function TemporaryClient() {
                 </button>
             </div>
             <div className="TemporaryClient">
-                <h3>CLIENT LIST</h3>
+                <h4>CLIENT LIST</h4>
                 <button id="exportButton">Export to Excel</button>
-                <h3>The Number of Clients: {product.length}</h3>
+                <h4>The Number of Clients: {product.length}</h4>
                 <table className="table">
                     <thead>
                         <tr>
