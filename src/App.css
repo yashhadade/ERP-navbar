@@ -197,9 +197,7 @@ td,th{
 .delete:hover{
   background-color:#831414 ;
 }
-h3{
-  text-align: center;
-}
+
 .cancle{
   background-color: #f44336;
   color: white;
@@ -218,4 +216,15 @@ h3{
   border-radius: 5px;
  
 }
+
+@media screen and (max-width: 600px) {
+  .container{
+    padding-left: 50px;
+  }
+  .container.sidebar-open {
+    margin-left: 0px; 
+  }
+
+}
+
 

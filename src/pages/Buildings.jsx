@@ -301,7 +301,7 @@ const Buildings = ({ onPrevious, onNext }) => {
         </Form.Group>
       </Row>
       {/* building layout ---will add---- */}
-      <h2>Building Layout</h2>
+      <h3>Building Layout</h3>
       <Row className="mb-3">
         <Form.Group as={Col} md="4" controlId="compound">
           <Form.Label>Compound</Form.Label>
@@ -480,7 +480,7 @@ const Buildings = ({ onPrevious, onNext }) => {
         <Button variant="secondary" onClick={hanldePreviousForm}>
           Previous
         </Button>
-        <Button variant="secondary" type="submit" style={{float:"right"}} className="me-3" onClick={handleNextForm}>
+        <Button variant="primary" type="submit" style={{float:"right"}} className="me-3" onClick={handleNextForm}>
           Next
         </Button>
       </div>

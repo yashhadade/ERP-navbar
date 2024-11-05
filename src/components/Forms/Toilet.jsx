@@ -400,7 +400,7 @@ const Toilet = () => {
           Previous
         </Button>
         <Button
-          variant="secondary"
+          variant="primary"
           type="submit"
           className="me-2"
           style={{ float: "right" }}

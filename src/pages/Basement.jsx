@@ -193,9 +193,9 @@ useEffect(()=>{
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <h1 className="form-title">Basement & Floor Form</h1>
 
-        <h2>
+        <h3>
           {currentFormType} {currentFormCount}
-        </h2>
+        </h3>
 
         {/* updated */}
 
@@ -354,7 +354,7 @@ useEffect(()=>{
           Previous
         </Button>
         <Button
-          variant="secondary"
+          variant="primary"
           type="submit"
           className="me-2"
           style={{ float: "right" }}
