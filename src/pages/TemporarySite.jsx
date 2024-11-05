@@ -11,7 +11,7 @@ const TemporarySite = () => {
       <div className="TemporaryClient" >
         <h3>SITE LIST</h3>
         <button id="exportButton">Export to Excel</button>
-        <h2>The Number of sites: {product.length}</h2>
+        <h3>The Number of sites: {product.length}</h3>
           <TableContainer component={Paper}>
             <Table aria-label='simple table'>
               <TableHead>

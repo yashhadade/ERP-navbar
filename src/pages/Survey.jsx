@@ -142,7 +142,8 @@ const Survey = () => {
     </button>  */}
 
 
- 
+        <div className="main-container">
+          <div className="container">
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
            <h1>Survey Form</h1>
           <Row className="mb-3">
@@ -193,7 +194,7 @@ const Survey = () => {
           </Row>
           <hr></hr>
           <Row className="mb-3">
-            <h2>Site Incharge</h2>
+            <h3>Site Incharge</h3>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
               <Form.Label>Name</Form.Label>
               <Form.Control required type="text" placeholder="Site Incharge Name" name="siteInchargeName" value={surveyForm.siteInchargeName} onChange={(e)=>handleChange(e)}/>
@@ -209,7 +210,7 @@ const Survey = () => {
             </Row>
             <hr></hr>
             <Row className="mb-3">
-            <h2>Commercial Incharge</h2>
+            <h3>Commercial Incharge</h3>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
               <Form.Label>Name</Form.Label>
               <Form.Control required type="text" placeholder="Commercial Incharge Name" name="commercialInchargeName" value={surveyForm.commercialInchargeName} onChange={(e)=>handleChange(e)}/>
@@ -225,7 +226,7 @@ const Survey = () => {
             </Row>
             <hr></hr>
             <Row className="mb-3">
-            <h2>Location Incharge</h2>
+            <h3>Location Incharge</h3>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
               <Form.Label>Name</Form.Label>
               <Form.Control required type="text" placeholder="location Incharge Name" name="locationInchargeName" value={surveyForm.locationInchargeName} onChange={(e)=>handleChange(e)}/>
@@ -241,7 +242,7 @@ const Survey = () => {
             </Row>
             <hr></hr>
             <Row className="mb-3">
-            <h2>Referral Incharge</h2>
+            <h3>Referral Incharge</h3>
           <Form.Group as={Col} md="4" controlId="validationCustom01">
               <Form.Label>Name</Form.Label>
               <Form.Control required type="text" placeholder="Referral Incharge Name" name="referralInchargeName" value={surveyForm.referralInchargeName} onChange={(e)=>handleChange(e)}/>
@@ -258,7 +259,7 @@ const Survey = () => {
             <hr></hr>
 
           <Row className="mb-3">
-            <h2>Sent Proposal To</h2>
+            <h3>Sent Proposal To</h3>
             {["siteIncharge", "commercialIncharge", "locationIncharge"].map((incharge, index) => (
                 <Form.Group
                   as={Col}
@@ -282,7 +283,7 @@ const Survey = () => {
           </Row>
 
           <Row className="mb-3">
-            <h2>Services Required</h2>
+            <h3>Services Required</h3>
            {["serviceOne", "serviceTwo", "serviceThree"].map((service, index) => (
   <Form.Group as={Col} md="4" key={index} controlId={`service${index}`}>
     <Form.Check
@@ -299,7 +300,7 @@ const Survey = () => {
           </Row>
 
           <Row className="mb-3">
-            <h2>Additional Services</h2>
+            <h3>Additional Services</h3>
             {["additionalOne", "additionalTwo", "additionalThree"].map(
               (service, index) => (
                 <Form.Group
@@ -349,6 +350,8 @@ const Survey = () => {
           </Button>
           
         </Form>
+        </div>
+        </div>
           </>
   );
  };

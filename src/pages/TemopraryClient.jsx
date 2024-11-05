@@ -48,7 +48,7 @@ function TemporaryClient() {
             <div className="TemporaryClient">
                 <h3>CLIENT LIST</h3>
                 <button id="exportButton">Export to Excel</button>
-                <h2>The Number of Clients: {product.length}</h2>
+                <h3>The Number of Clients: {product.length}</h3>
                 <table className="table">
                     <thead>
                         <tr>

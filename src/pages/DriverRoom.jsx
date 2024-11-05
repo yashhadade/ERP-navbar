@@ -354,7 +354,7 @@ const DriverRoom = (  ) => {
           >
             Previous
           </Button>
-          <Button variant="secondary" type="submit" onClick={handleNext}>
+          <Button variant="primary" type="submit" onClick={handleNext}>
             Next
           </Button>
         </div>
