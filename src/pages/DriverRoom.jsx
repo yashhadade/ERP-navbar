@@ -5,7 +5,7 @@ import FormContextProvider, {
 } from "../FormContext/FormContextProvider";
 import { useNavigate } from "react-router-dom";
 
-const DriverRoom = ({ onPrevious }) => {
+const DriverRoom = (  ) => {
   const {
     allDriverRoomData,
     setAllDriverRoomData,
@@ -24,10 +24,7 @@ const DriverRoom = ({ onPrevious }) => {
     currentFormType,
     setCurrentFormType,
     floornBasementCount,
-    setCurrentFormCount,
-    setCurrentType,
-    currentType,
-    
+    basementCount, setBasementCount,setFloornBasementCount
   } = useContext(FormContext);
 
   const navigate = useNavigate();
@@ -85,7 +82,13 @@ const DriverRoom = ({ onPrevious }) => {
     }
     setValidated(true);
   };
-  console.log(currentFormType, currentFormCount, basement);
+  console.log(
+    currentFormType,
+    currentFormCount,
+    basement,
+    floor,
+    currentBaseMentIndex
+  );
 
   const handleNext = async () => {
     await setAllDriverRoomData((prev) => [...prev, formData]);
@@ -111,26 +114,28 @@ const DriverRoom = ({ onPrevious }) => {
     //
 
     if (driverRoom > currentDriverRoomtIndex) {
-      console.log(currentDriverRoomtIndex, currentFormCount);
       setCurrentDriverRoomtIndex((prev) => prev + 1);
-    } else if (currentFormType === "Basement" && currentFormCount < basement) {
-      setCurrentDriverRoomtIndex(1);
+    }  else if (currentFormType === "Basement" && basementCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
-      setCurrentFormCount((prevCount) => prevCount + 1);
+      setBasementCount((prevCount) => prevCount + 1);
+      setCurrentDriverRoomtIndex(1);
       navigate("/basement");
-    } else if (currentFormType === "Basement" && currentFormCount == basement) {
-      setCurrentDriverRoomtIndex(1);
-      setCurrentBaseMEntIndex((prev) => prev + 1);
-      setCurrentFormCount(1);
+    } else if (currentFormType === "Basement" && basementCount == basement) {
       setCurrentFormType("Floor");
-      navigate("/basement");
-    } else if (currentFormType === "Floor" && currentFormCount < floor) {
-      setCurrentDriverRoomtIndex(1);
       setCurrentBaseMEntIndex((prev) => prev + 1);
-      setCurrentFormCount((prevCount) => prevCount + 1);
-      setCurrentFormType("Floor");
+      setCurrentDriverRoomtIndex(1);
+      setBasementCount(1);
       navigate("/basement");
-    } else if (currentBuildingIndex < buildingcount) {
+    } else if (currentFormType === "Floor" && basementCount < floor) {
+      setCurrentFormType("Floor");
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setBasementCount((prevCount) => prevCount + 1);
+      setCurrentDriverRoomtIndex(1);
+      navigate("/basement");
+  
+    }else if (currentBuildingIndex < buildingcount) {
+      setFloornBasementCount({basement:0, floor:0});
+      setCurrentFormType("")
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
     } else if (numOfPremises > currentPremisesIndex) {
@@ -139,29 +144,25 @@ const DriverRoom = ({ onPrevious }) => {
     } else {
       alert("Premises form done");
     }
-    {
-    }
   };
 
   console.log(currentFormType);
-  
+
   //
 
   console.log("Driver Room Data:", allDriverRoomData);
-//
+  //
   const hanldePreviousForm = () => {
-   
-    
     if (currentDriverRoomtIndex > 1) {
       setCurrentDriverRoomtIndex(currentDriverRoomtIndex - 1);
-      setAllDriverRoomData(allDriverRoomData[currentDriverRoomtIndex - 2] || {}); // load data for the for prev
-    }
-    else if ( currentDriverRoomtIndex === 1) {
+      setAllDriverRoomData(
+        allDriverRoomData[currentDriverRoomtIndex - 2] || {}
+      ); // load data for the for prev
+    } else if (currentDriverRoomtIndex === 1) {
       console.log(true);
-      
+
       navigate("/toilet");
-   
-    } 
+    }
     // if (currentFormCount > 1) {
     //   setCurrentDriverRoomtIndex((prev) => prev - 1);
     //   setCurrentFormCount((prevCount) => prevCount - 1);
@@ -177,12 +178,8 @@ const DriverRoom = ({ onPrevious }) => {
     // } else if (currentType == "Toilet" && currentFormCount === 1) {
     //   navigate("/toilet");
     // }
-
-
-  }; 
+  };
   //
-
-  
 
   return (
     <div>
@@ -357,7 +354,7 @@ const DriverRoom = ({ onPrevious }) => {
           >
             Previous
           </Button>
-          <Button variant="secondary" type="submit" onClick={handleNext}>
+          <Button variant="primary" type="submit" onClick={handleNext}>
             Next
           </Button>
         </div>

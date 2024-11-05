@@ -3,11 +3,12 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { FormContext } from "../FormContext/FormContextProvider";
 import { useNavigate } from "react-router-dom";
 
-const Premises = ({ onPrevious }) => {
+const Premises = () => {
   const {
     setAllPremiseData,
     allPremisesData,
     setCurrentPremisesIndex,
+    buildingcount,
     setBuildingCount,
     currentPremisesIndex,
     numOfPremises
@@ -57,8 +58,13 @@ const Premises = ({ onPrevious }) => {
       setFormData((prev) => ({ ...prev, shifts: newShifts }));
     }, [formData.operatingShifts]);
 
-    const handleInputChange = (e) =>
+    const handleInputChange = (e) =>{
       setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    
+    }
+
+
+
     const handleShiftChange = (i, field, value) =>
       setFormData((prev) => {
         const shifts = [...prev.shifts];
@@ -89,13 +95,16 @@ const Premises = ({ onPrevious }) => {
         />
       </Form.Group>
     );
+
+    console.log();
+    
   const onNextForm = async (e) => {
     e.preventDefault();
     await setAllPremiseData((prev) => [...prev, formData]);
     
     setBuildingCount(formData.buildings);
 
-    if(formData.buildings > 0){
+    if(buildingcount > 0 || formData.buildings> 0){
       navigate("/buildings")
 
     }else if (currentPremisesIndex < numOfPremises) {
@@ -107,11 +116,18 @@ const Premises = ({ onPrevious }) => {
 
 
   };
+  console.log(currentPremisesIndex);
   
-  const hanldePreviousForm = () => {
-    if (currentPremisesIndex > 0) {
-      setCurrentPremisesIndex(currentPremisesIndex - 1);
+  const handlePrevious = () => {
+    console.log(currentPremisesIndex);
+    
+    if (currentPremisesIndex >1) {
+      console.log("worked");
+      
+      setCurrentPremisesIndex(currentPremisesIndex-1);
       setFormData(allPremisesData[currentPremisesIndex - 2] || {}); // Load data for the previous building if it exists
+    }else{
+      navigate("/survey")
     }
   };  
 
@@ -231,7 +247,7 @@ const Premises = ({ onPrevious }) => {
 
           <Button
             variant="secondary"
-            onClick={onPrevious}
+            onClick={handlePrevious}
             className="me-2"
             style={{ float: "left" }} // Position Previous button to the left
             disabled={currentPremisesIndex === ""} // Disabled on Survey form return condition
@@ -240,11 +256,11 @@ const Premises = ({ onPrevious }) => {
           </Button>
 
           <Button
-            variant="secondary"
+            variant="primary"
             className="me-2"
             // onClick={formData.buildings < 0? buildingOpen: onNext}
             onClick={onNextForm}
-            style={{ float: "right" }} // Position Next button to the right
+            style={{ float: "right"  }} // Position Next button to the right
             // disabled={currentPremisesIndex === numOfPremises - 1} // Disable Next on last form
           >
             Next

@@ -17,15 +17,15 @@ const Toilet = () => {
     currentPremisesIndex,
     setCurrentPremisesIndex,
     buildingcount,
-    setNumOfPremises,
-    currentBaseMentIndex,
-    floornBasementCount,
+    currentFormType,
+    setCurrentFormType,
     currentToiletType,
-    setCurrentToiletType,
+    setCurrentToiletType,setFloornBasementCount,floornBasementCount ,basementCount, setBasementCount
   } = useContext(FormContext);
 
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
+  const { basement, floor } = floornBasementCount;
   const [currentFormCount, setCurrentFormCount] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
@@ -82,6 +82,8 @@ const Toilet = () => {
     }
   };
 
+  console.log(currentFormType,basementCount);
+  
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -115,40 +117,44 @@ const Toilet = () => {
       },
     });
 
-    console.log("currentFormCount " + currentFormCount);
-    console.log("ladiesToilet " + ladiesToilet);
 
     if (currentToiletType === "Gents" && currentFormCount < gentsToilet) {
-      console.log(currectToiletIndex, currentFormCount);
       setCurrentToiletType("Gents");
-
       setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
-    } else if (
-      currentToiletType === "Gents" &&
-      currentFormCount == gentsToilet
-    ) {
+    } else if (currentToiletType === "Gents" && currentFormCount == gentsToilet && ladiesToilet > 0) {
       setCurrentToiletType("Ladies");
       setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount(1);
-    } else if (
-      currentToiletType === "Ladies" &&
-      currentFormCount < ladiesToilet
-    ) {
-      console.log("here");
-
-      setCurrectToiletIndex((prev) => prev + 1);
+    } else if (currentToiletType === "Ladies" && currentFormCount < ladiesToilet) {
+        setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
     } else if (driverRoom > 0) {
       navigate("/driverroom");
-    } else if (
-      currentBaseMentIndex < floornBasementCount.basement ||
-      currentBaseMentIndex < floornBasementCount.floor
-    ) {
-      setCurrentBaseMEntIndex((prevCount) => prevCount + 1);
+    } else if (currentFormType === "Basement" && basementCount < basement) {
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setBasementCount((prevCount) => prevCount + 1);
       navigate("/basement");
-    } else if (currentBuildingIndex < buildingcount) {
+    } else if (currentFormType === "Basement" && basementCount == basement) {
+      setCurrentFormType("Floor");
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setBasementCount(1);
+      navigate("/basement");
+    } else if (currentFormType === "Floor" && basementCount < floor) {
+      setCurrentFormType("Floor");
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setBasementCount((prevCount) => prevCount + 1);   
+      navigate("/basement");
+    // } else if (currentFormType === "Floor" && basementCount == floor) {
+    //   setCurrentDriverRoomtIndex(1);
+    //   setCurrentBaseMEntIndex((prev) => prev + 1);
+    //   setBasementCount(1);
+    //   setCurrentFormType("Floor");
+    //   navigate("/basement");
+    }else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
+      setFloornBasementCount({basement:0, floor:0});
+      setCurrentFormType("")
       navigate("/buildings");
     } else if (numOfPremises > currentPremisesIndex) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
@@ -158,7 +164,6 @@ const Toilet = () => {
     }
   };
 
-  console.log(currentBuildingIndex, buildingcount);
 
   const handlePreviousForm = () => {
     if (currentFormCount > 1) {
@@ -400,7 +405,7 @@ const Toilet = () => {
           Previous
         </Button>
         <Button
-          variant="secondary"
+          variant="primary"
           type="submit"
           className="me-2"
           style={{ float: "right" }}

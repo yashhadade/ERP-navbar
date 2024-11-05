@@ -9,9 +9,9 @@ const TemporarySite = () => {
   return (
     <div className="container">
       <div className="TemporaryClient" >
-        <h3>SITE LIST</h3>
+        <h4>SITE LIST</h4>
         <button id="exportButton">Export to Excel</button>
-        <h2>The Number of sites: {product.length}</h2>
+        <h4>The Number of sites: {product.length}</h4>
           <TableContainer component={Paper}>
             <Table aria-label='simple table'>
               <TableHead>
