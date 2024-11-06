@@ -257,17 +257,30 @@ const Toilet = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group as={Col} md="4" controlId="validationCustom06">
+          { currentToiletType ==="Gents" ?
+            <Form.Group as={Col} md="4" controlId="validationCustom06">
             <Form.Label>Urinals</Form.Label>
-            <Form.Control
+            <Form.Control 
               required
               type="number"
               placeholder="Urinals"
               name="urinals"
               value={formData.urinals}
               onChange={handleChange}
+              />
+          </Form.Group> :
+          <Form.Group as={Col} md="4" controlId="validationCustom06">
+          <Form.Label>Sanitary pad</Form.Label>
+          <Form.Control 
+            required
+            type="number"
+            placeholder="Sanitary pad"
+            name="urinals"
+            value={formData.urinals}
+            onChange={handleChange}
             />
-          </Form.Group>
+        </Form.Group>
+            }
         </Row>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="validationCustom07">
@@ -346,7 +359,7 @@ const Toilet = () => {
             <Form.Group as={Col} md="4" key={field} controlId={field}>
               <Form.Label>
                 {field === "Urinals"
-                  ? "Upload Urinal Photo"
+                  ? "Upload Urinal Photo" 
                   : "Upload Washbasins Photo"}
               </Form.Label>
               <Form.Control
