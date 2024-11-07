@@ -24,6 +24,7 @@ import DriverRoom from "./components/Forms/DriverRoom";
 import Toilet from "./components/Forms/Toilet";
 import AddClient from "./components/Client/AddClient";
 import AdminPannel from "./components/Massmailer/Admin/AdminPannel";
+import AddSite from "./components/Client/AddSite";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/saved" element={<Saved />} />
           <Route path="/settings" element={<Setting />} />
           <Route path="/addClient" element={<AddClient/>}/>
+          <Route path="/addsite" element={<AddSite/>}/>
           <Route path="/editTemporaryClient/:clintId" element={<EditTemporaryClient/>}/>
           <Route path="/temporarySite" element={<TemporarySite/>}/>
           <Route path="/temporaryDesignantion" element={<TemporaryDesignantion/>}/>

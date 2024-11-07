@@ -102,7 +102,7 @@ const Buildings = ({ onPrevious, onNext }) => {
       navigate("/premises");
       //  if (!allBuildingData.length){
       //   navigate("/premises");
-    }
+    } 
   };
 
   return (
