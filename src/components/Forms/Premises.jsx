@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
-import { FormContext } from "../FormContext/FormContextProvider";
+import { FormContext } from "../../FormContext/FormContextProvider";
 import { useNavigate } from "react-router-dom";
 
 const Premises = () => {
