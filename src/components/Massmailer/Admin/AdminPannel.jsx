@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Container, Button, Row, Col, Form } from 'react-bootstrap';
 
 const AdminPannel = () => {
 
@@ -8,11 +7,10 @@ const AdminPannel = () => {
   const [date, setDate] = useState('');
   const [formError, setFormError] = useState('');
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simple validation: Check if any field is empty
+    // Check if any field is empty
     if (!clientName || !siteName || !date) {
       setFormError('All fields are required');
       return;
@@ -22,77 +20,74 @@ const AdminPannel = () => {
     setFormError('');
     alert(`Client: ${clientName}\nSite: ${siteName}\nDate: ${date}`);
 
-    // Optionally clear form fields after submit
+    // Clear the form after submit
     setClientName('');
     setSiteName('');
     setDate('');
+    console.log('form cleared');
   };
 
   return (
-    <Container className="mt-5">
-      <Row>
-        <Col md={{ span: 6, offset: 3 }}>
-          <Form>
-            <Form.Header as="h5" className="text-center">
-              Admin Panel
-            </Form.Header>
-            <Form.Body>
-              {/* Main Form */}
-              <Form onSubmit={handleSubmit}>
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <div className="card">
+            <div className="card-header text-center">
+              <h5>Admin Panel</h5>
+            </div>
+            <div className="card-body">
+              <form onSubmit={handleSubmit}>
                 {/* Client Name Field */}
-                <Form.Group controlId="formClientName">
-                  <Form.Label>Client Name</Form.Label>
-                  <Form.Control
+                <div className="form-group">
+                  <label htmlFor="formClientName">Client Name</label>
+                  <input
                     type="text"
+                    className={`form-control ${formError ? 'is-invalid' : ''}`}
+                    id="formClientName"
                     placeholder="Enter client name"
                     value={clientName}
                     onChange={(e) => setClientName(e.target.value)}
-                    isInvalid={!!formError} // Display error if formError exists
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {formError && 'Client name is required.'}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                  {formError && <div className="invalid-feedback">Client name is required.</div>}
+                </div>
 
                 {/* Site Name Field */}
-                <Form.Group controlId="formSiteName">
-                  <Form.Label>Site Name</Form.Label>
-                  <Form.Control
+                <div className="form-group">
+                  <label htmlFor="formSiteName">Site Name</label>
+                  <input
                     type="text"
+                    className={`form-control ${formError ? 'is-invalid' : ''}`}
+                    id="formSiteName"
                     placeholder="Enter site name"
                     value={siteName}
                     onChange={(e) => setSiteName(e.target.value)}
-                    isInvalid={!!formError} // Display error if formError exists
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {formError && 'Site name is required.'}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                  {formError && <div className="invalid-feedback">Site name is required.</div>}
+                </div>
 
                 {/* Date Field */}
-                <Form.Group controlId="formDate">
-                  <Form.Label>Date</Form.Label>
-                  <Form.Control
+                <div className="form-group">
+                  <label htmlFor="formDate">Date</label>
+                  <input
                     type="date"
+                    className={`form-control ${formError ? 'is-invalid' : ''}`}
+                    id="formDate"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    isInvalid={!!formError} // Display error if formError exists
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {formError && 'Date is required.'}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                  {formError && <div className="invalid-feedback">Date is required.</div>}
+                </div>
 
                 {/* Submit Button */}
-                <Button variant="primary" type="submit" className="w-100">
+                <button type="submit" className="btn btn-primary w-100">
                   Submit
-                </Button>
-              </Form>
-            </Form.Body>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

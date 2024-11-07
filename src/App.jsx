@@ -51,7 +51,7 @@ function App() {
           <Route path="/basement" element={<Basement />} />
           <Route path="/driverroom" element={<DriverRoom />} />
           <Route path="/toilet" element={<Toilet />} />
-          <Route path="/adminPannel" element={<AdminPannel />} />
+          <Route path="/adminPannel" element={<AdminPannel/>} />
 
           <Route path="*" element={<> not found</>} />
         </Routes>

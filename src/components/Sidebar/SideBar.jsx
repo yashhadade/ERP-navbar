@@ -29,6 +29,13 @@ const routes = [
     name: "Messages",
     icon: <MdMessage />,
   },
+
+  {
+    path: "/adminPannel",
+    name: "AdminPannel",
+    icon: <DiLaravel />,
+  },
+
   {
     path: "/survey",
     name: "Survey",
