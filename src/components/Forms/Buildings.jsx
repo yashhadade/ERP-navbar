@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FormContext } from "../FormContext/FormContextProvider";
+import { FormContext } from "../../FormContext/FormContextProvider";
 
 const Buildings = ({ onPrevious, onNext }) => {
   const {

@@ -20,11 +20,7 @@ const Toilet = () => {
     currentFormType,
     setCurrentFormType,
     currentToiletType,
-    setCurrentToiletType,
-    setFloornBasementCount,
-    floornBasementCount,
-    basementCount,
-    setBasementCount,
+    setCurrentToiletType, setFloornBasementCount, floornBasementCount, basementCount, setBasementCount
   } = useContext(FormContext);
 
   const navigate = useNavigate();
@@ -86,6 +82,8 @@ const Toilet = () => {
     }
   };
 
+  console.log(currentFormType, basementCount);
+
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -131,10 +129,7 @@ const Toilet = () => {
       setCurrentToiletType("Ladies");
       setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount(1);
-    } else if (
-      currentToiletType === "Ladies" &&
-      currentFormCount < ladiesToilet
-    ) {
+    } else if (currentToiletType === "Ladies" && currentFormCount < ladiesToilet) {
       setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
     } else if (driverRoom > 0) {
@@ -162,7 +157,7 @@ const Toilet = () => {
     } else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       setFloornBasementCount({ basement: 0, floor: 0 });
-      setCurrentFormType("");
+      setCurrentFormType("")
       navigate("/buildings");
     } else if (numOfPremises > currentPremisesIndex) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
@@ -264,17 +259,30 @@ const Toilet = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group as={Col} md="4" controlId="validationCustom06">
-            <Form.Label>Urinals</Form.Label>
-            <Form.Control
-              required
-              type="number"
-              placeholder="Urinals"
-              name="urinals"
-              value={formData.urinals}
-              onChange={handleChange}
-            />
-          </Form.Group>
+          {currentToiletType === "Gents" ?
+            <Form.Group as={Col} md="4" controlId="validationCustom06">
+              <Form.Label>Urinals</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                placeholder="Urinals"
+                name="urinals"
+                value={formData.urinals}
+                onChange={handleChange}
+              />
+            </Form.Group> :
+            <Form.Group as={Col} md="4" controlId="validationCustom06">
+              <Form.Label>Sanitary pad</Form.Label>
+              <Form.Control
+                required
+                type="number"
+                placeholder="Sanitary pad"
+                name="urinals"
+                value={formData.urinals}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          }
         </Row>
         <Row className="mb-3">
           <Form.Group as={Col} md="4" controlId="validationCustom07">
@@ -349,26 +357,36 @@ const Toilet = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          {["Urinals", "locationPhoto"].map((field) => (
-            <Form.Group as={Col} md="4" key={field} controlId={field}>
-              <Form.Label>
-                {field === "Urinals"
-                  ? "Upload Urinal Photo"
-                  : "Upload Washbasins Photo"}
-              </Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => handleFileUpload(e, field)}
+          {currentToiletType ==="Gents" &&
+          <Form.Group as={Col} md="4" controlId="Urinals">
+            <Form.Label>Upload Urinal Photo</Form.Label>
+            <Form.Control
+              type="file"
+              onChange={(e) => handleFileUpload(e, "Urinals")}
+            />
+            {formData["Urinals"] && (
+              <img
+                src={formData["Urinals"]}
+                alt="Urinals"
+                style={{ width: "100px", height: "auto" }}
               />
-              {formData[field] && (
-                <img
-                  src={formData[field]}
-                  alt={field}
-                  style={{ width: "100px", height: "auto" }}
-                />
-              )}
-            </Form.Group>
-          ))}
+            )}
+          </Form.Group>
+         }
+          <Form.Group as={Col} md="4" controlId="locationPhoto">
+            <Form.Label>Upload Washbasins Photo</Form.Label>
+            <Form.Control
+              type="file"
+              onChange={(e) => handleFileUpload(e, "locationPhoto")}
+            />
+            {formData["locationPhoto"] && (
+              <img
+                src={formData["locationPhoto"]}
+                alt="Washbasins"
+                style={{ width: "100px", height: "auto" }}
+              />
+            )}
+          </Form.Group>
         </Row>
         <Row>
           <Form.Group as={Col} md="4" controlId="Cubicles">

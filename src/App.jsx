@@ -16,11 +16,11 @@ import SalarayComponents from "./pages/SalaryComponents";
 import Machinery from "./pages/Machinery";
 import Material from "./pages/Material";
 import EditTemporaryClient from "./pages/EditTemporaryClient";
-import Survey from "./pages/Survey";
-import Premises from "./pages/Premises";
-import Buildings from "./pages/Buildings";
-import Basement from "./pages/Basement";
-import DriverRoom from "./pages/DriverRoom";
+import Survey from "./components/Forms/Survey";
+import Premises from "./components/Forms/Premises";
+import Buildings from "./components/Forms/Buildings";
+import Basement from "./components/Forms/Basement";
+import DriverRoom from "./components/Forms/DriverRoom";
 import Toilet from "./components/Forms/Toilet";
 
 function App() {

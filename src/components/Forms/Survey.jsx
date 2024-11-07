@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import Premises from "./Premises";
 import { useNavigate } from "react-router-dom";
-import { FormContext } from "../FormContext/FormContextProvider";
+import { FormContext } from "../../FormContext/FormContextProvider";
 
 const Survey = () => {
   const navigate = useNavigate();
