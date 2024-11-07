@@ -33,8 +33,6 @@ const FormContextProvider = ({ children }) => {
   const [currentFormType, setCurrentFormType] = useState("");
   const [currentToiletType, setCurrentToiletType] = useState("");
 
-  console.log(allBasementsData,allBuildingData);
-  
   // console.log(
   //   "survey",
   //   surveyData,
@@ -83,7 +81,8 @@ const FormContextProvider = ({ children }) => {
         setCurrentDriverRoomtIndex,
         currectToiletIndex,
         setCurrectToiletIndex,
-        basementCount, setBasementCount,
+        basementCount,
+        setBasementCount,
         currentToiletType,
         setCurrentToiletType,
 

@@ -35,21 +35,26 @@ function App() {
           <Route path="/order" element={<Order />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/settings" element={<Setting />} />
-          <Route path="/temporaryClient" element={<TemporaryClient/>}/>
-          <Route path="/editTemporaryClient/:clintId" element={<EditTemporaryClient/>}/>
-          <Route path="/temporarySite" element={<TemporarySite/>}/>
-          <Route path="/temporaryDesignantion" element={<TemporaryDesignantion/>}/>
-          <Route path="/salaryHead" element={<SalarayHead/>}/>
-          <Route path="/salaryComponents" element={<SalarayComponents/>}/>
-          <Route path="/machinery" element={<Machinery/>}/>
-          <Route path="/material" element={<Material/>}/>
+          <Route path="/temporaryClient" element={<TemporaryClient />} />
+          <Route
+            path="/editTemporaryClient/:clintId"
+            element={<EditTemporaryClient />}
+          />
+          <Route path="/temporarySite" element={<TemporarySite />} />
+          <Route
+            path="/temporaryDesignantion"
+            element={<TemporaryDesignantion />}
+          />
+          <Route path="/salaryHead" element={<SalarayHead />} />
+          <Route path="/salaryComponents" element={<SalarayComponents />} />
+          <Route path="/machinery" element={<Machinery />} />
+          <Route path="/material" element={<Material />} />
           <Route path="/survey" element={<Survey />} />
-          <Route path="/premises" element={<Premises/>}/>
-          <Route path="/buildings" element={<Buildings/>}/>
-          <Route path="/basement" element={<Basement/>}/>
-          <Route path="/driverroom" element={<DriverRoom/>}/>         
-          <Route path="/toilet" element={<Toilet/>}/>
-         
+          <Route path="/premises" element={<Premises />} />
+          <Route path="/buildings" element={<Buildings />} />
+          <Route path="/basement" element={<Basement />} />
+          <Route path="/driverroom" element={<DriverRoom />} />
+          <Route path="/toilet" element={<Toilet />} />
 
           <Route path="*" element={<> not found</>} />
         </Routes>

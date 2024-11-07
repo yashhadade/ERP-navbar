@@ -1,46 +1,58 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import useCustomReactQuery from "./getForAllApi";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import UseputData from './putData';
+import UseputData from "./putData";
 
 const EditTemporaryClient = () => {
-    const params=useParams()
-    const [product] = useCustomReactQuery(`temp-client/${params.clintId}`)
-    const [inputData, setInputData] = useState({ clientName: '' });
-    const { putData, responseData, error, loading,message } =UseputData(`temp-client/update/${params.clintId}`)
-    const navigate = useNavigate(); 
+  const params = useParams();
+  const [product] = useCustomReactQuery(`temp-client/${params.clintId}`);
+  const [inputData, setInputData] = useState({ clientName: "" });
+  const { putData, responseData, error, loading, message } = UseputData(
+    `temp-client/update/${params.clintId}`
+  );
+  const navigate = useNavigate();
 
-    const handleData = (e) => {
-        setInputData({ ...inputData, [e.target.name]: e.target.value });
-    };
-    const handleSubmit=async(event)=> {
-        event.preventDefault(); const newClient = await putData(inputData);
-        if (newClient) {
-            setInputData({ clientName: "" });
-            setTimeout(() => {
-                navigate("/temporaryClient/");
-            }, 1000);
-        }
-    };
-    useEffect(() => {
-        if (responseData) {
-            console.log("Client Edit:", responseData);
-        }
-    }, [responseData]);
+  const handleData = (e) => {
+    setInputData({ ...inputData, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const newClient = await putData(inputData);
+    if (newClient) {
+      setInputData({ clientName: "" });
+      setTimeout(() => {
+        navigate("/temporaryClient/");
+      }, 1000);
+    }
+  };
+  useEffect(() => {
+    if (responseData) {
+    }
+  }, [responseData]);
   return (
     <div className="container">
-    <div className="TemporaryClient">
+      <div className="TemporaryClient">
         <h4>Edit Temporary Client</h4>
         <label>Client Name</label>
-        <input type="text" name="clientName" placeholder="Clinet Name" defaultValue={product.clientName} onChange={handleData} ></input>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {message && <p style={{ color: 'green' }}>{message}</p>}
-        <Link className="cancle" to={"/temporaryClient/"}>Cancle</Link>
-        <button className="save" onClick={handleSubmit} disabled={loading}>{loading ? "Saving..." : "Save"}</button>
+        <input
+          type="text"
+          name="clientName"
+          placeholder="Clinet Name"
+          defaultValue={product.clientName}
+          onChange={handleData}
+        ></input>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {message && <p style={{ color: "green" }}>{message}</p>}
+        <Link className="cancle" to={"/temporaryClient/"}>
+          Cancle
+        </Link>
+        <button className="save" onClick={handleSubmit} disabled={loading}>
+          {loading ? "Saving..." : "Save"}
+        </button>
+      </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default EditTemporaryClient
+export default EditTemporaryClient;

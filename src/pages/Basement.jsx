@@ -76,7 +76,6 @@ const Basement = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -86,9 +85,6 @@ const Basement = () => {
       }));
     }
   };
-
-  console.log(currentBaseMentIndex);
-  
 
   const handleSubmit = (e) => {
     const form = e.currentTarget;
@@ -128,12 +124,15 @@ const Basement = () => {
     else if (currentFormType === "Basement" && basementCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setBasementCount((prevCount) => prevCount + 1);
-    } else if (currentFormType === "Basement" && basementCount == basement && floor >0) {
-        setCurrentFormType("Floor");
-        setCurrentBaseMEntIndex((prev) => prev + 1);
-        setBasementCount(1);
-      
-    }else if (currentFormType === "Floor" && basementCount < floor) {
+    } else if (
+      currentFormType === "Basement" &&
+      basementCount == basement &&
+      floor > 0
+    ) {
+      setCurrentFormType("Floor");
+      setCurrentBaseMEntIndex((prev) => prev + 1);
+      setBasementCount(1);
+    } else if (currentFormType === "Floor" && basementCount < floor) {
       setCurrentFormType("Floor");
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setBasementCount((prevCount) => prevCount + 1);
@@ -150,7 +149,7 @@ const Basement = () => {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
-      alert("Premises form done");
+      alert("Premises form done");  navigate("/survey");
     }
   };
 
@@ -323,7 +322,7 @@ const Basement = () => {
           )}
           {renderFormField(
             "numberOfStaffDining",
-            "Number of Staff Dining", 
+            "Number of Staff Dining",
             "number"
           )}
         </Row>
