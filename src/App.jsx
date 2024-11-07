@@ -22,6 +22,7 @@ import Buildings from "./components/Forms/Buildings";
 import Basement from "./components/Forms/Basement";
 import DriverRoom from "./components/Forms/DriverRoom";
 import Toilet from "./components/Forms/Toilet";
+import AddClient from "./components/Client/AddClient";
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
           <Route path="/order" element={<Order />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/settings" element={<Setting />} />
-          <Route path="/temporaryClient" element={<TemporaryClient/>}/>
+          <Route path="/addClient" element={<AddClient/>}/>
           <Route path="/editTemporaryClient/:clintId" element={<EditTemporaryClient/>}/>
           <Route path="/temporarySite" element={<TemporarySite/>}/>
           <Route path="/temporaryDesignantion" element={<TemporaryDesignantion/>}/>

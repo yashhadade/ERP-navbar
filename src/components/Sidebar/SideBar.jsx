@@ -59,7 +59,7 @@ const routes = [
     icon: <DiUikit />,
     subRoutes: [
       {
-        path: "/temporaryClient",
+        path: "/Addclient",
         name: "Temporary Client",
         icon: <FaIdCardClip />,
       },
