@@ -22,6 +22,7 @@ import Buildings from "./components/Forms/Buildings";
 import Basement from "./components/Forms/Basement";
 import DriverRoom from "./components/Forms/DriverRoom";
 import Toilet from "./components/Forms/Toilet";
+import AdminPannel from "./components/Massmailer/Admin/AdminPannel";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
           <Route path="/basement" element={<Basement />} />
           <Route path="/driverroom" element={<DriverRoom />} />
           <Route path="/toilet" element={<Toilet />} />
+          <Route path="/adminPannel" element={<AdminPannel />} />
 
           <Route path="*" element={<> not found</>} />
         </Routes>
