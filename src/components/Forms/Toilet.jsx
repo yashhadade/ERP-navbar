@@ -117,12 +117,15 @@ const Toilet = () => {
       },
     });
 
-
     if (currentToiletType === "Gents" && currentFormCount < gentsToilet) {
       setCurrentToiletType("Gents");
       setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount((prevCount) => prevCount + 1);
-    } else if (currentToiletType === "Gents" && currentFormCount == gentsToilet && ladiesToilet > 0) {
+    } else if (
+      currentToiletType === "Gents" &&
+      currentFormCount == gentsToilet &&
+      ladiesToilet > 0
+    ) {
       setCurrentToiletType("Ladies");
       setCurrectToiletIndex((prev) => prev + 1);
       setCurrentFormCount(1);
@@ -160,10 +163,9 @@ const Toilet = () => {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
-      alert("Premises form done");
+      alert("Premises form done");  navigate("/survey");
     }
   };
-
 
   const handlePreviousForm = () => {
     if (currentFormCount > 1) {

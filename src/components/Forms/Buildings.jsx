@@ -12,14 +12,16 @@ const Buildings = ({ onPrevious, onNext }) => {
     setCurrentPremisesIndex,
     buildingcount,
     currentBuildingIndex,
-    setCurrentBuilidingIndex,floornBasementCount, setFloornBasementCount
+    setCurrentBuilidingIndex,
+    floornBasementCount,
+    setFloornBasementCount,
   } = useContext(FormContext);
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const location = useLocation();
   // const [] = useState({});
 
-  const [buildingData, setBuildingData] = useState({
+  const [buildingData, setBuildingData,] = useState({
     buildingName: "",
     carpetArea: 0,
     builtUpArea: 0,
@@ -60,7 +62,6 @@ const Buildings = ({ onPrevious, onNext }) => {
     if (e.currentTarget.checkValidity() === false) e.stopPropagation();
     setValidated(true);
   };
-console.log(buildingData);
 
   const handleNextForm = async () => {
     await setAllBuildingData((prev) => {
@@ -69,10 +70,11 @@ console.log(buildingData);
       return newData; // Return the updated array
     });
 
-    
     if (buildingData?.basement > 0 || buildingData?.floors > 0) {
-
-      setFloornBasementCount({basement:buildingData?.basement, floor:buildingData?.floors})
+      setFloornBasementCount({
+        basement: buildingData?.basement,
+        floor: buildingData?.floors,
+      });
 
       navigate("/basement");
     } else if (currentBuildingIndex < buildingcount) {
@@ -82,44 +84,31 @@ console.log(buildingData);
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
-      alert("Premises form done")
+      alert("Premises form done");  navigate("/survey");
     }
   };
 
-  console.log(floornBasementCount);
-  
-  useEffect(()=>{
-    console.log(allBuildingData);
-    
-if(allBuildingData.length > 0){
-  console.log("here",currentBuildingIndex , currentBuildingIndex-2);
-  setBuildingData(allBuildingData[currentBuildingIndex - 1] || {});
-}
-  },[])
+  useEffect(() => {
+    if (allBuildingData.length > 0) {
+      setBuildingData(allBuildingData[currentBuildingIndex - 1] || {});
+    }
+  }, []);
 
   const hanldePreviousForm = () => {
-    console.log(currentBuildingIndex);
-    
     if (currentBuildingIndex > 1) {
-      setCurrentBuilidingIndex((prev)=>prev - 1);
+      setCurrentBuilidingIndex((prev) => prev - 1);
       setBuildingData(allBuildingData[currentBuildingIndex - 2] || {}); // load data for the previous building if it exists
-    }
-    else if ( currentBuildingIndex === 1) {
-      console.log(true);
-      
+    } else if (currentBuildingIndex === 1) {
       navigate("/premises");
-    //  if (!allBuildingData.length){
-    //   navigate("/premises");
-
-     
-    } 
-  }; 
+      //  if (!allBuildingData.length){
+      //   navigate("/premises");
+    }
+  };
 
   return (
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <h1 className="form-title">
-        Building {currentBuildingIndex} Form for Premises{" "}
-        {currentPremisesIndex}
+        Building {currentBuildingIndex} Form for Premises {currentPremisesIndex}
       </h1>
 
       <Row className="mb-3">
@@ -262,7 +251,7 @@ if(allBuildingData.length > 0){
             name="compoundFlooring"
             value={buildingData?.compoundFlooring || ""}
             onChange={handleInputChange}
-            requiredd
+            required
           >
             <option value="">Select...</option>
             <option value="cf1">CF1</option>
@@ -350,6 +339,28 @@ if(allBuildingData.length > 0){
           />
         </Form.Group>
 
+        <Form.Group as={Col} md="4" controlId="numParking">
+          <Form.Label>No. of Car Parking</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="numParking"
+            value={buildingData?.numParking || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col} md="4" controlId="numTwoWheelers">
+          <Form.Label>No. of Two Wheelers</Form.Label>
+          <Form.Control
+            requiredd
+            type="number"
+            name="numTwoWheelers"
+            value={buildingData?.numTwoWheelers || ""}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
         <Form.Group as={Col} md="4" controlId="floors">
           <Form.Label>Floors</Form.Label>
           <Form.Control
@@ -372,32 +383,12 @@ if(allBuildingData.length > 0){
           />
         </Form.Group>
 
-        <Form.Group as={Col} md="4" controlId="numParking">
-          <Form.Label>No. of Parking</Form.Label>
-          <Form.Control
-            requiredd
-            type="number"
-            name="numParking"
-            value={buildingData?.numParking || ""}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
-
-        <Form.Group as={Col} md="4" controlId="numTwoWheelers">
-          <Form.Label>No. of Two Wheelers</Form.Label>
-          <Form.Control
-            requiredd
-            type="number"
-            name="numTwoWheelers"
-            value={buildingData?.numTwoWheelers || ""}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
+       
       </Row>
-
+  
       <Row className="mb-3">
         <Form.Group as={Col} md="4" controlId="parkingManagement">
-          <Form.Label>Parking Management System</Form.Label>
+          <Form.Label>Have Parking Management System?</Form.Label>
           <Form.Control
             as="select"
             name="parkingManagement"
@@ -410,6 +401,8 @@ if(allBuildingData.length > 0){
             <option value="manual">Manual</option>
           </Form.Control>
         </Form.Group>
+
+        
 
         <Form.Group as={Col} md="4" controlId="parkingMode">
           <Form.Label>Parking Mode</Form.Label>
@@ -493,7 +486,13 @@ if(allBuildingData.length > 0){
         <Button variant="secondary" onClick={hanldePreviousForm}>
           Previous
         </Button>
-        <Button variant="primary" type="submit" style={{float:"right"}} className="me-3" onClick={handleNextForm}>
+        <Button
+          variant="primary"
+          type="submit"
+          style={{ float: "right" }}
+          className="me-3"
+          onClick={handleNextForm}
+        >
           Next
         </Button>
       </div>

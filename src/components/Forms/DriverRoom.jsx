@@ -5,7 +5,7 @@ import FormContextProvider, {
 } from "../../FormContext/FormContextProvider";
 import { useNavigate } from "react-router-dom";
 
-const DriverRoom = (  ) => {
+const DriverRoom = () => {
   const {
     allDriverRoomData,
     setAllDriverRoomData,
@@ -24,7 +24,9 @@ const DriverRoom = (  ) => {
     currentFormType,
     setCurrentFormType,
     floornBasementCount,
-    basementCount, setBasementCount,setFloornBasementCount
+    basementCount,
+    setBasementCount,
+    setFloornBasementCount,
   } = useContext(FormContext);
 
   const navigate = useNavigate();
@@ -82,13 +84,6 @@ const DriverRoom = (  ) => {
     }
     setValidated(true);
   };
-  console.log(
-    currentFormType,
-    currentFormCount,
-    basement,
-    floor,
-    currentBaseMentIndex
-  );
 
   const handleNext = async () => {
     await setAllDriverRoomData((prev) => [...prev, formData]);
@@ -115,7 +110,7 @@ const DriverRoom = (  ) => {
 
     if (driverRoom > currentDriverRoomtIndex) {
       setCurrentDriverRoomtIndex((prev) => prev + 1);
-    }  else if (currentFormType === "Basement" && basementCount < basement) {
+    } else if (currentFormType === "Basement" && basementCount < basement) {
       setCurrentBaseMEntIndex((prev) => prev + 1);
       setBasementCount((prevCount) => prevCount + 1);
       setCurrentDriverRoomtIndex(1);
@@ -132,26 +127,19 @@ const DriverRoom = (  ) => {
       setBasementCount((prevCount) => prevCount + 1);
       setCurrentDriverRoomtIndex(1);
       navigate("/basement");
-  
-    }else if (currentBuildingIndex < buildingcount) {
-      setFloornBasementCount({basement:0, floor:0});
-      setCurrentFormType("")
+    } else if (currentBuildingIndex < buildingcount) {
+      setFloornBasementCount({ basement: 0, floor: 0 });
+      setCurrentFormType("");
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       navigate("/buildings");
     } else if (numOfPremises > currentPremisesIndex) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
-      alert("Premises form done");
+      alert("Premises form done");  navigate("/survey");
     }
   };
 
-  console.log(currentFormType);
-
-  //
-
-  console.log("Driver Room Data:", allDriverRoomData);
-  //
   const hanldePreviousForm = () => {
     if (currentDriverRoomtIndex > 1) {
       setCurrentDriverRoomtIndex(currentDriverRoomtIndex - 1);
@@ -159,8 +147,6 @@ const DriverRoom = (  ) => {
         allDriverRoomData[currentDriverRoomtIndex - 2] || {}
       ); // load data for the for prev
     } else if (currentDriverRoomtIndex === 1) {
-      console.log(true);
-
       navigate("/toilet");
     }
     // if (currentFormCount > 1) {
@@ -307,7 +293,7 @@ const DriverRoom = (  ) => {
             <Form.Check
               type="checkbox"
               label="Disposables"
-              name="disposables"
+              name="disposables" 
               checked={formData.crockery.disposables}
               onChange={handleInputChange}
             />
@@ -405,3 +391,4 @@ export default DriverRoom;
 
 //   }
 // }
+
