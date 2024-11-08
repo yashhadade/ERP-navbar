@@ -151,7 +151,7 @@ const Toilet = () => {
       //   setBasementCount(1);
       //   setCurrentFormType("Floor");
       //   navigate("/basement");
-    } else if (currentBuildingIndex < buildingcount) {
+    } else if (currentBuildingIndex < buildingcount ) {
       setCurrentBuilidingIndex((prevCount) => prevCount + 1);
       setFloornBasementCount({ basement: 0, floor: 0 });
       setCurrentFormType("")
