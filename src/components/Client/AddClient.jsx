@@ -1,12 +1,14 @@
 import useCustomReactQuery from "../../pages/getForAllApi";
 import { useState, useEffect } from "react"; 
 import usePostData from "../../pages/postData";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteProduct } from "../../pages/DeleteAPI";
 const AddClient = () => {
     const [product, setProduct] = useCustomReactQuery('temp-client');
     const [inputData, setInputData] = useState({ clientName: '' });
     const { postData, responseData, error, loading, message } = usePostData("temp-client/new");
+
+    const navigate = useNavigate();
 
     const handleData = (e) => {
         setInputData({ ...inputData, [e.target.name]: e.target.value });
@@ -14,13 +16,15 @@ const AddClient = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(inputData);
-        
-        const newClient = await postData(inputData);
-        if (newClient) {
-            setProduct((prevData) => [...prevData, newClient]);
-            setInputData({ clientName: "" });
-        }
+        localStorage.setItem("clientName" ,inputData.clientName )
+
+
+        navigate("/addSite")
+        // const newClient = await postData(inputData);
+        // if (newClient) {
+        //     setProduct((prevData) => [...prevData, newClient]);
+        //     setInputData({ clientName: "" });
+        // }
     };
 
     useEffect(() => {
@@ -34,29 +38,6 @@ const AddClient = () => {
                 <h2>Add Client</h2>
 
                 <div className="client-container">
-                <label>Client Name</label>
-                <input 
-                    type="text" 
-                    name="clientName" 
-                    placeholder="Client Name" 
-                    value={inputData.clientName} 
-                    onChange={handleData}
-                    />
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                    {message && <p style={{ color: 'green' }}>{message}</p>}
-                    </div>
-                    <div className="client-container">
-                <label>Client Name</label>
-                <input 
-                    type="text" 
-                    name="clientName" 
-                    placeholder="Client Name" 
-                    value={inputData.clientName} 
-                    onChange={handleData}
-                    />
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                    {message && <p style={{ color: 'green' }}>{message}</p>}
-                    </div> <div className="client-container">
                 <label>Client Name</label>
                 <input 
                     type="text" 

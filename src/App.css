@@ -129,6 +129,10 @@ main {
     font-weight: 500;
 }
 
+.field-container{
+  display: flex;
+}
+
 .client-container{
   width: 40%;
 }
@@ -151,7 +155,7 @@ main {
 .container.sidebar-open {
   margin-left: 100px; 
 }
-input {
+input, select{
   margin: 10px 0;
   padding: 12px;
   width: calc(100% - 24px);
