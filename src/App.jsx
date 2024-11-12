@@ -23,7 +23,8 @@ import Basement from "./components/Forms/Basement";
 import DriverRoom from "./components/Forms/DriverRoom";
 import Toilet from "./components/Forms/Toilet";
 import AddClient from "./components/Client/AddClient";
-import AdminPannel from "./components/Massmailer/Admin/AdminPannel";
+import Massmailer from "./components/Massmailer/Admin/Massmailer";
+import AddSite from "./components/Client/AddSite";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/saved" element={<Saved />} />
           <Route path="/settings" element={<Setting />} />
           <Route path="/addClient" element={<AddClient/>}/>
+          <Route path="/addsite" element={<AddSite/>}/>
           <Route path="/editTemporaryClient/:clintId" element={<EditTemporaryClient/>}/>
           <Route path="/temporarySite" element={<TemporarySite/>}/>
           <Route path="/temporaryDesignantion" element={<TemporaryDesignantion/>}/>
@@ -51,7 +53,7 @@ function App() {
           <Route path="/basement" element={<Basement />} />
           <Route path="/driverroom" element={<DriverRoom />} />
           <Route path="/toilet" element={<Toilet />} />
-          <Route path="/adminPannel" element={<AdminPannel/>} />
+          <Route path="/massmailer" element={<Massmailer/>}/>
 
           <Route path="*" element={<> not found</>} />
         </Routes>

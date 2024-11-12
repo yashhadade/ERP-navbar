@@ -31,8 +31,8 @@ const routes = [
   },
 
   {
-    path: "/adminPannel",
-    name: "AdminPannel",
+    path: "/massmailer",
+    name: " Massmailer",
     icon: <DiLaravel />,
   },
 
