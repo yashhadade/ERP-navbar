@@ -79,17 +79,17 @@ function Massmailer() {
     <div>
       <h1>FeedBack Form</h1>
 
-      <div className="flex justify-end items- space-x-4">
-        <div className="ml-auto col-6 col-md-4 col-lg-3">
-          <InputGroup className="mb-3">
-            <FormControl
-              placeholder="Search"
-              value={search}
-              onChange={(e) => debouncedSearch(e.target.value)}
-            />
-          </InputGroup>
-        </div>
-      </div>
+      <div className="flex justify-end items-center space-x-4">
+  <div className="col-6 col-md-4 col-lg-3">
+    <InputGroup className="mb-3">
+      <FormControl
+        placeholder="Search"
+        value={search}
+        onChange={(e) => debouncedSearch(e.target.value)}
+      />
+    </InputGroup>
+  </div>
+</div>
 
       <Table>
         <thead>
