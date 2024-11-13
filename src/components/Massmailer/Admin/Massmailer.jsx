@@ -110,7 +110,7 @@ function Massmailer() {
                 <td>{client.clientName}</td>
                 <td>{client.siteName}</td>
                 <td>{client.inchargeName}</td>
-                <td>{client.percentage}</td>
+                <td>{client.percentage.toFixed(2)}</td>
                 <td>
                   <button
                     id="exportButton"
@@ -125,6 +125,7 @@ function Massmailer() {
           ) : (
             <tr>
               <td colSpan="6" className="text-center">
+                
                 No data found
               </td>
             </tr>
