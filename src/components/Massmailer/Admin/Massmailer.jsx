@@ -3,13 +3,11 @@ import debounce from "lodash.debounce";
 import { Pagination, Table, InputGroup, FormControl } from "react-bootstrap";
 import useCustomReactQuery from "../../../pages/getForAllApi";
 import useCustomReactForExcel from "../../../Exel/ExcelApi";
-import { data } from "autoprefixer";
 
 function Massmailer() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
-  console.log(search);
-  
+
   const [product, setProduct] = useCustomReactQuery("feedback/all-percenatage");
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredData, setFilteredData] = useState([]);
@@ -17,8 +15,8 @@ function Massmailer() {
 
   const [excelId, setExcelId] = useState(null);
   useCustomReactForExcel("feedback/excel", excelId);
+
   const handleExleSheet = (id) => {
-    console.log(id);
     setExcelId(id);
   };
 
@@ -26,18 +24,29 @@ function Massmailer() {
     handleSearch(value);
   }, 100);
 
- 
-
   const handleSearch = (searchQuery) => {
-    setSearch(searchQuery);
-    const filtered = data.filter(
-      (client) =>
-        client.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        client.siteName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        client.inchargeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        client.percentage.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredData(filtered);
+    const trimmedQuery = searchQuery.trim();
+    setSearch(trimmedQuery);
+
+    if (trimmedQuery === "") {
+      setFilteredData(data);
+    } else {
+      const query = trimmedQuery.toLowerCase();
+      const filtered = data.filter((client) => {
+        return (
+          (client.clientName &&
+            client.clientName.toLowerCase().includes(query)) ||
+          (client.siteName && client.siteName.toLowerCase().includes(query)) ||
+          (client.inchargeName &&
+            client.inchargeName.toLowerCase().includes(query)) ||
+          (client.percentage &&
+            client.percentage.toString().toLowerCase().includes(query))
+        );
+      });
+
+      setFilteredData(filtered);
+    }
+
     setCurrentPage(1);
   };
 
@@ -56,7 +65,6 @@ function Massmailer() {
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(i);
     }
-
     return pageNumbers;
   };
 
@@ -70,6 +78,7 @@ function Massmailer() {
   return (
     <div>
       <h1>FeedBack Form</h1>
+
       <div className="flex justify-end items- space-x-4">
         <div className="ml-auto col-6 col-md-4 col-lg-3">
           <InputGroup className="mb-3">
@@ -94,8 +103,6 @@ function Massmailer() {
           </tr>
         </thead>
         <tbody>
-
-
           {filteredData.length > 0 ? (
             currentData.map((client, index) => (
               <tr key={index}>
@@ -141,5 +148,3 @@ function Massmailer() {
 }
 
 export default Massmailer;
-
-
