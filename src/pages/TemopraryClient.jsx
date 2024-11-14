@@ -23,7 +23,7 @@ function TemporaryClient() {
   };
 
   useEffect(() => {
-    if (responseData) {
+    if (responseData) { 
     }
   }, [responseData]);
 

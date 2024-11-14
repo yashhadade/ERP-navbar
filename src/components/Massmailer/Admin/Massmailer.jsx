@@ -12,7 +12,8 @@ function Massmailer() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredData, setFilteredData] = useState([]);
   const itemsPerPage = 10;
-
+ const [clientDroupDown,setclientDroupDown]=useState("");
+ const[siteId,setSiteId]=useState("");
   const [excelId, setExcelId] = useState(null);
   useCustomReactForExcel("feedback/excel", excelId);
 
@@ -20,9 +21,19 @@ function Massmailer() {
     setExcelId(id);
   };
 
+ 
   const debouncedSearch = debounce((value) => {
     handleSearch(value);
   }, 100);
+
+
+const handleClientChange=(e)=>{
+  setclientDroupDown(e.target.value)
+}
+ 
+const handleSiteChange=(e)=>{
+  setSiteId(parseInt(e.target.value, 10));
+}
 
   const handleSearch = (searchQuery) => {
     const trimmedQuery = searchQuery.trim();
@@ -35,7 +46,7 @@ function Massmailer() {
       const filtered = data.filter((client) => {
         return (
           (client.clientName &&
-            client.clientName.toLowerCase().includes(query)) ||
+            client.clientName.toLowerCase().includes(query)) || 
           (client.siteName && client.siteName.toLowerCase().includes(query)) ||
           (client.inchargeName &&
             client.inchargeName.toLowerCase().includes(query)) ||
@@ -74,7 +85,10 @@ function Massmailer() {
       setFilteredData(product);
     }
   }, [product]);
+console.log(currentData);
+const filteredSites = currentData.filter(data => data.clientName === clientDroupDown);
 
+console.log(siteId);
   return (
     <div>
       <h1>FeedBack Form</h1>
@@ -88,9 +102,41 @@ function Massmailer() {
         onChange={(e) => debouncedSearch(e.target.value)}
       />
     </InputGroup>
+    <label htmlFor="clientName">Select Client </label>
+            <select
+              name="clientName"
+              id="clientName"
+              value={clientDroupDown}
+              onChange={handleClientChange}
+            >
+              <option disabled value="">
+                Select client
+              </option>
+              {currentData.map((client,index) => (
+                <option key={index} value={client.clientName}>
+                  {client.clientName}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="siteName">Select Name</label>
+            <select
+              name="siteName"
+              id="siteName"
+              value={siteId}
+              onChange={handleSiteChange}
+            >
+              <option disabled value="">
+                Select site
+              </option>
+              {filteredSites.map((site,index) => (
+                <option key={index} value={site.siteId}>
+                  {site.siteName}
+                </option>
+              ))}
+            </select>
+
   </div>
 </div>
-
       <Table>
         <thead>
           <tr>
