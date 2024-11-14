@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import debounce from "lodash.debounce";
+
 import { Pagination, Table, InputGroup, FormControl } from "react-bootstrap";
 import useCustomReactQuery from "../../../pages/getForAllApi";
 import useCustomReactForExcel from "../../../Exel/ExcelApi";
@@ -21,45 +21,61 @@ function Massmailer() {
     setExcelId(id);
   };
 
- 
-  const debouncedSearch = debounce((value) => {
+  const handleClientChange=(e)=>{
+    const newValue = e.target.value;
+    setclientDroupDown(newValue);
+    debouncedSearch(newValue);
+  }
+  
+function debouncedSearch(value){
+    console.log("value " +value);
+    
     handleSearch(value);
-  }, 100);
+  } ;
 
 
-const handleClientChange=(e)=>{
-  setclientDroupDown(e.target.value)
-}
+
  
 const handleSiteChange=(e)=>{
-  setSiteId(parseInt(e.target.value, 10));
+  const selectedSiteId = parseInt(e.target.value,10); 
+  const selectedSite = filteredSites.find(site => site.siteId === selectedSiteId); 
+  console.log("site ID "+selectedSiteId);
+  if (selectedSite) {
+    setSiteId(selectedSiteId); 
+    console.log("site ID"+selectedSite);
+    debouncedSearch(selectedSite.siteName); 
+    console.log(selectedSite.siteName);
+  }
 }
 
-  const handleSearch = (searchQuery) => {
-    const trimmedQuery = searchQuery.trim();
-    setSearch(trimmedQuery);
+const handleSearch = (searchQuery) => {
+  setSearch(searchQuery); 
 
-    if (trimmedQuery === "") {
-      setFilteredData(data);
-    } else {
-      const query = trimmedQuery.toLowerCase();
-      const filtered = data.filter((client) => {
-        return (
-          (client.clientName &&
-            client.clientName.toLowerCase().includes(query)) || 
-          (client.siteName && client.siteName.toLowerCase().includes(query)) ||
-          (client.inchargeName &&
-            client.inchargeName.toLowerCase().includes(query)) ||
-          (client.percentage &&
-            client.percentage.toString().toLowerCase().includes(query))
-        );
-      });
+  if (searchQuery === "") {
+    setFilteredData(data); 
+  } else {
+    const query = searchQuery.toLowerCase(); 
 
-      setFilteredData(filtered);
-    }
+    const filtered = data.filter((client) => {
+      
+      const clientName = client.clientName ? client.clientName.toLowerCase() : "";
+      const siteName = client.siteName ? client.siteName.toLowerCase() : "";
+      const inchargeName = client.inchargeName ? client.inchargeName.toLowerCase() : "";
+      const percentage = client.percentage ? client.percentage.toString().toLowerCase() : "";
 
-    setCurrentPage(1);
-  };
+      return (
+        clientName.includes(query) ||
+        siteName.includes(query) ||
+        inchargeName.includes(query) ||
+        percentage.includes(query)
+      );
+    });
+
+    setFilteredData(filtered); 
+
+  setCurrentPage(1); 
+  }
+};
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentData = filteredData.slice(startIndex, startIndex + itemsPerPage);
@@ -88,7 +104,7 @@ const handleSiteChange=(e)=>{
 console.log(currentData);
 const filteredSites = currentData.filter(data => data.clientName === clientDroupDown);
 
-console.log(siteId);
+
   return (
     <div>
       <h1>FeedBack Form</h1>
@@ -109,10 +125,8 @@ console.log(siteId);
               value={clientDroupDown}
               onChange={handleClientChange}
             >
-              <option disabled value="">
-                Select client
-              </option>
-              {currentData.map((client,index) => (
+              <option disabled value=" ">Select client </option>
+              {product.map((client,index) => (
                 <option key={index} value={client.clientName}>
                   {client.clientName}
                 </option>
