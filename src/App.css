@@ -257,6 +257,77 @@ td,th{
   font-size: 18px; 
   max-width: fit-content;
 }
+
+.feedbackform {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.select-feedbackform {
+  display: flex;
+  align-items: center; 
+  gap: 20px; 
+  width: 100%; 
+}
+
+select {
+  padding: 12px;
+  width: 200px; 
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+label {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.react-datepicker__input-container input {
+  padding: 12px;
+  width: 200px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+}
+
+.btn-export{
+  background-color: rgb(0, 123, 255);
+  border-radius: 9px;
+  color: white;
+  width: 400px;
+  height: 45px; 
+  padding: 8px 12px; 
+  padding-left: 20px; 
+  font-size: 18px; 
+  max-width: fit-content;
+}
+
+.btn-export-hover {
+  background-color: #004494;
+}
+
+
+.datepicker-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  margin-left: auto; 
+  flex-shrink: 0; 
+}
+
+.datepicker-container .react-datepicker__input-container input {
+  width: 200px; 
+}
+
 @media screen and (max-width: 600px) {
   .container{
     padding-left: 50px;
@@ -264,6 +335,28 @@ td,th{
   .container.sidebar-open {
     margin-left: 0px; 
   }
+  .select-feedbackform {
+    flex-direction: column; 
+    gap: 10px;
+  }
+
+  .datepicker-container {
+    width: 100%; 
+    margin-left: 0;
+    flex-direction: column; 
+    gap: 10px; 
+  }
+
+  select, .react-datepicker__input-container input {
+    width: 100%; 
+    padding: 10px;
+  }
+
+  button {
+    width: 100%; 
+    padding: 12px;
+  }
+
 
 }
 

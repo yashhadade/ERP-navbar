@@ -12,7 +12,6 @@ const useCustomReactForExcel = (urlPath, id) => {
           const response = await axios.get(`${apiUrl}/${urlPath}/${id}`, {
             responseType: "blob",
           });
-
           const blob = new Blob([response.data], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
           });
