@@ -1,6 +1,6 @@
 
 function ServerApi(){
-    const api="http://localhost:8086"
+    const api="http://smartfm.ismartfacitechpl.com/feedback"
     return api
 }
 export default ServerApi;
