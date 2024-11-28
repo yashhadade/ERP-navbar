@@ -70,54 +70,36 @@ const Buildings = ({ onPrevious, onNext }) => {
   };
 
   const handleNextForm = async () => {
-    // Save the current building data in the global context
     await setAllBuildingData((prev) => {
-      const newData = [...prev]; // Create a copy of the previous state
-      newData[currentBuildingIndex - 1] = buildingData; // Update the specific index
-      return newData; // Return the updated array
+      const newData = [...prev];
+      newData[currentBuildingIndex - 1] = buildingData;
+      return newData;
     });
-  
-    // Handle logic for basement and floor form navigation
-    if (buildingData?.basement > 0 || buildingData?.floors > 0) {
+
+    if (buildingData.basement > 0 || buildingData.floors > 0) {
       setFloornBasementCount({
-        basement: buildingData?.basement,
-        floor: buildingData?.floors,
+        basement: buildingData.basement,
+        floor: buildingData.floors,
       });
-  
-      // Navigate to basement form
       navigate("/basement");
-  
-    // Handle logic for elevation form navigation
-    } else if (buildingData?.numElevations > 0) {
-      // Set the number of elevation forms to display
+    } else if (buildingData.numElevations > 0) {
       setElevatorFormCount(buildingData.numElevations);
-  
-      // Check if we still need to show more elevation forms
+
       if (currentElevationForm < buildingData.numElevations) {
-        // Navigate to the current elevation form
         navigate("/elevatorForm");
+      } else if (buildingData.basement > 0) {
+        navigate("/basement");
       } else {
-        // If all elevation forms are completed, navigate to basement form
-        if (buildingData?.basement > 0) {
-          navigate("/basement");
-        } else {
-          // Otherwise, navigate to the next section (like premises)
-          navigate("/premises");
-        }
+        navigate("/premises");
       }
-  
-    // Logic for building index navigation
     } else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex(currentBuildingIndex + 1);
-      setBuildingData(allBuildingData[currentBuildingIndex] || {}); // Load data for the next building if it exists
-  
-    // Logic for premises index navigation
+      setBuildingData(allBuildingData[currentBuildingIndex] || {});
     } else if (numOfPremises > currentPremisesIndex) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
-  
     } else {
-      alert("Premises form done");
+      alert("Premises form completed");
       navigate("/survey");
     }
   };

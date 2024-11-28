@@ -35,6 +35,7 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
 
   const handleExleSheet = (id) => {
     setExcelId(id);
+    console.log("Exporting data for Form ID: " + id); 
   };
 
   const handleClientChange = (e) => {
@@ -246,10 +247,14 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
                   <button
                     id="exportButton"
                     className="btn btn-primary"
-                    onClick={() => handleExleSheet(client.siteId)}  // have to change siteId => formId
+                    onClick={() => handleExleSheet(client.formId)}  // have to change siteId => formId
+                    
+                    
                   
                   >
                     Export to Excel
+                 
+                    
                   </button>
                 </td>
               </tr>
