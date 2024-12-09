@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useCustomReactForYearExcel from "../../../Exel/YearExcel";
 import useCustomReactForAvg from "../../../Exel/YearExcel";
+// import { shouldProcessLinkClick } from "react-router-dom/dist/dom";
 
 function Massmailer() {
   const [data, setData] = useState([]);
@@ -20,6 +21,7 @@ function Massmailer() {
   const [clientDroupDown, setclientDroupDown] = useState("");
   const [siteId, setSiteId] = useState("");
   const [excelId, setExcelId] = useState(null);
+
   useCustomReactForExcel("feedback/excel", excelId);
 const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${selectedYear}`,selectedYear);
 
@@ -33,12 +35,14 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
 
   const handleExleSheet = (id) => {
     setExcelId(id);
+    console.log("Exporting data for Form ID: " + id); 
   };
 
   const handleClientChange = (e) => {
     const newValue = e.target.value;
     setclientDroupDown(newValue);
-    debouncedSearch(newValue);
+    filterDataByClientAndSite(newValue, siteId);
+    // debouncedSearch(newValue);
   };
 
   function debouncedSearch(value) {
@@ -56,30 +60,45 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
     if (selectedSite) {
       setSiteId(selectedSiteId);
       console.log("site ID" + selectedSite);
-      debouncedSearch(selectedSite.siteName);
+      filterDataByClientAndSite(clientDroupDown, selectedSiteId); 
+      // debouncedSearch(selectedSite.siteName);
       console.log(selectedSite.siteName);
     }
   };
+  //
+
+  
+  const filterDataByClientAndSite = (client, site) => {
+    let filtered = data;
+
+    if (client) {
+      filtered = filtered.filter((item) => item.clientName === client);
+    }
+
+    if (site) {
+      filtered = filtered.filter((item) => item.siteId === parseInt(site, 10));
+    }
+
+    setFilteredData(filtered.length > 0 ? filtered : data); // Show filtered data or fallback to original
+  };
+  //
+
+  
 
   const handleSearch = (searchQuery) => {
     setSearch(searchQuery);
 
     if (searchQuery === "") {
+
       setFilteredData(data);
     } else {
+   
       const query = searchQuery.toLowerCase();
-
       const filtered = data.filter((client) => {
-        const clientName = client.clientName
-          ? client.clientName.toLowerCase()
-          : "";
+        const clientName = client.clientName ? client.clientName.toLowerCase() : "";
         const siteName = client.siteName ? client.siteName.toLowerCase() : "";
-        const inchargeName = client.inchargeName
-          ? client.inchargeName.toLowerCase()
-          : "";
-        const percentage = client.percentage
-          ? client.percentage.toString().toLowerCase()
-          : "";
+        const inchargeName = client.inchargeName ? client.inchargeName.toLowerCase() : "";
+        const percentage = client.percentage ? client.percentage.toString().toLowerCase() : "";
 
         return (
           clientName.includes(query) ||
@@ -89,7 +108,7 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
         );
       });
 
-      setFilteredData(filtered);
+      setFilteredData(filtered.length > 0 ? filtered : data);
 
       setCurrentPage(1);
     }
@@ -102,7 +121,7 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
   const handlePageChange = (page) => setCurrentPage(page);
 
   const getPaginationItems = () => {
-    const pageNumbers = [];
+    const pageNumbers = []; 
     const pageRange = 5;
     const startPage = Math.max(1, currentPage - Math.floor(pageRange / 2));
     const endPage = Math.min(totalPages, startPage + pageRange - 1);
@@ -120,7 +139,7 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
     }
   }, [product]);
   console.log(currentData);
-  const filteredSites = currentData.filter(
+  const filteredSites = product.filter(
     (data) => data.clientName === clientDroupDown
   );
 
@@ -147,7 +166,7 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
         value={clientDroupDown}
         onChange={handleClientChange}
       >
-        <option disabled value=" ">
+        <option  value=" ">
           Select client
         </option>
         {product.map((client, index) => (
@@ -228,17 +247,21 @@ const [avg]=useCustomReactForAvg(`feedback/avg-percenatage/${siteId}/year/${sele
                   <button
                     id="exportButton"
                     className="btn btn-primary"
-                    onClick={() => handleExleSheet(client.siteId)}
+                    onClick={() => handleExleSheet(client.formId)}  // have to change siteId => formId
+                    
+                    
                   
                   >
                     Export to Excel
+                 
+                    
                   </button>
                 </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="text-center">
+              <td colSpan="5" className="text-center">
                 No data found
               </td>
             </tr>

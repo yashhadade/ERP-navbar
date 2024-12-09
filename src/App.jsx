@@ -26,6 +26,17 @@ import AddClient from "./components/Client/AddClient";
 import Massmailer from "./components/Massmailer/Admin/Massmailer";
 import AddSite from "./components/Client/AddSite";
 
+import StoreForm from "./components/Forms/StoreForm";
+import LobbiesForm from "./components/Forms/LobbiesForm";
+import LoungeForm from "./components/Forms/LoungeForm";
+import ManagerForm from "./components/Forms/ManagerForm";
+import RestingForm from "./components/Forms/RestingForm";
+import StaircaseForm from "./components/Forms/StaircaseForm";
+import ElevatorForm from "./components/Forms/ElevatorForm";
+import CompoundForm from "./components/Forms/CompoundForm";
+import EscalatorForm from "./components/Forms/EscalatorForm";
+import TerraceForm from "./components/Forms/TerraceForm";
+
 function App() {
   return (
     <Router>
@@ -54,6 +65,18 @@ function App() {
           <Route path="/driverroom" element={<DriverRoom />} />
           <Route path="/toilet" element={<Toilet />} />
           <Route path="/massmailer" element={<Massmailer/>}/>
+          <Route path="/storeForm" element={<StoreForm/>}/>
+          <Route path="/lobbiesForm" element={<LobbiesForm/>}/>
+          <Route path="/loungeForm" element={<LoungeForm/>}/>
+          <Route path="/managerForm" element={<ManagerForm/>}/>
+          <Route path="/restingForm" element={<RestingForm/>}/>
+          <Route path="/staircaseForm" element={<StaircaseForm/>}/>
+          <Route path="/elevatorForm" element={<ElevatorForm/>}/>
+          <Route path="/escalatorForm" element={<EscalatorForm/>}/>
+          <Route path="/compoundForm" element={<CompoundForm/>}/>
+          <Route path="/terraceForm" element={<TerraceForm/>}/>
+         
+          
 
           <Route path="*" element={<> not found</>} />
         </Routes>

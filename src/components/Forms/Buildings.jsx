@@ -15,8 +15,14 @@ const Buildings = ({ onPrevious, onNext }) => {
     setCurrentBuilidingIndex,
     floornBasementCount,
     setFloornBasementCount,
+    elevatorFormCount,
+    setElevatorFormCount,
   } = useContext(FormContext);
   const navigate = useNavigate();
+  // const handleElevationFormSubmit = () => {
+  //   setCurrentElevationForm((prev) => prev + 1); // Increment to go to the next elevation form
+  // };
+  const [currentElevationForm, setCurrentElevationForm] = useState(0); 
   const [validated, setValidated] = useState(false);
   const location = useLocation();
   // const [] = useState({});
@@ -65,28 +71,39 @@ const Buildings = ({ onPrevious, onNext }) => {
 
   const handleNextForm = async () => {
     await setAllBuildingData((prev) => {
-      const newData = [...prev]; // Create a copy of the previous state
-      newData[currentBuildingIndex - 1] = buildingData; // Update the specific index
-      return newData; // Return the updated array
+      const newData = [...prev];
+      newData[currentBuildingIndex - 1] = buildingData;
+      return newData;
     });
 
-    if (buildingData?.basement > 0 || buildingData?.floors > 0) {
+    if (buildingData.basement > 0 || buildingData.floors > 0) {
       setFloornBasementCount({
-        basement: buildingData?.basement,
-        floor: buildingData?.floors,
+        basement: buildingData.basement,
+        floor: buildingData.floors,
       });
-
       navigate("/basement");
+    } else if (buildingData.numElevations > 0) {
+      setElevatorFormCount(buildingData.numElevations);
+
+      if (currentElevationForm < buildingData.numElevations) {
+        navigate("/elevatorForm");
+      } else if (buildingData.basement > 0) {
+        navigate("/basement");
+      } else {
+        navigate("/premises");
+      }
     } else if (currentBuildingIndex < buildingcount) {
       setCurrentBuilidingIndex(currentBuildingIndex + 1);
-      setBuildingData(allBuildingData[currentBuildingIndex] || {}); // Load data for the next building if it exists
+      setBuildingData(allBuildingData[currentBuildingIndex] || {});
     } else if (numOfPremises > currentPremisesIndex) {
       setCurrentPremisesIndex(currentPremisesIndex + 1);
       navigate("/premises");
     } else {
-      alert("Premises form done");  navigate("/survey");
+      alert("Premises form completed");
+      navigate("/survey");
     }
   };
+  
 
   useEffect(() => {
     if (allBuildingData.length > 0) {
@@ -150,7 +167,7 @@ const Buildings = ({ onPrevious, onNext }) => {
         <Form.Group as={Col} md="4" controlId="numEmployees">
           <Form.Label>Number of Employees</Form.Label>
           <Form.Control
-            requiredd
+            required
             type="number"
             name="numEmployees"
             value={buildingData?.numEmployees || ""}

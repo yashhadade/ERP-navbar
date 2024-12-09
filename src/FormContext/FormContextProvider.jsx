@@ -15,6 +15,10 @@ const FormContextProvider = ({ children }) => {
     basement: 0,
     floor: 0,
   });
+  const [elevatorData, setElevatorData] = useState([]);
+
+const [elevatorFormCount, setElevatorFormCount] = useState(0);
+
   const [toiletDiverRoomCount, setToiletDiverRoomCount] = useState({
     gentsToilet: 0,
     ladiesToilet: 0,
@@ -32,6 +36,7 @@ const FormContextProvider = ({ children }) => {
   const [currentDriverRoomIndex, setCurrentDriverRoomIndex] = useState(1); // to track driverr. index
   const [currentFormType, setCurrentFormType] = useState("");
   const [currentToiletType, setCurrentToiletType] = useState("");
+
 
   // console.log(
   //   "survey",
@@ -90,6 +95,11 @@ const FormContextProvider = ({ children }) => {
         setAllDriverRoomData, //for updating driver room data
         currentDriverRoomIndex, //to track current driver room index
         setCurrentDriverRoomIndex, //to set current driver room index
+        elevatorData,
+        setElevatorData,
+        elevatorFormCount,
+        setElevatorFormCount,
+    
       }}
     >
       {children}
